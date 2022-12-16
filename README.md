@@ -17,15 +17,11 @@
 
 ## Instructions (လမ်းညွှန်ချက်)
 
-1. MongoDB Community Server ကို အောက်ပါလင့်တွင် Download ရယူ၍ ၄င်း၏လမ်းညွှန်ချက်များနှင့်အညီ Install ပြုလုပ် ထည့်သွင်းထားပါ။ 
-
-<a href="https://www.mongodb.com/try/download/community">
+1. MongoDB Community Server ကို အောက်ပါလင့်တွင် Download ရယူ၍ ၄င်း၏လမ်းညွှန်ချက်များနှင့်အညီ Install ပြုလုပ် ထည့်သွင်းထားပါ။ <a href="https://www.mongodb.com/try/download/community">
 	https://www.mongodb.com/try/download/community
 </a>
 
-2. Node မရှိသေးပါက အောက်ပါလိပ်စာတွင် Download ရယူ၍ Install ပြုလုပ်ပါ။
-
-<a href="https://nodejs.org/en/">
+2. Node မရှိသေးပါက အောက်ပါလိပ်စာတွင် Download ရယူ၍ Install ပြုလုပ်ပါ။ <a href="https://nodejs.org/en/">
 	https://nodejs.org/en/
 </a>
 
