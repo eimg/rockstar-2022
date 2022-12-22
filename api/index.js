@@ -4,7 +4,9 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const app = express();
 
-var bodyParser = require("body-parser");
+const expressWs = require("express-ws")(app);
+
+const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -249,7 +251,7 @@ app.get("/tweets", async (req, res) => {
 	}
 });
 
-// Get user's tweets by @handle
+// Get user"s tweets by @handle
 app.get("/tweets/users/:handle", async (req, res) => {
 	const handle = req.params.handle;
 	const limit = 20;
@@ -285,7 +287,7 @@ app.get("/tweets/users/:handle", async (req, res) => {
 	}
 });
 
-// Get user's comments by @handle
+// Get user"s comments by @handle
 app.get("/comments/users/:handle", async (req, res) => {
 	const handle = req.params.handle;
 	const limit = 20;
@@ -318,7 +320,7 @@ app.get("/comments/users/:handle", async (req, res) => {
 	}
 });
 
-// Get user's liked tweets by @handle
+// Get user"s liked tweets by @handle
 app.get("/tweets/users/:handle/liked", async (req, res) => {
 	const handle = req.params.handle;
 	const limit = 20;
@@ -609,6 +611,8 @@ app.get("/notis", auth, async (req, res) => {
 });
 
 // Add new noti
+// Fix: Noti creation should be private server-side action
+// not an open API end-point.
 app.post("/notis", auth, async (req, res) => {
 	const user = res.locals.user;
 	const { type, target } = req.body;
@@ -617,6 +621,17 @@ app.post("/notis", auth, async (req, res) => {
 		_id: ObjectId(target)
 	});
 
+	// No noti for unlike
+	if (!tweet.likes.find(item => item.toString() === user._id)) 
+		return res.status(304).end();
+
+	// No noti for own posts
+	if(user._id === tweet.owner.toString())
+		return res.status(304).end();
+
+	// Fix: Repetitive notis for same actions
+	// e.g., like, then unlike, then like again
+	// maybe remove old identical notis
 	let result = await db.collection("notis").insertOne({
 		type,
 		actor: ObjectId(user._id),
@@ -630,6 +645,15 @@ app.post("/notis", auth, async (req, res) => {
 	let noti = await db.collection("notis").findOne({
 		_id: result.insertedId
 	});
+
+	const webSocketClient = subscribers.filter(subscriber => {
+		return subscriber.uid === tweet.owner.toString();
+	})[0];
+
+	if (webSocketClient) {
+		webSocketClient.conn.send(JSON.stringify(noti));
+		console.log("broadcasting noti to: " + noti.owner);
+	}
 
 	return res.status(201).json(noti);
 });
@@ -660,6 +684,28 @@ app.put("/notis/:id", auth, async (req, res) => {
 	);
 
 	return res.status(200).json({ msg: "noti marked read" });
+});
+
+const subscribers = [];
+
+app.ws("/subscribe", (conn, req) => {
+	conn.on("message", token => {
+		if(token) {
+			jwt.verify(token, secret, function (err, user) {
+				if (err) console.log("invalid token");
+
+				if (user) {
+					if (!subscribers.find(subscriber => subscriber.uid === user._id.toString())) {
+						subscribers.push({ uid: user._id, conn });
+
+						console.log("adding subscription: " + user._id);
+					}
+				}
+			});
+		} else {
+			console.log("token required");
+		}
+	});
 });
 
 app.listen(8000, () => {

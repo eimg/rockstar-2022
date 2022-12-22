@@ -74,10 +74,6 @@ export default function App({ colorMode }) {
 	let [bottomMenuState, setBottomMenuState] = useState(false);
 
 	useEffect(() => {
-		if (getToken()) setAuth(true);
-	}, []);
-
-	useEffect(() => {
 		(async () => {
 			let result = await fetchTweets();
 			if (!result) return navigate("/error");
@@ -93,8 +89,24 @@ export default function App({ colorMode }) {
 			if (!user) return false;
 
 			setAuthUser(user);
+			setAuth(true);
+
+			const ws = new WebSocket("ws://localhost:8000/subscribe");
+
+			ws.onopen = e => {
+				const token = getToken();
+				if(token) {
+					ws.send(token);
+				}
+			};
+
+			ws.onmessage = e => {
+				// const noti = JSON.parse(e.data);
+				setNotiCount(1);
+			};
 		})();
-	}, [auth]);
+
+	}, [auth, notiCount]);
 
 	const toggleDrawer = open => event => {
 		if (event.type === "keydown"
