@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
 	AppBar,
@@ -10,6 +10,7 @@ import {
 import {
 	Hub as HubIcon,
 	ArrowBack as ArrowBackIcon,
+	PersonSearch as PersonSearchIcon,
 	Notifications as NotificationsIcon,
 	AccountCircle as AccountCircleIcon,
 } from "@mui/icons-material";
@@ -18,14 +19,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { fetchNotis } from "../apiCalls";
 
-export default function Header({ 
-	toggleDrawer, 
-	auth, 
-	notiCount, 
-	setNotiCount 
+import Search from "./Search";
+
+export default function Header({
+	auth,
+	notiCount,
+	setNotiCount,
+	toggleDrawer,
 }) {
 	const location = useLocation();
 	const navigate = useNavigate();
+
+	let [searchOpen, setSearchOpen] = useState(false);
 
 	useEffect(() => {
 		(async () => {
@@ -78,6 +83,15 @@ export default function Header({
 					<HubIcon sx={{ color: "logo.color", fontSize: 38 }} />
 				</IconButton>
 
+				<IconButton
+					sx={{ mr: 1 }}
+					onClick={() => {
+						setSearchOpen(true);
+					}}
+				>
+					<PersonSearchIcon />
+				</IconButton>
+
 				{auth && <IconButton color="inherit" onClick={() => {
 					navigate("/notis");
 				}}>
@@ -94,6 +108,8 @@ export default function Header({
 					}
 				</IconButton>}
 			</Toolbar>
+
+			<Search open={searchOpen} setOpen={setSearchOpen} />
 		</AppBar>
 	);
 }

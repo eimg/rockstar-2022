@@ -63,6 +63,17 @@ export async function updateProfile(_id, name, profile, password) {
 	return false;
 }
 
+export async function fetchUsers(q = "") {
+	const res = await fetch(`${apiBase}/users?q=${q}`);
+
+	if (res.ok) {
+		let result = await res.json();
+		return result;
+	}
+
+	return false;
+}
+
 export async function fetchUser() {
 	const token = getToken();
 

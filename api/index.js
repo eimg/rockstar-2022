@@ -108,6 +108,49 @@ app.get("/users/:handle", async (req, res) => {
 	return res.status(401).json({ msg: "user not found" });
 });
 
+// Get all users by {q} query
+app.get("/users", async (req, res) => {
+	let { q } = req.query;
+
+	let result = await db.collection("users").aggregate([
+		{ 
+			$match: { 
+				name: new RegExp(`.*${q}.*`, "i")
+			} 
+		},
+		{
+			$sort: { name: 1 }
+		},
+		{
+			$limit: 5
+		},
+		// Followers users relationship
+		{
+			$lookup: {
+				from: "users",
+				localField: "followers",
+				foreignField: "_id",
+				as: "followers_users"
+			}
+		},
+		// Following users relationship
+		{
+			$lookup: {
+				from: "users",
+				localField: "following",
+				foreignField: "_id",
+				as: "following_users"
+			}
+		},
+	]).toArray();
+
+	if (result) {
+		return res.status(200).json(result);
+	}
+
+	return res.status(401).json({ msg: "user not found" });
+});
+
 // Register: create user
 app.post("/user", async (req, res) => {
 	const { name, handle, profile, password } = req.body;
