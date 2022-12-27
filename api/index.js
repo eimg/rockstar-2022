@@ -41,8 +41,6 @@ const auth = (req, res, next) => {
 
 app.post("/login", async (req, res) => {
 	const { handle, password } = req.body;
-
-	console.log(req.body);
 	
 	if (!handle || !password) {
 		return res.status(403).json({ 
