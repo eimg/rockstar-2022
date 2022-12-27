@@ -8,6 +8,9 @@
 * Express API Back-end
 * MongoDB Database
 * MUI UI Framework
+* React Native
+* React Navigation for React Native
+* React Native Elements UI Framework
 
 ## Requirements (လိုအပ်ချက်)
 
@@ -25,7 +28,7 @@
 	https://nodejs.org/en/
 </a>
 
-3. ကုဒ်နမူနာတွင် အစိတ်အပိုင်း (၃) ပိုင်းပါဝင်သည်။ api, client, tools တို့ဖြစ်ကြသည်။ တစ်ပိုင်းချင်းစီအတွက် လိုအပ်သည့် Node Modules များကိုယူရန်၊ သက်ဆိုင်ရာ ဖိုဒါတစ်ခုချင်းစီအတွင်း npm instll Run ၍ ထည့်သွင်းပါ။
+3. ကုဒ်နမူနာတွင် အစိတ်အပိုင်း (၄) ပိုင်းပါဝင်သည်။ `api`, `client`, `native`, `tools` တို့ဖြစ်ကြသည်။ တစ်ပိုင်းချင်းစီအတွက် လိုအပ်သည့် Node Modules များကိုယူရန်၊ သက်ဆိုင်ရာ ဖိုဒါတစ်ခုချင်းစီအတွင်း `npm instll` Run ၍ ထည့်သွင်းပါ။
 
 ```
 cd api
@@ -34,11 +37,14 @@ npm install
 cd ../client
 npm install
 
+cd ../native
+npm install
+
 cd ../tools
 npm install
 ```
 
-4. လိုအပ်သည့် Database နှင့် နမူနာ Data များရရှိရန် tools/seeds.js ကို Run ပါ။
+4. လိုအပ်သည့် Database နှင့် နမူနာ Data များရရှိရန် `tools/seeds.js` ကို Run ပါ။
 
 ```
 node tools/seeds.js
@@ -59,11 +65,11 @@ npm start
 
 <img src="https://i.imgur.com/XptCUfR.png" alt="Sample Screenshot">
 
-7. User Account အသစ်တည်ဆောက်၍ သော်လည်းကောင်း၊ နမူနာ User Account အဖြစ် alice အတွက် Password နေရာတွင် password ကိုထည့်သွင်း၍ စတင်စမ်းသပ်နိုင်ပြီဖြစ်ပါသည်။
+7. User Account အသစ်တည်ဆောက်၍ သော်လည်းကောင်း၊ နမူနာ User Account အဖြစ် `alice` အတွက် Password နေရာတွင် password ကိုထည့်သွင်း၍ စတင်စမ်းသပ်နိုင်ပြီဖြစ်ပါသည်။
+
+8. React Native App ကိုစမ်းသပ်ရန် မိမိ၏ဖုန်းတွင် `Expo Go` App ကို သက်ဆိုင်ရာ App Store မှတစ်ဆင့် ထည့်သွင်းထားရန် လိုအပ်ပါသည်။ ထို့နောက် `native` Directory အတွင်း `npx expo start` ကို Run ပါ။ ပေါ်လာသည့် QR Code ကို ဖတ်ခြင်းအားဖြင့် App ကို ဖုန်းတွင် တိုက်ရိုက်စမ်းသပ်နိုင်မည် ဖြစ်ပါသည်။
 
 ## Todo (ဆက်လက်ထည့်သွင်းရန် ရည်ရွယ်ထားသည်များ)
 
-* Search
 * Mention
 * Continues Loading
-* Real-time Notis
