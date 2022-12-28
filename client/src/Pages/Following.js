@@ -15,7 +15,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 
 export default function Following({ authUser, setAuthUser }) {
 	const { handle } = useParams();
-	let [following, setFollowing] = useState([]);
+	const [following, setFollowing] = useState([]);
 
 	const navigate = useNavigate();
 

@@ -25,7 +25,7 @@ import Search from "./Search";
 import Singup from "./Singup";
 import Profile from "./Profile";
 
-import { fetchUser } from "./apiCalls";
+import { fetchUser, fetchNotis } from "./apiCalls";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -65,6 +65,16 @@ export default function App() {
 	const [auth, setAuth] = useState(false);
 	const [authUser, setAuthUser] = useState({});
 	const [showMenu, setShowMenu] = useState(false);
+	const [notiCount, setNotiCount] = useState(0);
+
+	useEffect(() => {
+		(async () => {
+			let notis = await fetchNotis();
+			if (!notis) return false;
+
+			setNotiCount(notis.filter(noti => !noti.read).length);
+		})();
+	}, [notiCount]);
 
 	useEffect(() => {
 		(async () => {
@@ -147,14 +157,17 @@ export default function App() {
 
 							<Tab.Screen
 								name="Notis"
-								component={Notis}
 								options={{
-									tabBarBadge: 3,
+									tabBarBadge: notiCount < 1 
+										? null : notiCount > 9 
+										? ".." : notiCount,
 									tabBarIcon: ({ color }) => (
 										<Ionicons name="notifications" size={24} color={color} />
 									),
 								}}
-							/>
+							>
+								{ () => <Notis setNotiCount={setNotiCount} /> }
+							</Tab.Screen>
 						</>
 
 						: <>

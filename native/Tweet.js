@@ -10,16 +10,16 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { formatRelative, parseISO } from "date-fns";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { fetchTweet } from "./apiCalls";
+import { fetchTweet, putLike, postNoti } from "./apiCalls";
 
-export default function Tweet({ authUser, user }) {
+export default function Tweet({ authUser, auth }) {
 	const navigation = useNavigation();
 	const route = useRoute();
 
 	const { _id } = route.params;
 
-	let [isLoading, setIsLoading] = useState(true);
-	let [tweet, setTweet] = useState({});
+	const [isLoading, setIsLoading] = useState(true);
+	const [tweet, setTweet] = useState({});
 
 	useEffect(() => {
 		(async () => {
@@ -28,6 +28,35 @@ export default function Tweet({ authUser, user }) {
 			setIsLoading(false);
 		})();
 	}, [isLoading]);
+
+	const toggleLike = id => {
+		if (!auth) return false;
+
+		(async () => {
+			let likes = await putLike(id);
+			// if (!likes) return navigate("/error");
+
+			let updatedTweet = await fetchTweet(id);
+			if (!updatedTweet) return navigate("/error");
+
+			setTweet(updatedTweet);
+			postNoti("like", id);
+		})();
+	}
+
+	const toggleLikeForComment = (commentId, tweetId) => {
+		if (!auth) return false;
+
+		(async () => {
+			let likes = await putLike(commentId);
+			// if (!likes) return navigate("/error");
+
+			let result = await fetchTweet(tweetId);
+			// if (!result) return navigate("/error");
+
+			setTweet(result);
+		})();
+	}
 
 	return (
 		<ScrollView>
@@ -183,18 +212,17 @@ export default function Tweet({ authUser, user }) {
 							}}
 						>
 
-							{
-								tweet.likes &&
-									tweet.likes.includes(authUser._id)
-									? <Button type="clear">
-										<Ionicons name="heart" size={24} color="red" />
-										<Text style={{ marginLeft: 5 }}>{tweet.likes.length}</Text>
-									</Button>
-									: <Button type="clear">
-										<Ionicons name="heart-outline" size={24} color="red" />
-										<Text style={{ marginLeft: 5 }}>{tweet.likes.length}</Text>
-									</Button>
-							}
+							<Button type="clear" onPress={() => {
+								toggleLike(tweet._id);
+							}}>
+								{
+									tweet.likes &&
+										tweet.likes.includes(authUser._id)
+										? <Ionicons name="heart" size={24} color="red" />
+										: <Ionicons name="heart-outline" size={24} color="red" />
+								}
+								<Text style={{ marginLeft: 5 }}>{tweet.likes.length}</Text>
+							</Button>
 
 							<Button type="clear">
 								<Ionicons name="share-social-outline" size={24} color="#09a" />
@@ -260,28 +288,25 @@ export default function Tweet({ authUser, user }) {
 									</View>
 								</View>
 
-								<View style={{ flexDirection: "row", marginTop: 10, justifyContent: "space-around" }}>
-									{
-										comment.likes &&
-											comment.likes.includes(authUser._id)
-											? <Button type="clear">
-												<Ionicons name="heart" size={24} color="red" />
-												<Text 
-													style={{ marginLeft: 5 }}
-												>
-													{comment.likes.length}
-												</Text>
-											</Button>
+								<View 
+									style={{ 
+										flexDirection: "row", 
+										marginTop: 10, 
+										justifyContent: "space-around" 
+									}}
+								>
 
-											: <Button type="clear">
-												<Ionicons name="heart-outline" size={24} color="red" />
-												<Text 
-													style={{ marginLeft: 5 }}
-												>
-													{comment.likes.length}
-												</Text>
-											</Button>
-									}
+									<Button type="clear" onPress={() => {
+										toggleLikeForComment(comment._id, tweet._id);
+									}}>
+										{
+											comment.likes &&
+												comment.likes.includes(authUser._id)
+												? <Ionicons name="heart" size={24} color="red" />
+												: <Ionicons name="heart-outline" size={24} color="red" />
+										}
+										<Text style={{ marginLeft: 5 }}>{comment.likes.length}</Text>
+									</Button>
 
 									<Button type="clear">
 										<Ionicons name="share-social-outline" size={24} color="#09a" />

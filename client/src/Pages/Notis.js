@@ -23,7 +23,7 @@ import { fetchNotis, markAllNotisRead, markNotiRead } from "../apiCalls";
 export default function Notis({ setNotiCount }) {
 	const navigate = useNavigate();
 
-	let [notis, setNotis] = useState([]);
+	const [notis, setNotis] = useState([]);
 
 	useEffect(() => {
 		(async () => {

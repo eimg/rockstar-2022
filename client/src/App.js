@@ -61,17 +61,17 @@ export default function App({ colorMode }) {
 	const location = useLocation();
 	const addShareRoute = useMatch("/tweet/:id/share");
 
-	let [auth, setAuth] = useState(false);
-	let [tweet, setTweet] = useState({});
-	let [tweets, setTweets] = useState([]);
-	let [authUser, setAuthUser] = useState({});
-	let [notiCount, setNotiCount] = useState(0);
-	let [isLoading, setIsLoading] = useState(true);
-	let [tweetIdOwner, setTweetIdOwner] = useState();
+	const [auth, setAuth] = useState(false);
+	const [tweet, setTweet] = useState({});
+	const [tweets, setTweets] = useState([]);
+	const [authUser, setAuthUser] = useState({});
+	const [notiCount, setNotiCount] = useState(0);
+	const [isLoading, setIsLoading] = useState(true);
+	const [tweetIdOwner, setTweetIdOwner] = useState();
 
-	let [drawerState, setDrawerState] = useState(false);
-	let [snackbarOpen, setSnackbarOpen] = useState(false);
-	let [bottomMenuState, setBottomMenuState] = useState(false);
+	const [drawerState, setDrawerState] = useState(false);
+	const [snackbarOpen, setSnackbarOpen] = useState(false);
+	const [bottomMenuState, setBottomMenuState] = useState(false);
 
 	useEffect(() => {
 		(async () => {

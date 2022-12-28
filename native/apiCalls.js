@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const apiBase = "http://192.168.99.186:8000";
 
 export async function getToken() {
-	let token = AsyncStorage.getItem("token");
+	let token = await AsyncStorage.getItem("token");
 	return token || false;
 }
 
@@ -84,7 +84,7 @@ export async function fetchUsers(q = "") {
 }
 
 export async function fetchUser() {
-	const token = getToken();
+	const token = await getToken();
 
 	if (!token) return false;
 
@@ -169,7 +169,7 @@ export async function fetchTweet(_id) {
 }
 
 export async function postTweet(tweet) {
-	const token = getToken();
+	const token = await getToken();
 
 	const res = await fetch(`${apiBase}/tweets`, {
 		method: "POST",
@@ -189,7 +189,7 @@ export async function postTweet(tweet) {
 }
 
 export async function postReply(_id, reply) {
-	const token = getToken();
+	const token = await getToken();
 
 	const res = await fetch(`${apiBase}/reply/${_id}`, {
 		method: "POST",
@@ -209,7 +209,7 @@ export async function postReply(_id, reply) {
 }
 
 export async function postShare(_id, tweet) {
-	const token = getToken();
+	const token = await getToken();
 
 	const res = await fetch(`${apiBase}/tweets/${_id}/share`, {
 		method: "POST",
@@ -229,7 +229,7 @@ export async function postShare(_id, tweet) {
 }
 
 export async function deleteTweet(_id) {
-	const token = getToken();
+	const token = await getToken();
 
 	const res = await fetch(`${apiBase}/tweets/${_id}`, {
 		method: "DELETE",
@@ -242,7 +242,7 @@ export async function deleteTweet(_id) {
 }
 
 export async function putLike(_id) {
-	const token = getToken();
+	const token = await getToken();
 
 	const res = await fetch(`${apiBase}/tweets/${_id}/like`, {
 		method: "PUT",
@@ -260,7 +260,7 @@ export async function putLike(_id) {
 }
 
 export async function putFollow(_id) {
-	const token = getToken();
+	const token = await getToken();
 
 	const res = await fetch(`${apiBase}/users/${_id}/follow`, {
 		method: "PUT",
@@ -278,7 +278,7 @@ export async function putFollow(_id) {
 }
 
 export async function fetchNotis() {
-	const token = getToken();
+	const token = await getToken();
 
 	const res = await fetch(`${apiBase}/notis`, {
 		headers: {
@@ -295,7 +295,7 @@ export async function fetchNotis() {
 }
 
 export async function postNoti(type, target) {
-	const token = getToken();
+	const token = await getToken();
 
 	const res = await fetch(`${apiBase}/notis`, {
 		method: "POST",
@@ -315,7 +315,7 @@ export async function postNoti(type, target) {
 }
 
 export async function markNotiRead(_id) {
-	const token = getToken();
+	const token = await getToken();
 
 	const res = await fetch(`${apiBase}/notis/${_id}`, {
 		method: "PUT",
@@ -328,7 +328,7 @@ export async function markNotiRead(_id) {
 }
 
 export async function markAllNotisRead() {
-	const token = getToken();
+	const token = await getToken();
 
 	const res = await fetch(`${apiBase}/notis`, {
 		method: "PUT",

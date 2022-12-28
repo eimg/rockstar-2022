@@ -15,7 +15,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 
 export default function Likes({ authUser, setAuthUser }) {
 	const { id } = useParams();
-	let [likes, setLikes] = useState([]);
+	const [likes, setLikes] = useState([]);
 
 	const navigate = useNavigate();
 

@@ -46,9 +46,9 @@ const style = {
 
 export default function Search({ open, setOpen }) {
 	
-	let input = useRef();
+	const input = useRef();
 	const navigate = useNavigate();
-	let [users, setUsers] = useState([]);
+	const [users, setUsers] = useState([]);
 
 	const handleClose = () => setOpen(false);
 

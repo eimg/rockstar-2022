@@ -13,7 +13,7 @@ import { postTweet } from "../apiCalls";
 export default function AddTweet({ setSnackbarOpen }) {
 	const navigate = useNavigate();
 
-	let input = useRef();
+	const input = useRef();
 
 	return (
 		<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>

@@ -21,10 +21,10 @@ export default function AddShare({ setSnackbarOpen }) {
 	const navigate = useNavigate();
 	const { id } = useParams();
 
-	let input = useRef();
+	const input = useRef();
 
-	let [tweet, setTweet] = useState({});
-	let [isLoading, setIsLoading] = useState(true);
+	const [tweet, setTweet] = useState({});
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		(async () => {

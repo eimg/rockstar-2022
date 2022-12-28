@@ -11,9 +11,9 @@ import {
 import { login } from './apiCalls';
 
 export default function Login({ setAuth, setAuthUser }) {
-	let [ handle, setHandle ] = useState("");
-	let [ password, setPassword ] = useState("");
-	let [ hasError, setHasError ] = useState(false);
+	const [ handle, setHandle ] = useState("");
+	const [ password, setPassword ] = useState("");
+	const [ hasError, setHasError ] = useState(false);
 
 	return (
 		<View 

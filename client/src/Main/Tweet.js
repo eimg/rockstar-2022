@@ -46,8 +46,8 @@ export default function Tweet({
 	const navigate = useNavigate();
 	const { id } = useParams();
 
-	let [isLoading, setIsLoading] = useState(true);
-	let input = useRef();
+	const [isLoading, setIsLoading] = useState(true);
+	const input = useRef();
 
 	useEffect(() => {
 		(async () => {

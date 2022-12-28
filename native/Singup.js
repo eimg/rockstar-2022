@@ -11,12 +11,12 @@ import {
 import { register } from './apiCalls';
 
 export default function Singup({ setAuth, setAuthUser }) {
-	let [name, setName] = useState("");
-	let [handle, setHandle] = useState("");
-	let [profile, setProfile] = useState("");
-	let [password, setPassword] = useState("");
-	let [hasError, setHasError] = useState(false);
-	let [errMsg, setErrMsg] = useState(false);
+	const [name, setName] = useState("");
+	const [handle, setHandle] = useState("");
+	const [profile, setProfile] = useState("");
+	const [password, setPassword] = useState("");
+	const [hasError, setHasError] = useState(false);
+	const [errMsg, setErrMsg] = useState(false);
 
 	return (
 		<View 

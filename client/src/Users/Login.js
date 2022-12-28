@@ -12,12 +12,12 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Login({ setAuth, setAuthUser }) {
-	let handleInput = useRef();
-	let passwordInput = useRef();
+	const handleInput = useRef();
+	const passwordInput = useRef();
 
 	const navigate = useNavigate();
 
-	let [hasError, setHasError] = useState(false);
+	const [hasError, setHasError] = useState(false);
 
 	return (
 		<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>

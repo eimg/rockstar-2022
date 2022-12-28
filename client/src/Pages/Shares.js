@@ -17,7 +17,7 @@ export default function Shares({ authUser, setAuthUser }) {
 	const navigate = useNavigate();
 	const { id } = useParams();
 
-	let [shares, setShares] = useState([]);
+	const [shares, setShares] = useState([]);
 
 	useEffect(() => {
 		(async () => {

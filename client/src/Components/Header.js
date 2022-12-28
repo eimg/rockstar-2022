@@ -30,7 +30,7 @@ export default function Header({
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	let [searchOpen, setSearchOpen] = useState(false);
+	const [searchOpen, setSearchOpen] = useState(false);
 
 	useEffect(() => {
 		(async () => {

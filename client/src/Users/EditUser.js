@@ -14,12 +14,12 @@ import { useNavigate } from "react-router-dom";
 export default function EditUser({ setAuthUser, authUser }) {
 	const navigate = useNavigate();
 
-	let nameInput = useRef();
-	let profileInput = useRef();
-	let passwordInput = useRef();
+	const nameInput = useRef();
+	const profileInput = useRef();
+	const passwordInput = useRef();
 
-	let [errMsg, setErrMsg] = useState("");
-	let [hasError, setHasError] = useState(false);
+	const [errMsg, setErrMsg] = useState("");
+	const [hasError, setHasError] = useState(false);
 
 	return (
 		<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>

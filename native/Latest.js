@@ -11,11 +11,11 @@ import { useNavigation } from "@react-navigation/native";
 import { formatRelative, parseISO } from "date-fns";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { fetchTweets } from "./apiCalls";
+import { fetchTweets, putLike, postNoti } from "./apiCalls";
 
 export default function Latest({ auth, authUser }) {
 	const navigation = useNavigation();
-	let [tweets, setTweets] = useState([]);
+	const [tweets, setTweets] = useState([]);
 
 	useEffect(() => {
 		(async () => {
@@ -23,6 +23,28 @@ export default function Latest({ auth, authUser }) {
 			setTweets(result);
 		})();
 	}, []);
+
+	const toggleLike = id => {
+		if (!auth) return false;
+
+		(async () => {
+			let likes = await putLike(id);
+			// if (!likes) return navigate("/error");
+
+			let updatedTweets = await Promise.all(
+				tweets.map(async (tweet) => {
+					if (tweet._id === id) {
+						tweet.likes = likes;
+					}
+
+					return tweet;
+				})
+			);
+
+			setTweets(updatedTweets);
+			postNoti("like", id);
+		})();
+	}
 
 	return (
 		<ScrollView>
@@ -183,19 +205,17 @@ export default function Latest({ auth, authUser }) {
 									justifyContent: "space-around", 
 								}}
 							>
-
-								{
-									tweet.likes &&
-										tweet.likes.includes(authUser._id)
-										? <Button type="clear">
-											<Ionicons name="heart" size={24} color="red" />
-											<Text style={{ marginLeft: 5 }}>{tweet.likes.length}</Text>
-										</Button>
-										: <Button type="clear">
-											<Ionicons name="heart-outline" size={24} color="red" />
-											<Text style={{ marginLeft: 5 }}>{tweet.likes.length}</Text>
-										</Button>
-								}
+								<Button type="clear" onPress={() => {
+									toggleLike(tweet._id);
+								}}>
+									{
+										tweet.likes &&
+											tweet.likes.includes(authUser._id)
+											? <Ionicons name="heart" size={24} color="red" />
+											: <Ionicons name="heart-outline" size={24} color="red" />
+									}
+									<Text style={{ marginLeft: 5 }}>{tweet.likes.length}</Text>
+								</Button>
 
 								<Button type="clear">
 									<Ionicons name="share-social-outline" size={24} color="#09a" />
