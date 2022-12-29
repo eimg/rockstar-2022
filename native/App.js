@@ -78,7 +78,7 @@ function Home({ setShowMenu, authUser, auth }) {
 			{auth &&
 				<FAB
 					visible={true}
-					icon={() => <Ionicons name="add" style={{ color: "white" }} size={32} />}
+					icon={() => <Ionicons name="add" style={{ color: "white" }} size={24} />}
 					color="#1c9cea"
 					style={{
 						position: "absolute",
