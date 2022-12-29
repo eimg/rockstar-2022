@@ -39,7 +39,7 @@ export default function UserContents({ authUser, handle, auth }) {
 
 		(async () => {
 			let likes = await putLike(id);
-			// handle error
+			// handle api error here
 
 			let updatedTweets = await Promise.all(
 				tweets.map(async (tweet) => {

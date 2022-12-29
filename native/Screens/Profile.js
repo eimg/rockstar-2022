@@ -20,7 +20,7 @@ export default function Profile({ auth, setAuth, authUser, setAuthUser }) {
 						flexDirection: "row",
 						justifyContent: "space-between",
 						marginHorizontal: 20,
-						marginBottom: 20,
+						marginBottom: 10,
 					}}
 				>
 					<View style={{ marginTop: -50 }}>
@@ -51,18 +51,19 @@ export default function Profile({ auth, setAuth, authUser, setAuthUser }) {
 						</View>
 					</View>
 
-					<Button
-						style={{
-							marginTop: 20,
-						}}
-						onPress={() => {
-							(async () => {
-								AsyncStorage.removeItem("token");
-							})();
+					<View style={{
+						marginTop: 10,
+					}}>
+						<Button
+							onPress={() => {
+								(async () => {
+									AsyncStorage.removeItem("token");
+								})();
 
-							setAuth(false);
-							setAuthUser({});
-						}}>Logout</Button>
+								setAuth(false);
+								setAuthUser({});
+							}}>Logout</Button>
+					</View>
 				</View>
 
 				<UserContents

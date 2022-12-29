@@ -37,12 +37,12 @@ export default function User({ authUser, auth }) {
 				<View style={{ backgroundColor: "#5af", height: 100 }}>
 				</View>
 
-				<View 
-					style={{ 
-						flexDirection: "row", 
-						justifyContent: "space-between", 
-						marginHorizontal: 20, 
-						marginBottom: 20,
+				<View
+					style={{
+						flexDirection: "row",
+						justifyContent: "space-between",
+						marginHorizontal: 20,
+						marginBottom: 10,
 					}}
 				>
 					<View style={{ marginTop: -50 }}>
@@ -74,22 +74,24 @@ export default function User({ authUser, auth }) {
 					</View>
 
 					{auth &&
-						<Button
-							style={{
-								marginTop: 20,
-							}}
-							onPress={() => {
-								//
-							}}>
-							Follow
-						</Button>
+						<View style={{
+							marginTop: 10,
+						}}>
+							<Button
+
+								onPress={() => {
+									//
+								}}>
+								Follow
+							</Button>
+						</View>
 					}
 				</View>
 
-				<UserContents 
+				<UserContents
 					auth={auth}
-					handle={handle} 
-					authUser={authUser} 
+					handle={handle}
+					authUser={authUser}
 				/>
 			</ScrollView>
 		</View>

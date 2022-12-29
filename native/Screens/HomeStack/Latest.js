@@ -23,7 +23,7 @@ export default function Latest({ auth, authUser }) {
 	useEffect(() => {
 		(async () => {
 			let result = await fetchTweets();
-			// handle error
+			// handle api error here
 
 			setTweets(result);
 		})();
@@ -32,7 +32,7 @@ export default function Latest({ auth, authUser }) {
 	useFocusEffect(useCallback(() => {
 		(async () => {
 			let result = await fetchTweets();
-			// handle error
+			// handle api error here
 
 			setTweets(result);
 		})();
@@ -43,7 +43,7 @@ export default function Latest({ auth, authUser }) {
 
 		(async () => {
 			let likes = await putLike(id);
-			// handle error
+			// handle api error here
 
 			let updatedTweets = await Promise.all(
 				tweets.map(async (tweet) => {

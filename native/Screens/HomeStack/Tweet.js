@@ -31,7 +31,7 @@ export default function Tweet({ authUser, auth }) {
 	useEffect(() => {
 		(async () => {
 			let result = await fetchTweet(_id);
-			// handle error
+			// handle api error here
 
 			setTweet(result);
 			setIsLoading(false);
@@ -43,10 +43,10 @@ export default function Tweet({ authUser, auth }) {
 
 		(async () => {
 			let likes = await putLike(id);
-			// handle error
+			// handle api error here
 
 			let updatedTweet = await fetchTweet(id);
-			// handle error
+			// handle api error here
 
 			setTweet(updatedTweet);
 			postNoti("like", id);
@@ -58,10 +58,10 @@ export default function Tweet({ authUser, auth }) {
 
 		(async () => {
 			let likes = await putLike(commentId);
-			// handle error
+			// handle api error here
 
 			let updatedTweet = await fetchTweet(tweetId);
-			// handle error
+			// handle api error here
 
 			setTweet(updatedTweet);
 		})();
@@ -84,7 +84,7 @@ export default function Tweet({ authUser, auth }) {
 										containerStyle={{ backgroundColor: "#0a5" }}
 									/>
 								</TouchableOpacity>
-								<View style={{ marginLeft: 10, marginTop: 5 }}>
+								<View style={{ marginLeft: 10, marginTop: 5, flexShrink: 1 }}>
 									<View
 										style={{
 											flexDirection: "row",
@@ -288,7 +288,7 @@ export default function Tweet({ authUser, auth }) {
 									/>
 									<View style={{ marginLeft: 20, flexShrink: 1 }}>
 										<View style={{ marginTop: 10 }}>
-											<View style={{ flexDirection: "row" }}>
+											<View style={{ flexDirection: "row", flexWrap: 'wrap' }}>
 												<Text
 													style={{
 														fontSize: 14,
@@ -392,10 +392,10 @@ export default function Tweet({ authUser, auth }) {
 
 								(async () => {
 									let result = await postReply(tweet._id, body);
-									// handle error
+									// handle api error here
 
 									let update = await fetchTweet(_id);
-									// handle error
+									// handle api error here
 
 									setTweet(update);
 

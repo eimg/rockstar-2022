@@ -21,7 +21,7 @@ export default function Notis({ setNotiCount }) {
 	useEffect(() => {
 		(async () => {
 			let result = await fetchNotis();
-			// handle error
+			// handle api error here
 
 			setNotis(result);
 			setNotiCount(notis.filter(noti => !noti.read).length);

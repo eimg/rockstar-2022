@@ -27,7 +27,7 @@ export default function Share({ authUser }) {
 	useEffect(() => {
 		(async () => {
 			let tweet = await fetchTweet(id);
-			// handle error
+			// handle api error here
 
 			setTweet(tweet);
 			setIsLoading(false);
@@ -36,11 +36,10 @@ export default function Share({ authUser }) {
 
 	return (
 		!isLoading &&
-		<View style={{ padding: 20 }}>
+		<View style={{ padding: 10 }}>
 			<View
 				style={{
-					flex: 1,
-					marginVertical: 20,
+					marginVertical: 10,
 					marginHorizontal: 10,
 					flexDirection: "row",
 					justifyContent: "space-between",
@@ -57,7 +56,7 @@ export default function Share({ authUser }) {
 
 					(async () => {
 						let result = await postShare(id, body);
-						// handle error
+						// handle api error here
 
 						Toast.show("You shared a post", {
 							duration: Toast.durations.LONG,
@@ -73,7 +72,7 @@ export default function Share({ authUser }) {
 			<View>
 				<Input
 					multiline={true}
-					placeholder="Your reply"
+					placeholder="What's on your mind?"
 					onChangeText={setBody}
 					value={body}
 					style={{
@@ -94,7 +93,7 @@ export default function Share({ authUser }) {
 						borderRadius: 4
 					}}
 				>
-					<View style={{ flex: 1, flexDirection: "row" }}>
+					<View style={{ flexDirection: "row" }}>
 						<Avatar
 							rounded
 							title="O"
@@ -105,7 +104,6 @@ export default function Share({ authUser }) {
 							<View style={{ marginTop: 5 }}>
 								<View
 									style={{
-										flex: 1,
 										flexDirection: "row",
 										flexWrap: "wrap"
 									}}

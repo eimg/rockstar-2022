@@ -18,11 +18,10 @@ export default function Add({ authUser }) {
 	const [body, setBody] = useState("");
 
 	return (
-		<View style={{ padding: 20 }}>
+		<View style={{ padding: 10 }}>
 			<View
 				style={{
-					flex: 1,
-					marginVertical: 20,
+					marginVertical: 10,
 					marginHorizontal: 10,
 					flexDirection: "row",
 					justifyContent: "space-between",
@@ -39,7 +38,7 @@ export default function Add({ authUser }) {
 
 					(async () => {
 						let result = await postTweet(body);
-						// handle error
+						// handle api error here
 
 						Toast.show("You tweet is posted", {
 							duration: Toast.durations.LONG,

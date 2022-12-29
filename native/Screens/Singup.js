@@ -72,7 +72,7 @@ export default function Singup({ setAuth, setAuthUser }) {
 
 				(async () => {
 					let result = await register(name, handle, profile, password);
-					// handle error
+					// handle api error here
 
 					if (!result) {
 						setErrMsg("required: name, handle, profile");
