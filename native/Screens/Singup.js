@@ -1,36 +1,37 @@
 import { useState } from "react";
+import { Text, View } from "react-native";
 
-import { Text, View } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import {
 	Input,
 	Button,
-} from '@rneui/themed';
+} from "@rneui/themed";
 
-import { register } from './apiCalls';
+import { register } from "../apiCalls";
 
 export default function Singup({ setAuth, setAuthUser }) {
 	const [name, setName] = useState("");
 	const [handle, setHandle] = useState("");
 	const [profile, setProfile] = useState("");
 	const [password, setPassword] = useState("");
-	const [hasError, setHasError] = useState(false);
+	
 	const [errMsg, setErrMsg] = useState(false);
+	const [hasError, setHasError] = useState(false);
 
 	return (
 		<View 
 			style={{ 
 				flex: 1, 
-				alignItems: 'stretch', 
-				justifyContent: 'flex-start', 
+				alignItems: "stretch", 
+				justifyContent: "flex-start", 
 				padding: 20 
 			}}
 		>
 			<Text 
 				style={{ 
 					fontSize: 24, 
-					fontWeight: 'bold', 
+					fontWeight: "bold", 
 					marginBottom: 20, 
 					marginLeft: 10 
 				}}
@@ -42,7 +43,7 @@ export default function Singup({ setAuth, setAuthUser }) {
 				hasError && <View 
 					style={{ 
 						padding: 15, 
-						backgroundColor: '#fdd', 
+						backgroundColor: "#fdd", 
 						marginBottom: 10 
 					}}>
 						<Text>{errMsg}</Text>
@@ -71,6 +72,7 @@ export default function Singup({ setAuth, setAuthUser }) {
 
 				(async () => {
 					let result = await register(name, handle, profile, password);
+					// handle error
 
 					if (!result) {
 						setErrMsg("required: name, handle, profile");

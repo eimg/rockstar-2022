@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { View, ScrollView, TouchableOpacity } from "react-native";
+
+import { useNavigation } from "@react-navigation/native";
 
 import {
 	ListItem,
@@ -6,11 +9,9 @@ import {
 	Input,
 } from "@rneui/themed";
 
-import { View, ScrollView, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { fetchUsers } from "./apiCalls";
+import { fetchUsers } from "../apiCalls";
 
 export default function Search() {
 	const navigation = useNavigation();
@@ -55,7 +56,7 @@ export default function Search() {
 				{users.map(user => {
 					return (
 						<TouchableOpacity key={user._id} onPress={() => {
-							//
+							navigation.navigate("User", { handle: user.handle });
 						}}>
 							<ListItem bottomDivider>
 

@@ -1,14 +1,14 @@
 import { useState } from "react";
-
-import { Text, View } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Text, View } from "react-native";
 
 import {
 	Input,
 	Button,
-} from '@rneui/themed';
+} from "@rneui/themed";
 
-import { login } from './apiCalls';
+import Ionicons from "@expo/vector-icons/Ionicons";
+
+import { login } from "../apiCalls";
 
 export default function Login({ setAuth, setAuthUser }) {
 	const [ handle, setHandle ] = useState("");
@@ -19,17 +19,17 @@ export default function Login({ setAuth, setAuthUser }) {
 		<View 
 			style={{ 
 				flex: 1, 
-				alignItems: 'stretch', 
-				justifyContent: 'flex-start', 
-				padding: 20 
+				alignItems: "stretch", 
+				justifyContent: "flex-start", 
+				padding: 20,
 			}}
 		>
 			<Text 
 				style={{ 
 					fontSize: 24, 
-					fontWeight: 'bold', 
+					fontWeight: "bold", 
 					marginBottom: 20, 
-					marginLeft: 10 
+					marginLeft: 10,
 				}}
 			>
 				Login
@@ -39,8 +39,8 @@ export default function Login({ setAuth, setAuthUser }) {
 				hasError && <View 
 					style={{ 
 						padding: 15, 
-						backgroundColor: '#fdd', 
-						marginBottom: 10 
+						backgroundColor: "#fdd", 
+						marginBottom: 10,
 					}}
 				>
 					<Text>Handle or password incorrect</Text>
@@ -48,8 +48,8 @@ export default function Login({ setAuth, setAuthUser }) {
 			}
 
 			<Input 
-				placeholder="Handle" 
 				value={handle} 
+				placeholder="Handle" 
 				onChangeText={setHandle} 
 				leftIcon={
 					<Ionicons name="at" size={24} color="grey" />

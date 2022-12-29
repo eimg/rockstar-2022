@@ -1,29 +1,38 @@
+import { useEffect, useState } from "react";
+import { Text, View, ScrollView, TouchableOpacity } from "react-native";
+
 import {
 	Card,
 	Avatar,
 	Button,
+	Input,
 } from "@rneui/themed";
 
-import { useEffect, useState } from "react";
-import { Text, View, ScrollView, TouchableOpacity } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { formatRelative, parseISO } from "date-fns";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { fetchTweet, putLike, postNoti } from "./apiCalls";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { formatRelative, parseISO } from "date-fns";
+
+import Toast from "react-native-root-toast";
+
+import { fetchTweet, putLike, postNoti, postReply } from "../../apiCalls";
 
 export default function Tweet({ authUser, auth }) {
-	const navigation = useNavigation();
 	const route = useRoute();
+	const navigation = useNavigation();
 
 	const { _id } = route.params;
 
-	const [isLoading, setIsLoading] = useState(true);
+	const [body, setBody] = useState("");
 	const [tweet, setTweet] = useState({});
+	const [isLoading, setIsLoading] = useState(true);
+
 
 	useEffect(() => {
 		(async () => {
 			let result = await fetchTweet(_id);
+			// handle error
+
 			setTweet(result);
 			setIsLoading(false);
 		})();
@@ -34,10 +43,10 @@ export default function Tweet({ authUser, auth }) {
 
 		(async () => {
 			let likes = await putLike(id);
-			// if (!likes) return navigate("/error");
+			// handle error
 
 			let updatedTweet = await fetchTweet(id);
-			if (!updatedTweet) return navigate("/error");
+			// handle error
 
 			setTweet(updatedTweet);
 			postNoti("like", id);
@@ -49,12 +58,12 @@ export default function Tweet({ authUser, auth }) {
 
 		(async () => {
 			let likes = await putLike(commentId);
-			// if (!likes) return navigate("/error");
+			// handle error
 
-			let result = await fetchTweet(tweetId);
-			// if (!result) return navigate("/error");
+			let updatedTweet = await fetchTweet(tweetId);
+			// handle error
 
-			setTweet(result);
+			setTweet(updatedTweet);
 		})();
 	}
 
@@ -65,12 +74,16 @@ export default function Tweet({ authUser, auth }) {
 					<Card>
 						<View>
 							<View style={{ flexDirection: "row" }}>
-								<Avatar
-									size={48}
-									rounded
-									title="T"
-									containerStyle={{ backgroundColor: "#0a5" }}
-								/>
+								<TouchableOpacity onPress={() => {
+									navigation.navigate("User", { handle: tweet.user[0].handle });
+								}}>
+									<Avatar
+										size={48}
+										rounded
+										title="T"
+										containerStyle={{ backgroundColor: "#0a5" }}
+									/>
+								</TouchableOpacity>
 								<View style={{ marginLeft: 10, marginTop: 5 }}>
 									<View
 										style={{
@@ -127,26 +140,36 @@ export default function Tweet({ authUser, auth }) {
 										}}
 									>
 										<View style={{ flex: 1, flexDirection: "row" }}>
-											<Avatar
-												size={32}
-												rounded
-												title="O"
-												containerStyle={{ backgroundColor: "grey" }}
-											/>
+											<TouchableOpacity onPress={() => {
+												navigation.navigate("User", { 
+													handle: 
+														tweet.origin_tweet[0].user[0].handle 
+												});
+											}}>
+												<Avatar
+													rounded
+													size={32}
+													title={
+														tweet.origin_tweet[0]
+															.user[0].name[0].toUpperCase()
+													}
+													containerStyle={{ backgroundColor: "grey" }}
+												/>
+											</TouchableOpacity>
 											<View style={{ marginLeft: 20, flexShrink: 1 }}>
 												<View style={{ marginTop: 10 }}>
 													<View
 														style={{
 															flex: 1,
-															flexDirection: "row",
 															flexWrap: "wrap",
+															flexDirection: "row",
 														}}
 													>
 														<Text
 															style={{
 																fontSize: 14,
+																marginRight: 6,
 																fontWeight: "bold",
-																marginRight: 6
 															}}
 														>
 															{tweet.origin_tweet[0].user[0].name}
@@ -179,7 +202,9 @@ export default function Tweet({ authUser, auth }) {
 													}}
 												>
 													<View style={{ marginTop: 10 }}>
-														<Text style={{ fontSize: 14 }}>{tweet.origin_tweet[0].body}</Text>
+														<Text style={{ fontSize: 14 }}>
+															{tweet.origin_tweet[0].body}
+														</Text>
 													</View>
 												</TouchableOpacity>
 											</View>
@@ -188,11 +213,11 @@ export default function Tweet({ authUser, auth }) {
 								)}
 
 								{(tweet.origin && !tweet.origin_tweet[0]) &&
-									<View 
-										style={{ 
-											padding: 15, 
-											marginTop: 15, 
-											backgroundColor: "#f5f5f5" 
+									<View
+										style={{
+											padding: 15,
+											marginTop: 15,
+											backgroundColor: "#f5f5f5"
 										}}
 									>
 										<Text style={{ color: "grey" }}>
@@ -204,16 +229,19 @@ export default function Tweet({ authUser, auth }) {
 							</View>
 						</View>
 
-						<View 
-							style={{ 
-								flexDirection: "row", 
-								marginTop: 10, 
-								justifyContent: "space-around" 
+						<View
+							style={{
+								flexDirection: "row",
+								marginTop: 10,
+								justifyContent: "space-around"
 							}}
 						>
 
 							<Button type="clear" onPress={() => {
-								toggleLike(tweet._id);
+								if (auth) toggleLike(tweet._id);
+								else Toast.show("Login required to like", {
+									duration: Toast.durations.LONG,
+								});
 							}}>
 								{
 									tweet.likes &&
@@ -221,16 +249,29 @@ export default function Tweet({ authUser, auth }) {
 										? <Ionicons name="heart" size={24} color="red" />
 										: <Ionicons name="heart-outline" size={24} color="red" />
 								}
-								<Text style={{ marginLeft: 5 }}>{tweet.likes.length}</Text>
+								<Text style={{ marginLeft: 5 }}>
+									{tweet.likes && tweet.likes.length}
+								</Text>
 							</Button>
 
-							<Button type="clear">
+							<Button type="clear" onPress={() => {
+								if (auth) navigation.navigate("Share", { id: tweet._id });
+								else Toast.show("Login required to share", {
+									duration: Toast.durations.LONG,
+								});
+							}}>
 								<Ionicons name="share-social-outline" size={24} color="#09a" />
-								<Text style={{ marginLeft: 5 }}>{tweet.shares.length}</Text>
+								<Text style={{ marginLeft: 5 }}>
+									{tweet.shares.length}
+								</Text>
 							</Button>
-							<Button type="clear">
+							<Button type="clear" onPress={() => {
+								navigation.navigate("Tweet", { _id: tweet._id });
+							}}>
 								<Ionicons name="chatbubble-outline" size={24} color="green" />
-								<Text style={{ marginLeft: 5 }}>{tweet.comments.length}</Text>
+								<Text style={{ marginLeft: 5 }}>
+									{tweet.comments.length}
+								</Text>
 							</Button>
 						</View>
 					</Card>
@@ -240,29 +281,29 @@ export default function Tweet({ authUser, auth }) {
 							<Card key={comment._id}>
 								<View style={{ flex: 1, flexDirection: "row" }}>
 									<Avatar
-										size={32}
 										rounded
-										title="C"
+										size={32}
+										title={comment.user[0].name[0].toUpperCase()}
 										containerStyle={{ backgroundColor: "grey" }}
 									/>
 									<View style={{ marginLeft: 20, flexShrink: 1 }}>
 										<View style={{ marginTop: 10 }}>
 											<View style={{ flexDirection: "row" }}>
-												<Text 
-													style={{ 
-														fontSize: 14, 
-														fontWeight: "bold", 
-														marginRight: 6 
+												<Text
+													style={{
+														fontSize: 14,
+														marginRight: 6,
+														fontWeight: "bold",
 													}}
 												>
 													{comment.user[0].name}
 												</Text>
-												
-												<Text 
-													style={{ 
-														fontSize: 14, 
-														color: "grey", 
-														marginRight: 10 
+
+												<Text
+													style={{
+														fontSize: 14,
+														color: "grey",
+														marginRight: 10
 													}}
 												>
 													@{comment.user[0].handle}
@@ -288,16 +329,19 @@ export default function Tweet({ authUser, auth }) {
 									</View>
 								</View>
 
-								<View 
-									style={{ 
-										flexDirection: "row", 
-										marginTop: 10, 
-										justifyContent: "space-around" 
+								<View
+									style={{
+										flexDirection: "row",
+										marginTop: 10,
+										justifyContent: "space-around"
 									}}
 								>
 
 									<Button type="clear" onPress={() => {
-										toggleLikeForComment(comment._id, tweet._id);
+										if (auth) toggleLikeForComment(comment._id, tweet._id);
+										else Toast.show("Login required to like", {
+											duration: Toast.durations.LONG,
+										});
 									}}>
 										{
 											comment.likes &&
@@ -305,21 +349,65 @@ export default function Tweet({ authUser, auth }) {
 												? <Ionicons name="heart" size={24} color="red" />
 												: <Ionicons name="heart-outline" size={24} color="red" />
 										}
-										<Text style={{ marginLeft: 5 }}>{comment.likes.length}</Text>
+										<Text style={{ marginLeft: 5 }}>
+											{comment.likes.length}
+										</Text>
 									</Button>
 
-									<Button type="clear">
+									<Button type="clear" onPress={() => {
+										if (auth) navigation.navigate("Share", { id: comment._id });
+										else Toast.show("Login required to share", {
+											duration: Toast.durations.LONG,
+										});
+									}}>
 										<Ionicons name="share-social-outline" size={24} color="#09a" />
-										<Text style={{ marginLeft: 5 }}>{comment.shares.length}</Text>
+										<Text style={{ marginLeft: 5 }}>
+											{comment.shares.length}
+										</Text>
 									</Button>
-									<Button type="clear">
+									<Button type="clear" onPress={() => {
+										navigation.replace("Tweet", { _id: comment._id });
+									}}>
 										<Ionicons name="chatbubble-outline" size={24} color="green" />
-										<Text style={{ marginLeft: 5 }}>{comment.comments.length}</Text>
+										<Text style={{ marginLeft: 5 }}>
+											{comment.comments.length}
+										</Text>
 									</Button>
 								</View>
 							</Card>
 						)
 					})}
+
+					{auth &&
+						<View style={{ margin: 20 }}>
+							<Input
+								value={body}
+								multiline={true}
+								onChangeText={setBody}
+								style={{ height: 80 }}
+								placeholder="Your reply"
+							/>
+							<Button onPress={() => {
+								if (!body) return;
+
+								(async () => {
+									let result = await postReply(tweet._id, body);
+									// handle error
+
+									let update = await fetchTweet(_id);
+									// handle error
+
+									setTweet(update);
+
+									Toast.show("You reply is posted", {
+										duration: Toast.durations.LONG,
+									});
+
+									setBody("");
+								})();
+							}}>Reply</Button>
+						</View>
+					}
 				</View>
 			}
 		</ScrollView>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Text, View, ScrollView, TouchableOpacity } from "react-native";
 
 import {
 	ListItem,
@@ -7,12 +8,11 @@ import {
 } from "@rneui/themed";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
+
 import { formatRelative, parseISO } from "date-fns";
 import { useNavigation } from "@react-navigation/native";
-import { Text, View, ScrollView, TouchableOpacity } from "react-native";
 
-import { fetchNotis, markAllNotisRead, markNotiRead } from "./apiCalls";
-
+import { fetchNotis, markAllNotisRead, markNotiRead } from "../apiCalls";
 
 export default function Notis({ setNotiCount }) {
 	const navigation = useNavigation();
@@ -21,7 +21,7 @@ export default function Notis({ setNotiCount }) {
 	useEffect(() => {
 		(async () => {
 			let result = await fetchNotis();
-			// if (!result) return navigate("/error");
+			// handle error
 
 			setNotis(result);
 			setNotiCount(notis.filter(noti => !noti.read).length);
@@ -64,6 +64,15 @@ export default function Notis({ setNotiCount }) {
 					return (
 						<TouchableOpacity key={noti._id} onPress={() => {
 							markNotiRead(noti._id);
+							
+							let result = notis.map(n => {
+								if(n._id === noti._id) n.read = true;
+								return n;
+							});
+							setNotis([ ...result ]);
+							setNotiCount(result.filter(noti => !noti.read).length);
+
+							navigation.navigate("Tweet", { _id: noti.target });
 						}}>
 							<ListItem bottomDivider style={{ opacity: noti.read ? 0.4 : 1 }}>
 
