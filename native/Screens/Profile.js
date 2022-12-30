@@ -1,15 +1,18 @@
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View, TouchableOpacity } from "react-native";
 
 import {
 	Avatar,
-	Button,
+	Button
 } from "@rneui/themed";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import UserContents from "./_Share/UserContents";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Profile({ auth, setAuth, authUser, setAuthUser }) {
+	const navigation = useNavigation();
+
 	return (
 		<View style={{ flex: 1, alignItems: "stretch", justifyContent: "center" }}>
 			<ScrollView>
@@ -20,7 +23,7 @@ export default function Profile({ auth, setAuth, authUser, setAuthUser }) {
 						flexDirection: "row",
 						justifyContent: "space-between",
 						marginHorizontal: 20,
-						marginBottom: 10,
+						marginBottom: 20,
 					}}
 				>
 					<View style={{ marginTop: -50 }}>
@@ -40,14 +43,21 @@ export default function Profile({ auth, setAuth, authUser, setAuthUser }) {
 
 							<Text style={{ marginTop: 10 }}>{authUser.profile}</Text>
 						</View>
-						<View style={{ marginLeft: 10, marginTop: 15 }}>
-							<Text style={{ fontSize: 16, color: "#09c" }}>
-								{authUser.following.length} Followings
-
-								<Text style={{ marginLeft: 10 }}>
+						<View style={{ marginLeft: 10, marginTop: 15, flexDirection: "row" }}>
+							<TouchableOpacity onPress={() => {
+								navigation.navigate("Following", { handle: authUser.handle });
+							}}>
+								<Text style={{ fontSize: 16, color: "#09c" }}>
+									{authUser.following.length} Followings
+								</Text>
+							</TouchableOpacity>
+							<TouchableOpacity onPress={() => {
+								navigation.navigate("Followers", { handle: authUser.handle });
+							}}>
+								<Text style={{ marginLeft: 10, fontSize: 16, color: "#09c" }}>
 									{authUser.followers.length} Followers
 								</Text>
-							</Text>
+							</TouchableOpacity>
 						</View>
 					</View>
 

@@ -28,6 +28,8 @@ import User from "./Screens/HomeStack/User";
 import Share from "./Screens/HomeStack/Share";
 import Tweet from "./Screens/HomeStack/Tweet";
 import Latest from "./Screens/HomeStack/Latest";
+import Followers from "./Screens/HomeStack/Followers";
+import Following from "./Screens/HomeStack/Following";
 
 import { fetchUser, fetchNotis } from "./apiCalls";
 
@@ -40,7 +42,7 @@ function Logo() {
 	)
 }
 
-function Home({ setShowMenu, authUser, auth }) {
+function Home({ setShowMenu, authUser, setAuthUser, auth }) {
 	const navigation = useNavigation();
 
 	return (
@@ -71,7 +73,13 @@ function Home({ setShowMenu, authUser, auth }) {
 					{() => <Share authUser={authUser} auth={auth} />}
 				</Stack.Screen>
 				<Stack.Screen name="User">
-					{() => <User authUser={authUser} auth={auth} />}
+					{() => <User authUser={authUser} auth={auth} setAuthUser={setAuthUser} />}
+				</Stack.Screen>
+				<Stack.Screen name="Followers">
+					{() => <Followers setAuthUser={setAuthUser} authUser={authUser} auth={auth} />}
+				</Stack.Screen>
+				<Stack.Screen name="Following">
+					{() => <Following setAuthUser={setAuthUser} authUser={authUser} auth={auth} />}
 				</Stack.Screen>
 			</Stack.Navigator>
 
@@ -151,6 +159,7 @@ export default function App() {
 									<Home
 										auth={auth}
 										authUser={authUser}
+										setAuthUser={setAuthUser}
 										setShowMenu={setShowMenu}
 									/>
 								)

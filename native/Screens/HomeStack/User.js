@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View, TouchableOpacity } from "react-native";
 
 import {
 	Avatar,
-	Button,
 } from "@rneui/themed";
 
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { fetchUserByHandle } from "../../apiCalls";
 import UserContents from "../_Share/UserContents";
+import FollowButton from "../_Share/FollowButton";
 
-export default function User({ authUser, auth }) {
+export default function User({ authUser, auth, setAuthUser }) {
+	const navigation = useNavigation();
+	
 	const route = useRoute();
 	const [user, setUser] = useState({});
 	const [isLoading, setIsLoading] = useState(true);
@@ -42,7 +44,7 @@ export default function User({ authUser, auth }) {
 						flexDirection: "row",
 						justifyContent: "space-between",
 						marginHorizontal: 20,
-						marginBottom: 10,
+						marginBottom: 20,
 					}}
 				>
 					<View style={{ marginTop: -50 }}>
@@ -62,14 +64,21 @@ export default function User({ authUser, auth }) {
 
 							<Text style={{ marginTop: 10 }}>{user.profile}</Text>
 						</View>
-						<View style={{ marginLeft: 10, marginTop: 15 }}>
-							<Text style={{ fontSize: 16, color: "#09c" }}>
-								{user.following_users.length} Followings
-
-								<Text style={{ marginLeft: 10 }}>
-									{user.followers_users.length} Followers
-								</Text>
-							</Text>
+						<View style={{ marginLeft: 10, marginTop: 15, flexDirection: "row" }}>
+								<TouchableOpacity onPress={() => {
+									navigation.navigate("Following", { handle: user.handle });
+								}}>
+									<Text style={{ fontSize: 16, color: "#09c" }}>
+										{user.following_users.length} Followings
+									</Text>
+								</TouchableOpacity>
+								<TouchableOpacity onPress={() => {
+									navigation.navigate("Followers", { handle: user.handle });
+								}}>
+									<Text style={{ marginLeft: 10, fontSize: 16, color: "#09c" }}>
+										{user.followers_users.length} Followers
+									</Text>
+								</TouchableOpacity>
 						</View>
 					</View>
 
@@ -77,13 +86,7 @@ export default function User({ authUser, auth }) {
 						<View style={{
 							marginTop: 10,
 						}}>
-							<Button
-
-								onPress={() => {
-									//
-								}}>
-								Follow
-							</Button>
+							<FollowButton authUser={authUser} user={user} setAuthUser={setAuthUser} />
 						</View>
 					}
 				</View>
