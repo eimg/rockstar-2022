@@ -27,7 +27,9 @@ import Add from "./Screens/HomeStack/Add";
 import User from "./Screens/HomeStack/User";
 import Share from "./Screens/HomeStack/Share";
 import Tweet from "./Screens/HomeStack/Tweet";
+import Likes from "./Screens/HomeStack/Likes";
 import Latest from "./Screens/HomeStack/Latest";
+import Shares from "./Screens/HomeStack/Shares";
 import Followers from "./Screens/HomeStack/Followers";
 import Following from "./Screens/HomeStack/Following";
 
@@ -80,6 +82,12 @@ function Home({ setShowMenu, authUser, setAuthUser, auth }) {
 				</Stack.Screen>
 				<Stack.Screen name="Following">
 					{() => <Following setAuthUser={setAuthUser} authUser={authUser} auth={auth} />}
+				</Stack.Screen>
+				<Stack.Screen name="Likes">
+					{() => <Likes setAuthUser={setAuthUser} authUser={authUser} auth={auth} />}
+				</Stack.Screen>
+				<Stack.Screen name="Shares">
+					{() => <Shares setAuthUser={setAuthUser} authUser={authUser} auth={auth} />}
 				</Stack.Screen>
 			</Stack.Navigator>
 
@@ -168,13 +176,14 @@ export default function App() {
 
 						<Tab.Screen
 							name="Search"
-							component={Search}
 							options={{
 								tabBarIcon: ({ color }) => (
 									<Ionicons name="search" size={24} color={color} />
 								)
 							}}
-						/>
+						>
+							{() => <Search authUser={authUser} setAuthUser={setAuthUser} />}
+						</Tab.Screen>
 
 						{auth
 							? <>

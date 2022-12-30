@@ -4,15 +4,10 @@ import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import {
 	Card,
 	Avatar,
-	Button,
 	ButtonGroup,
 } from "@rneui/themed";
 
-import Ionicons from "@expo/vector-icons/Ionicons";
-
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-
-import Toast from "react-native-root-toast";
 import { formatRelative, parseISO } from "date-fns";
 
 import {
@@ -23,8 +18,12 @@ import {
 	fetchLikedTweetsByHandle,
 } from "../../apiCalls";
 
+import Attachment from "./Attachment";
+import ActionButtons from "./ActionButtons";
+
 export default function UserContents({ authUser, handle, auth }) {
 	const [selectedButton, setSelectedButton] = useState(0);
+
 	const [tweets, setTweets] = useState([]);
 	const [comments, setComments] = useState([]);
 	const [likedTweets, setLikedTweets] = useState([]);
@@ -77,8 +76,8 @@ export default function UserContents({ authUser, handle, auth }) {
 	return (
 		<View>
 			<ButtonGroup
-				buttons={["Recent", "Comments", "Likes"]}
 				selectedIndex={selectedButton}
+				buttons={["Recent", "Comments", "Likes"]}
 				onPress={(value) => {
 					setSelectedButton(value);
 				}}
@@ -86,30 +85,30 @@ export default function UserContents({ authUser, handle, auth }) {
 			/>
 			<ScrollView>
 				<TweetList
-					show={selectedButton === 0}
 					auth={auth}
-					authUser={authUser}
 					handle={handle}
 					tweets={tweets}
+					authUser={authUser}
 					toggleLike={toggleLike}
+					show={selectedButton === 0}
 				/>
 
 				<TweetList
-					show={selectedButton === 1}
 					auth={auth}
-					authUser={authUser}
 					handle={handle}
 					tweets={comments}
+					authUser={authUser}
 					toggleLike={toggleLike}
+					show={selectedButton === 1}
 				/>
 
 				<TweetList
-					show={selectedButton === 2}
 					auth={auth}
-					authUser={authUser}
 					handle={handle}
+					authUser={authUser}
 					tweets={likedTweets}
 					toggleLike={toggleLike}
+					show={selectedButton === 2}
 				/>
 			</ScrollView>
 		</View>
@@ -131,8 +130,8 @@ function TweetList({ authUser, auth, tweets, toggleLike, show }) {
 							}}>
 								<Avatar
 									rounded
-									title={tweet.user[0].name[0].toUpperCase()}
 									size={48}
+									title={tweet.user[0].name[0].toUpperCase()}
 									containerStyle={{ backgroundColor: "#0a5" }}
 								/>
 							</TouchableOpacity>
@@ -177,156 +176,16 @@ function TweetList({ authUser, auth, tweets, toggleLike, show }) {
 									</View>
 								</TouchableOpacity>
 
-								{(
-									tweet.origin_tweet[0] &&
-
-									<View
-										style={{
-											backgroundColor: "#f5f5f5",
-											padding: 15,
-											marginTop: 15,
-											borderRadius: 4,
-										}}
-									>
-										<View style={{ flex: 1, flexDirection: "row" }}>
-											<TouchableOpacity onPress={() => {
-												navigation.navigate("User", { handle: tweet.origin_tweet[0].user[0].handle })
-											}}>
-												<Avatar
-													rounded
-													size={32}
-													containerStyle={{ backgroundColor: "grey" }}
-													title={
-														tweet.origin_tweet[0]
-															.user[0].name[0].toUpperCase()
-													}
-												/>
-											</TouchableOpacity>
-
-											<View style={{ marginLeft: 10, flexShrink: 1 }}>
-												<View style={{ marginTop: 5 }}>
-													<View
-														style={{
-															flex: 1,
-															flexDirection: "row",
-															flexWrap: "wrap",
-														}}
-													>
-														<Text
-															style={{
-																fontSize: 12,
-																fontWeight: "bold",
-																marginRight: 6,
-															}}
-														>
-															{tweet.origin_tweet[0].user[0].name}
-														</Text>
-
-														<Text
-															style={{
-																fontSize: 12,
-																color: "grey",
-																marginRight: 10
-															}}
-														>
-															@{tweet.origin_tweet[0].user[0].handle}
-														</Text>
-
-														<Text
-															style={{
-																fontSize: 12,
-																color: "#5ad"
-															}}
-														>
-															{
-																formatRelative(
-																	parseISO(tweet.origin_tweet[0].created), new Date()
-																)
-															}
-														</Text>
-													</View>
-												</View>
-
-												<TouchableOpacity
-													onPress={() => {
-														navigation.navigate("Tweet", {
-															_id: tweet.origin_tweet[0]._id
-														});
-													}}
-												>
-													<View style={{ marginTop: 5 }}>
-														<Text style={{ fontSize: 12 }}>
-															{tweet.origin_tweet[0].body}
-														</Text>
-													</View>
-												</TouchableOpacity>
-											</View>
-										</View>
-									</View>
-								)}
-
-								{
-									(tweet.origin && !tweet.origin_tweet[0]) &&
-									<View
-										style={{
-											padding: 15,
-											marginTop: 15,
-											backgroundColor: "#f5f5f5"
-										}}
-									>
-										<Text style={{ color: "grey" }}>
-											[ deleted post ]
-										</Text>
-									</View>
-								}
-
+								<Attachment tweet={tweet} />
 							</View>
 						</View>
 
-						<View
-							style={{
-								marginTop: 10,
-								flexDirection: "row",
-								justifyContent: "space-around",
-							}}
-						>
-							<Button type="clear" onPress={() => {
-								if (auth) toggleLike(tweet._id);
-								else Toast.show("Login required to like", {
-									duration: Toast.durations.LONG,
-								});
-							}}>
-								{
-									tweet.likes &&
-										tweet.likes.includes(authUser._id)
-										? <Ionicons name="heart" size={24} color="red" />
-										: <Ionicons name="heart-outline" size={24} color="red" />
-								}
-								<Text style={{ marginLeft: 5 }}>
-									{tweet.likes && tweet.likes.length}
-								</Text>
-							</Button>
-
-							<Button type="clear" onPress={() => {
-								if (auth) navigation.navigate("Share", { id: tweet._id });
-								else Toast.show("Login required to share", {
-									duration: Toast.durations.LONG,
-								});
-							}}>
-								<Ionicons name="share-social-outline" size={24} color="#09a" />
-								<Text style={{ marginLeft: 5 }}>
-									{tweet.shares.length}
-								</Text>
-							</Button>
-							<Button type="clear" onPress={() => {
-								navigation.navigate("Tweet", { _id: tweet._id });
-							}}>
-								<Ionicons name="chatbubble-outline" size={24} color="green" />
-								<Text style={{ marginLeft: 5 }}>
-									{tweet.comments.length}
-								</Text>
-							</Button>
-						</View>
+						<ActionButtons
+							auth={auth}
+							tweet={tweet}
+							authUser={authUser}
+							toggleLike={toggleLike}
+						/>
 					</Card>
 				</View>
 			);
