@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import { Text, View, ScrollView, TouchableOpacity } from "react-native";
+import { View, ScrollView, TouchableOpacity } from "react-native";
 
-import {
-	Card,
-	Avatar,
-	Button,
-	Input,
-} from "@rneui/themed";
+import { Card, Avatar, Button, Input, Text, useTheme } from "@rneui/themed";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -15,267 +10,381 @@ import { formatRelative, parseISO } from "date-fns";
 
 import Toast from "react-native-root-toast";
 
-import { fetchTweet, putLike, postNoti, postReply } from "../../apiCalls";
+import {
+    fetchTweet,
+    putLike,
+    postNoti,
+    postReply,
+    deleteTweet,
+} from "../../apiCalls";
 import ActionButtons from "../_Share/ActionButtons";
 import Attachment from "../_Share/Attachment";
 
 export default function Tweet({ authUser, auth }) {
-	const route = useRoute();
-	const navigation = useNavigation();
+    const route = useRoute();
+    const navigation = useNavigation();
 
-	const { _id } = route.params;
+    const { theme } = useTheme();
 
-	const [body, setBody] = useState("");
-	const [tweet, setTweet] = useState({});
-	const [isLoading, setIsLoading] = useState(true);
+    const { _id } = route.params;
 
+    const [body, setBody] = useState("");
+    const [tweet, setTweet] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
-	useEffect(() => {
-		(async () => {
-			let result = await fetchTweet(_id);
-			// handle api error here
+    useEffect(() => {
+        (async () => {
+            let result = await fetchTweet(_id);
+            // handle api error here
 
-			setTweet(result);
-			setIsLoading(false);
-		})();
-	}, [isLoading]);
+            setTweet(result);
+            setIsLoading(false);
+        })();
+    }, [isLoading]);
 
-	const toggleLike = id => {
-		if (!auth) return false;
+    const toggleLike = (tweetId, parentId) => {
+        if (!auth) return false;
 
-		(async () => {
-			let likes = await putLike(id);
-			// handle api error here
+        (async () => {
+            let likes = await putLike(tweetId);
+            // handle api error here
 
-			let updatedTweet = await fetchTweet(id);
-			// handle api error here
+            // If parentId exists, assuming
+            // it"s a comment and refetching
+            // entire parent tweet
+            let updatedTweet = parentId
+                ? await fetchTweet(parentId)
+                : await fetchTweet(tweetId);
 
-			setTweet(updatedTweet);
-			postNoti("like", id);
-		})();
-	}
+            setTweet(updatedTweet);
+            postNoti("like", tweetId);
+        })();
+    };
 
-	const toggleLikeForComment = (commentId, tweetId) => {
-		if (!auth) return false;
+    return (
+        <ScrollView>
+            {!isLoading && (
+                <View key={tweet._id}>
+                    <Card>
+                        <View>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        flexShrink: 1,
+                                    }}
+                                >
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            navigation.navigate("User", {
+                                                handle: tweet.user[0].handle,
+                                            });
+                                        }}
+                                    >
+                                        <Avatar
+                                            size={48}
+                                            rounded
+                                            title="T"
+                                            containerStyle={{
+                                                backgroundColor:
+                                                    theme.colors.success,
+                                            }}
+                                        />
+                                    </TouchableOpacity>
+                                    <View
+                                        style={{
+                                            marginLeft: 10,
+                                            marginTop: 5,
+                                            flexShrink: 1,
+                                        }}
+                                    >
+                                        <View
+                                            style={{
+                                                flexDirection: "row",
+                                                marginBottom: 5,
+                                                flexWrap: "wrap",
+                                            }}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontSize: 16,
+                                                    fontWeight: "bold",
+                                                    marginRight: 6,
+                                                }}
+                                            >
+                                                {tweet.user[0].name}
+                                            </Text>
 
-		(async () => {
-			let likes = await putLike(commentId);
-			// handle api error here
+                                            <Text
+                                                style={{
+                                                    fontSize: 16,
+                                                    color: "#5ad",
+                                                }}
+                                            >
+                                                {formatRelative(
+                                                    parseISO(tweet.created),
+                                                    new Date()
+                                                )}
+                                            </Text>
+                                        </View>
 
-			let updatedTweet = await fetchTweet(tweetId);
-			// handle api error here
+                                        <Text
+                                            style={{
+                                                fontSize: 16,
+                                                color: "grey",
+                                                marginRight: 10,
+                                            }}
+                                        >
+                                            @{tweet.user[0].handle}
+                                        </Text>
+                                    </View>
+                                </View>
 
-			setTweet(updatedTweet);
-		})();
-	}
+                                {tweet.owner === authUser._id && (
+                                    <Button
+                                        size="sm"
+                                        type="clear"
+                                        buttonStyle={{ padding: 0 }}
+                                        onPress={() => {
+                                            deleteTweet(tweet._id);
+                                            navigation.navigate("Latest");
+                                            Toast.show("A tweet deleted", {
+                                                duration: Toast.durations.LONG,
+                                            });
+                                        }}
+                                    >
+                                        <Ionicons
+                                            name="close-outline"
+                                            size={24}
+                                            color="grey"
+                                        />
+                                    </Button>
+                                )}
+                            </View>
 
-	return (
-		<ScrollView>
-			{!isLoading &&
-				<View key={tweet._id}>
-					<Card>
-						<View>
-							<View style={{ flexDirection: "row" }}>
-								<TouchableOpacity onPress={() => {
-									navigation.navigate("User", { handle: tweet.user[0].handle });
-								}}>
-									<Avatar
-										size={48}
-										rounded
-										title="T"
-										containerStyle={{ backgroundColor: "#0a5" }}
-									/>
-								</TouchableOpacity>
-								<View style={{ marginLeft: 10, marginTop: 5, flexShrink: 1 }}>
-									<View
-										style={{
-											flexDirection: "row",
-											marginBottom: 5,
-											flexWrap: "wrap"
-										}}
-									>
-										<Text
-											style={{
-												fontSize: 16,
-												fontWeight: "bold",
-												marginRight: 6
-											}}
-										>
-											{tweet.user[0].name}
-										</Text>
+                            <View style={{ marginTop: 20 }}>
+                                <View>
+                                    <Text style={{ fontSize: 20 }}>
+                                        {tweet.body}
+                                    </Text>
+                                </View>
 
-										<Text style={{ fontSize: 16, color: "#5ad" }}>
-											{
-												formatRelative(
-													parseISO(tweet.created), new Date()
-												)
-											}
-										</Text>
-									</View>
+                                <Attachment tweet={tweet} />
+                            </View>
+                        </View>
 
-									<Text
-										style={{
-											fontSize: 16,
-											color: "grey",
-											marginRight: 10
-										}}
-									>
-										@{tweet.user[0].handle}
-									</Text>
-								</View>
-							</View>
+                        <ActionButtons
+                            auth={auth}
+                            tweet={tweet}
+                            authUser={authUser}
+                            toggleLike={toggleLike}
+                        />
+                    </Card>
 
-							<View style={{ marginTop: 20 }}>
-								<View>
-									<Text style={{ fontSize: 20 }}>{tweet.body}</Text>
-								</View>
+                    {tweet.comments.map((comment) => {
+                        return (
+                            <View key={comment._id}>
+                                <Card>
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            justifyContent: "space-between",
+                                        }}
+                                    >
+                                        <View
+                                            style={{
+                                                flexDirection: "row",
+                                                flexShrink: 1,
+                                            }}
+                                        >
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    navigation.navigate(
+                                                        "User",
+                                                        {
+                                                            handle: comment
+                                                                .user[0].handle,
+                                                        }
+                                                    );
+                                                }}
+                                            >
+                                                <Avatar
+                                                    rounded
+                                                    size={32}
+                                                    title={comment.user[0].name[0].toUpperCase()}
+                                                    containerStyle={{
+                                                        backgroundColor:
+                                                            theme.colors
+                                                                .secondary,
+                                                    }}
+                                                />
+                                            </TouchableOpacity>
 
-								<Attachment tweet={tweet} />
-							</View>
-						</View>
+                                            <View
+                                                style={{
+                                                    marginLeft: 10,
+                                                    flexShrink: 1,
+                                                }}
+                                            >
+                                                <View
+                                                    style={{
+                                                        flexDirection: "row",
+                                                        flexWrap: "wrap",
+                                                        marginTop: 5,
+                                                    }}
+                                                >
+                                                    <Text
+                                                        style={{
+                                                            fontSize: 14,
+                                                            fontWeight: "bold",
+                                                            marginRight: 6,
+                                                        }}
+                                                    >
+                                                        {comment.user[0].name}
+                                                    </Text>
 
-						<View
-							style={{
-								flexDirection: "row",
-								marginTop: 10,
-								justifyContent: "space-around"
-							}}
-						>
+                                                    <Text
+                                                        style={{
+                                                            fontSize: 14,
+                                                            color: "grey",
+                                                            marginRight: 10,
+                                                        }}
+                                                    >
+                                                        @
+                                                        {comment.user[0].handle}
+                                                    </Text>
 
-							<Button type="clear" onPress={() => {
-								if (auth) toggleLike(tweet._id);
-								else Toast.show("Login required to like", {
-									duration: Toast.durations.LONG,
-								});
-							}}>
-								{
-									tweet.likes &&
-										tweet.likes.includes(authUser._id)
-										? <Ionicons name="heart" size={24} color="red" />
-										: <Ionicons name="heart-outline" size={24} color="red" />
-								}
-								<Text style={{ marginLeft: 5 }}>
-									{tweet.likes && tweet.likes.length}
-								</Text>
-							</Button>
+                                                    <Text
+                                                        style={{
+                                                            fontSize: 14,
+                                                            color: theme.colors
+                                                                .lightBlue,
+                                                        }}
+                                                    >
+                                                        {formatRelative(
+                                                            parseISO(
+                                                                comment.created
+                                                            ),
+                                                            new Date()
+                                                        )}
+                                                    </Text>
+                                                </View>
 
-							<Button type="clear" onPress={() => {
-								if (auth) navigation.navigate("Share", { id: tweet._id });
-								else Toast.show("Login required to share", {
-									duration: Toast.durations.LONG,
-								});
-							}}>
-								<Ionicons name="share-social-outline" size={24} color="#09a" />
-								<Text style={{ marginLeft: 5 }}>
-									{tweet.shares.length}
-								</Text>
-							</Button>
-							<Button type="clear" onPress={() => {
-								navigation.navigate("Tweet", { _id: tweet._id });
-							}}>
-								<Ionicons name="chatbubble-outline" size={24} color="green" />
-								<Text style={{ marginLeft: 5 }}>
-									{tweet.comments.length}
-								</Text>
-							</Button>
-						</View>
-					</Card>
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        navigation.navigate(
+                                                            "Tweet",
+                                                            { _id: comment._id }
+                                                        );
+                                                    }}
+                                                >
+                                                    <View
+                                                        style={{ marginTop: 5 }}
+                                                    >
+                                                        <Text
+                                                            style={{
+                                                                fontSize: 14,
+                                                            }}
+                                                        >
+                                                            {comment.body}
+                                                        </Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
 
-					{tweet.comments.map(comment => {
-						return (
-							<Card key={comment._id}>
-								<View style={{ flex: 1, flexDirection: "row" }}>
-									<Avatar
-										rounded
-										size={32}
-										title={comment.user[0].name[0].toUpperCase()}
-										containerStyle={{ backgroundColor: "grey" }}
-									/>
-									<View style={{ marginLeft: 20, flexShrink: 1 }}>
-										<View style={{ marginTop: 10 }}>
-											<View style={{ flexDirection: "row", flexWrap: 'wrap' }}>
-												<Text
-													style={{
-														fontSize: 14,
-														marginRight: 6,
-														fontWeight: "bold",
-													}}
-												>
-													{comment.user[0].name}
-												</Text>
+                                        {comment.owner === authUser._id && (
+                                            <Button
+                                                size="sm"
+                                                type="clear"
+                                                buttonStyle={{ padding: 0 }}
+                                                onPress={() => {
+                                                    deleteTweet(comment._id);
 
-												<Text
-													style={{
-														fontSize: 14,
-														color: "grey",
-														marginRight: 10
-													}}
-												>
-													@{comment.user[0].handle}
-												</Text>
+                                                    tweet.comments =
+                                                        tweet.comments.filter(
+                                                            (c) =>
+                                                                c._id !==
+                                                                comment._id
+                                                        );
 
-												<Text style={{ fontSize: 14, color: "#5ad" }}>
-													{
-														formatRelative(
-															parseISO(comment.created), new Date()
-														)
-													}
-												</Text>
-											</View>
-										</View>
+                                                    setTweet({ ...tweet });
 
-										<TouchableOpacity onPress={() => {
-											navigation.replace("Tweet", { _id: comment._id });
-										}}>
-											<View style={{ marginTop: 10 }}>
-												<Text style={{ fontSize: 14 }}>{comment.body}</Text>
-											</View>
-										</TouchableOpacity>
-									</View>
-								</View>
+                                                    Toast.show(
+                                                        "A comment deleted",
+                                                        {
+                                                            duration:
+                                                                Toast.durations
+                                                                    .LONG,
+                                                        }
+                                                    );
+                                                }}
+                                            >
+                                                <Ionicons
+                                                    name="close-outline"
+                                                    size={24}
+                                                    color="grey"
+                                                />
+                                            </Button>
+                                        )}
+                                    </View>
 
-								<ActionButtons
-									auth={auth}
-									authUser={authUser}
-									tweet={tweet}
-									toggleLike={toggleLike}
-								/>
-							</Card>
-						)
-					})}
+                                    <ActionButtons
+                                        auth={auth}
+                                        parentTweet={tweet}
+                                        tweet={comment}
+                                        authUser={authUser}
+                                        toggleLike={toggleLike}
+                                    />
+                                </Card>
+                            </View>
+                        );
+                    })}
 
-					{auth &&
-						<View style={{ margin: 20 }}>
-							<Input
-								value={body}
-								multiline={true}
-								onChangeText={setBody}
-								style={{ height: 80 }}
-								placeholder="Your reply"
-							/>
-							<Button onPress={() => {
-								if (!body) return;
+                    {auth && (
+                        <View style={{ margin: 20 }}>
+                            <Input
+                                value={body}
+                                multiline={true}
+                                onChangeText={setBody}
+                                style={{ height: 80 }}
+                                placeholder="Your reply"
+                            />
+                            <Button
+                                onPress={() => {
+                                    if (!body) return;
 
-								(async () => {
-									let result = await postReply(tweet._id, body);
-									// handle api error here
+                                    (async () => {
+                                        let result = await postReply(
+                                            tweet._id,
+                                            body
+                                        );
+                                        // handle api error here
 
-									let update = await fetchTweet(_id);
-									// handle api error here
+                                        let update = await fetchTweet(_id);
+                                        // handle api error here
 
-									setTweet(update);
+                                        setTweet(update);
 
-									Toast.show("You reply is posted", {
-										duration: Toast.durations.LONG,
-									});
+                                        Toast.show("You reply is posted", {
+                                            duration: Toast.durations.LONG,
+                                        });
 
-									setBody("");
-								})();
-							}}>Reply</Button>
-						</View>
-					}
-				</View>
-			}
-		</ScrollView>
-	);
+                                        setBody("");
+                                    })();
+                                }}
+                            >
+                                Reply
+                            </Button>
+                        </View>
+                    )}
+                </View>
+            )}
+        </ScrollView>
+    );
 }

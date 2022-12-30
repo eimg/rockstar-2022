@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import { View } from "react-native";
 
 import { Input, } from "@rneui/themed";
-
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { fetchUsers } from "../apiCalls";
-
 import UserList from "./_Share/UserList";
 
 export default function Search({ authUser, setAuthUser }) {
@@ -25,7 +23,6 @@ export default function Search({ authUser, setAuthUser }) {
 	return (
 		<View style={{
 			flex: 1,
-			padding: 20,
 			alignItems: "stretch",
 			justifyContent: "flex-start",
 		}}>

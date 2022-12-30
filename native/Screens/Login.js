@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 import {
+	Text,
 	Input,
 	Button,
+	useTheme,
 } from "@rneui/themed";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -11,24 +13,26 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { login } from "../apiCalls";
 
 export default function Login({ setAuth, setAuthUser }) {
-	const [ handle, setHandle ] = useState("");
-	const [ password, setPassword ] = useState("");
-	const [ hasError, setHasError ] = useState(false);
+	const [handle, setHandle] = useState("");
+	const [password, setPassword] = useState("");
+	const [hasError, setHasError] = useState(false);
+
+	const { theme } = useTheme();
 
 	return (
-		<View 
-			style={{ 
-				flex: 1, 
-				alignItems: "stretch", 
-				justifyContent: "flex-start", 
+		<View
+			style={{
+				flex: 1,
+				alignItems: "stretch",
+				justifyContent: "flex-start",
 				padding: 20,
 			}}
 		>
-			<Text 
-				style={{ 
-					fontSize: 24, 
-					fontWeight: "bold", 
-					marginBottom: 20, 
+			<Text
+				style={{
+					fontSize: 24,
+					fontWeight: "bold",
+					marginBottom: 20,
 					marginLeft: 10,
 				}}
 			>
@@ -36,10 +40,10 @@ export default function Login({ setAuth, setAuthUser }) {
 			</Text>
 
 			{
-				hasError && <View 
-					style={{ 
-						padding: 15, 
-						backgroundColor: "#fdd", 
+				hasError && <View
+					style={{
+						padding: 15,
+						backgroundColor: theme.colors.warning,
 						marginBottom: 10,
 					}}
 				>
@@ -47,21 +51,21 @@ export default function Login({ setAuth, setAuthUser }) {
 				</View>
 			}
 
-			<Input 
-				value={handle} 
-				placeholder="Handle" 
-				onChangeText={setHandle} 
+			<Input
+				value={handle}
+				placeholder="Handle"
+				onChangeText={setHandle}
 				leftIcon={
 					<Ionicons name="at" size={24} color="grey" />
-				} 
+				}
 			/>
-			<Input 
-				placeholder="Password" 
-				onChangeText={setPassword} 
-				secureTextEntry={true} 
-				value={password} 
+			<Input
+				placeholder="Password"
+				onChangeText={setPassword}
+				secureTextEntry={true}
+				value={password}
 			/>
-			<Button 
+			<Button
 				onPress={() => {
 					setHasError(false);
 

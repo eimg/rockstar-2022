@@ -1,194 +1,287 @@
 import { useEffect, useState, useCallback } from "react";
-import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import { View, TouchableOpacity, ScrollView } from "react-native";
 
 import {
-	Card,
-	Avatar,
-	ButtonGroup,
+    Text,
+    Card,
+    Avatar,
+    Button,
+    ButtonGroup,
+    useTheme,
 } from "@rneui/themed";
+
+import Ionicons from "@expo/vector-icons/Ionicons";
+import Toast from "react-native-root-toast";
 
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { formatRelative, parseISO } from "date-fns";
 
 import {
-	putLike,
-	postNoti,
-	fetchTweetsByHandle,
-	fetchCommentsByHandle,
-	fetchLikedTweetsByHandle,
+    putLike,
+    postNoti,
+    fetchTweetsByHandle,
+    fetchCommentsByHandle,
+    fetchLikedTweetsByHandle,
+    deleteTweet,
 } from "../../apiCalls";
 
 import Attachment from "./Attachment";
 import ActionButtons from "./ActionButtons";
 
 export default function UserContents({ authUser, handle, auth }) {
-	const [selectedButton, setSelectedButton] = useState(0);
+    const [selectedButton, setSelectedButton] = useState(0);
 
-	const [tweets, setTweets] = useState([]);
-	const [comments, setComments] = useState([]);
-	const [likedTweets, setLikedTweets] = useState([]);
+    const [tweets, setTweets] = useState([]);
+    const [comments, setComments] = useState([]);
+    const [likedTweets, setLikedTweets] = useState([]);
 
-	useEffect(() => {
-		(async () => {
-			let tweets = await fetchTweetsByHandle(handle);
-			// handle api error here
-			setTweets(tweets);
+    const { theme } = useTheme();
 
-			let comments = await fetchCommentsByHandle(handle);
-			// handle api error here
-			setComments(comments);
+    useEffect(() => {
+        (async () => {
+            let tweets = await fetchTweetsByHandle(handle);
+            // handle api error here
+            setTweets(tweets);
 
-			let likedTweets = await fetchLikedTweetsByHandle(handle);
-			// handle api error here
-			setLikedTweets(likedTweets);
-		})();
-	}, []);
+            let comments = await fetchCommentsByHandle(handle);
+            // handle api error here
+            setComments(comments);
 
-	useFocusEffect(useCallback(() => {
-		(async () => {
-			let result = await fetchTweetsByHandle(handle);
-			setTweets(result);
-		})();
-	}, []));
+            let likedTweets = await fetchLikedTweetsByHandle(handle);
+            // handle api error here
+            setLikedTweets(likedTweets);
+        })();
+    }, []);
 
-	const toggleLike = id => {
-		if (!auth) return false;
+    useFocusEffect(
+        useCallback(() => {
+            (async () => {
+                let result = await fetchTweetsByHandle(handle);
+                setTweets(result);
+            })();
+        }, [])
+    );
 
-		(async () => {
-			let likes = await putLike(id);
-			// handle api error here
+    const toggleLike = (id) => {
+        if (!auth) return false;
 
-			let updatedTweets = await Promise.all(
-				tweets.map(async (tweet) => {
-					if (tweet._id === id) {
-						tweet.likes = likes;
-					}
+        (async () => {
+            let likes = await putLike(id);
+            // handle api error here
 
-					return tweet;
-				})
-			);
+            let updatedTweets = await Promise.all(
+                tweets.map(async (tweet) => {
+                    if (tweet._id === id) {
+                        tweet.likes = likes;
+                    }
 
-			setTweets(updatedTweets);
-			postNoti("like", id);
-		})();
-	}
+                    return tweet;
+                })
+            );
 
-	return (
-		<View>
-			<ButtonGroup
-				selectedIndex={selectedButton}
-				buttons={["Recent", "Comments", "Likes"]}
-				onPress={(value) => {
-					setSelectedButton(value);
-				}}
-				containerStyle={{ marginBottom: 20 }}
-			/>
-			<ScrollView>
-				<TweetList
-					auth={auth}
-					handle={handle}
-					tweets={tweets}
-					authUser={authUser}
-					toggleLike={toggleLike}
-					show={selectedButton === 0}
-				/>
+            setTweets(updatedTweets);
+            postNoti("like", id);
+        })();
+    };
 
-				<TweetList
-					auth={auth}
-					handle={handle}
-					tweets={comments}
-					authUser={authUser}
-					toggleLike={toggleLike}
-					show={selectedButton === 1}
-				/>
+    const removeTweet = (tweet, tweets) => {
+        deleteTweet(tweet._id);
+        setTweets(tweets.filter((t) => t._id !== tweet._id));
 
-				<TweetList
-					auth={auth}
-					handle={handle}
-					authUser={authUser}
-					tweets={likedTweets}
-					toggleLike={toggleLike}
-					show={selectedButton === 2}
-				/>
-			</ScrollView>
-		</View>
-	);
+        Toast.show("A tweet deleted", {
+            duration: Toast.durations.LONG,
+        });
+    };
+
+    const removeComment = (tweet, tweets) => {
+        deleteTweet(tweet._id);
+        setComments(tweets.filter((t) => t._id !== tweet._id));
+
+        Toast.show("A tweet deleted", {
+            duration: Toast.durations.LONG,
+        });
+    };
+
+    const removeLike = (tweet, tweets) => {
+        deleteTweet(tweet._id);
+        setLikedTweets(tweets.filter((t) => t._id !== tweet._id));
+
+        Toast.show("A tweet deleted", {
+            duration: Toast.durations.LONG,
+        });
+    };
+
+    return (
+        <View>
+            <ButtonGroup
+                selectedIndex={selectedButton}
+                buttons={["Recent", "Comments", "Likes"]}
+                onPress={(value) => {
+                    setSelectedButton(value);
+                }}
+                containerStyle={{
+                    marginHorizontal: 15,
+                    marginTop: 20,
+                    borderColor: "grey",
+                }}
+                buttonStyle={{ backgroundColor: theme.colors.background }}
+            />
+            <ScrollView>
+                <TweetList
+                    auth={auth}
+                    handle={handle}
+                    tweets={tweets}
+                    authUser={authUser}
+                    toggleLike={toggleLike}
+                    show={selectedButton === 0}
+                    remove={removeTweet}
+                />
+
+                <TweetList
+                    auth={auth}
+                    handle={handle}
+                    tweets={comments}
+                    authUser={authUser}
+                    toggleLike={toggleLike}
+                    show={selectedButton === 1}
+                    remove={removeComment}
+                />
+
+                <TweetList
+                    auth={auth}
+                    handle={handle}
+                    authUser={authUser}
+                    tweets={likedTweets}
+                    toggleLike={toggleLike}
+                    show={selectedButton === 2}
+                    remove={removeLike}
+                />
+            </ScrollView>
+        </View>
+    );
 }
 
-function TweetList({ authUser, auth, tweets, toggleLike, show }) {
-	const navigation = useNavigation();
+function TweetList({ authUser, auth, tweets, toggleLike, show, remove }) {
+    const navigation = useNavigation();
 
-	return (
-		show &&
-		tweets.map(tweet => {
-			return (
-				<View key={tweet._id}>
-					<Card>
-						<View style={{ flex: 1, flexDirection: "row" }}>
-							<TouchableOpacity onPress={() => {
-								navigation.navigate("User", { handle: tweet.user[0].handle })
-							}}>
-								<Avatar
-									rounded
-									size={48}
-									title={tweet.user[0].name[0].toUpperCase()}
-									containerStyle={{ backgroundColor: "#0a5" }}
-								/>
-							</TouchableOpacity>
-							<View style={{ marginLeft: 10, flexShrink: 1 }}>
-								<View style={{ marginTop: 5 }}>
-									<View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-										<Text
-											style={{
-												fontSize: 14,
-												fontWeight: "bold",
-												marginRight: 6,
-											}}
-										>
-											{tweet.user[0].name}
-										</Text>
+    return (
+        show &&
+        tweets.map((tweet) => {
+            return (
+                <View key={tweet._id}>
+                    <Card>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <View
+                                style={{ flexDirection: "row", flexShrink: 1 }}
+                            >
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        navigation.navigate("User", {
+                                            handle: tweet.user[0].handle,
+                                        });
+                                    }}
+                                >
+                                    <Avatar
+                                        rounded
+                                        size={48}
+                                        title={tweet.user[0].name[0].toUpperCase()}
+                                        containerStyle={{
+                                            backgroundColor: "#0a5",
+                                        }}
+                                    />
+                                </TouchableOpacity>
 
-										<Text
-											style={{
-												fontSize: 14,
-												color: "grey",
-												marginRight: 10,
-											}}
-										>
-											@{tweet.user[0].handle}
-										</Text>
+                                <View style={{ marginLeft: 10, flexShrink: 1 }}>
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            flexWrap: "wrap",
+                                            marginTop: 5,
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontSize: 14,
+                                                fontWeight: "bold",
+                                                marginRight: 6,
+                                            }}
+                                        >
+                                            {tweet.user[0].name}
+                                        </Text>
 
-										<Text style={{ fontSize: 14, color: "#5ad" }}>
-											{
-												formatRelative(
-													parseISO(tweet.created), new Date()
-												)
-											}
-										</Text>
-									</View>
-								</View>
+                                        <Text
+                                            style={{
+                                                fontSize: 14,
+                                                color: "grey",
+                                                marginRight: 10,
+                                            }}
+                                        >
+                                            @{tweet.user[0].handle}
+                                        </Text>
 
-								<TouchableOpacity onPress={() => {
-									navigation.navigate("Tweet", { _id: tweet._id });
-								}}>
-									<View style={{ marginTop: 5 }}>
-										<Text style={{ fontSize: 14 }}>{tweet.body}</Text>
-									</View>
-								</TouchableOpacity>
+                                        <Text
+                                            style={{
+                                                fontSize: 14,
+                                                color: "#5ad",
+                                            }}
+                                        >
+                                            {formatRelative(
+                                                parseISO(tweet.created),
+                                                new Date()
+                                            )}
+                                        </Text>
+                                    </View>
 
-								<Attachment tweet={tweet} />
-							</View>
-						</View>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            navigation.navigate("Tweet", {
+                                                _id: tweet._id,
+                                            });
+                                        }}
+                                    >
+                                        <View style={{ marginTop: 5 }}>
+                                            <Text style={{ fontSize: 14 }}>
+                                                {tweet.body}
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
 
-						<ActionButtons
-							auth={auth}
-							tweet={tweet}
-							authUser={authUser}
-							toggleLike={toggleLike}
-						/>
-					</Card>
-				</View>
-			);
-		})
-	);
+                                    <Attachment tweet={tweet} />
+                                </View>
+                            </View>
+
+                            {tweet.owner === authUser._id && (
+                                <Button
+                                    size="sm"
+                                    type="clear"
+                                    buttonStyle={{ padding: 0 }}
+                                    onPress={() => {
+                                        remove(tweet, tweets);
+                                    }}
+                                >
+                                    <Ionicons
+                                        name="close-outline"
+                                        size={24}
+                                        color="grey"
+                                    />
+                                </Button>
+                            )}
+                        </View>
+
+                        <ActionButtons
+                            auth={auth}
+                            tweet={tweet}
+                            authUser={authUser}
+                            toggleLike={toggleLike}
+                        />
+                    </Card>
+                </View>
+            );
+        })
+    );
 }
