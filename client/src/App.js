@@ -1,21 +1,11 @@
-import {
-	useState,
-	useEffect,
-} from "react";
+import { useState, useEffect } from 'react';
 
-import { useTheme, } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
+import { useTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
-import {
-	Box,
-	Fab,
-	Alert,
-	Snackbar,
-} from "@mui/material";
+import { Box, Fab, Alert, Snackbar } from '@mui/material';
 
-import {
-	Add as AddIcon,
-} from "@mui/icons-material";
+import { Add as AddIcon } from '@mui/icons-material';
 
 import {
 	Route,
@@ -23,27 +13,27 @@ import {
 	useMatch,
 	useNavigate,
 	useLocation,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import Home from "./Main/Home";
-import Tweet from "./Main/Tweet";
-import Likes from "./Pages/Likes";
-import Notis from "./Pages/Notis";
-import Login from "./Users/Login";
-import Error from "./Utils/Error";
-import Shares from "./Pages/Shares";
-import Profile from "./Main/Profile";
-import MainNav from "./Navs/MainNav";
-import Loading from "./Utils/Loading";
-import AddTweet from "./Forms/AddTweet";
-import AddShare from "./Forms/AddShare";
-import Register from "./Users/Register";
-import NotFound from "./Utils/NotFound";
-import EditUser from "./Users/EditUser";
-import Header from "./Components/Header";
-import Followers from "./Pages/Followers";
-import Following from "./Pages/Following";
-import BottomMenu from "./Navs/BottomMenu";
+import Home from './Main/Home';
+import Tweet from './Main/Tweet';
+import Likes from './Pages/Likes';
+import Notis from './Pages/Notis';
+import Login from './Users/Login';
+import Error from './Utils/Error';
+import Shares from './Pages/Shares';
+import Profile from './Main/Profile';
+import MainNav from './Navs/MainNav';
+import Loading from './Utils/Loading';
+import AddTweet from './Forms/AddTweet';
+import AddShare from './Forms/AddShare';
+import Register from './Users/Register';
+import NotFound from './Utils/NotFound';
+import EditUser from './Users/EditUser';
+import Header from './Components/Header';
+import Followers from './Pages/Followers';
+import Following from './Pages/Following';
+import BottomMenu from './Navs/BottomMenu';
 
 import {
 	putLike,
@@ -52,14 +42,13 @@ import {
 	fetchTweet,
 	fetchTweets,
 	postNoti,
-} from "./apiCalls";
+} from './apiCalls';
 
 export default function App({ colorMode }) {
-
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const location = useLocation();
-	const addShareRoute = useMatch("/tweet/:id/share");
+	const addShareRoute = useMatch('/tweet/:id/share');
 
 	const [auth, setAuth] = useState(false);
 	const [tweet, setTweet] = useState({});
@@ -76,7 +65,7 @@ export default function App({ colorMode }) {
 	useEffect(() => {
 		(async () => {
 			let result = await fetchTweets();
-			if (!result) return navigate("/error");
+			if (!result) return navigate('/error');
 
 			setTweets(result);
 			setIsLoading(false);
@@ -91,11 +80,11 @@ export default function App({ colorMode }) {
 			setAuthUser(user);
 			setAuth(true);
 
-			const ws = new WebSocket("ws://localhost:8000/subscribe");
+			const ws = new WebSocket('ws://localhost:8000/subscribe');
 
 			ws.onopen = e => {
 				const token = getToken();
-				if(token) {
+				if (token) {
 					ws.send(token);
 				}
 			};
@@ -105,13 +94,12 @@ export default function App({ colorMode }) {
 				setNotiCount(1);
 			};
 		})();
-
 	}, [auth, notiCount]);
 
 	const toggleDrawer = open => event => {
-		if (event.type === "keydown"
-			&& (event.key === "Tab"
-				|| event.key === "Shift")
+		if (
+			event.type === 'keydown' &&
+			(event.key === 'Tab' || event.key === 'Shift')
 		) {
 			return;
 		}
@@ -120,9 +108,9 @@ export default function App({ colorMode }) {
 	};
 
 	const toggleBottomMenu = (open, tweetIdOwner) => event => {
-		if (event.type === "keydown"
-			&& (event.key === "Tab"
-				|| event.key === "Shift")
+		if (
+			event.type === 'keydown' &&
+			(event.key === 'Tab' || event.key === 'Shift')
 		) {
 			return;
 		}
@@ -134,59 +122,60 @@ export default function App({ colorMode }) {
 	const addComment = reply => {
 		tweet.comments.push(reply);
 		setTweet({ ...tweet });
-		setTweets(tweets.map(t => {
-			if (t._id === reply.origin) {
-				t.comments.push(reply);
-			}
+		setTweets(
+			tweets.map(t => {
+				if (t._id === reply.origin) {
+					t.comments.push(reply);
+				}
 
-			return t;
-		}));
-	}
+				return t;
+			}),
+		);
+	};
 
 	const toggleLike = id => {
 		if (!auth) return false;
 
 		(async () => {
 			let likes = await putLike(id);
-			if (!likes) return navigate("/error");
+			if (!likes) return navigate('/error');
 
 			let updatedTweets = await Promise.all(
-				tweets.map(async (tweet) => {
+				tweets.map(async tweet => {
 					if (tweet._id === id) {
 						tweet.likes = likes;
 
 						let updatedTweet = await fetchTweet(id);
-						if (!updatedTweet) return navigate("/error");
+						if (!updatedTweet) return navigate('/error');
 
 						setTweet(updatedTweet);
 					}
 
 					return tweet;
-				})
+				}),
 			);
 
 			setTweets(updatedTweets);
-			postNoti("like", id);
+			postNoti('like', id);
 		})();
-	}
+	};
 
 	const toggleLikeForComment = (commentId, tweetId) => {
 		if (!auth) return false;
 
 		(async () => {
 			let likes = await putLike(commentId);
-			if (!likes) return navigate("/error");
+			if (!likes) return navigate('/error');
 
 			let result = await fetchTweet(tweetId);
-			if (!result) return navigate("/error");
+			if (!result) return navigate('/error');
 
 			setTweet(result);
 		})();
-	}
+	};
 
 	return (
-		<Box sx={{ ml: { md: "280px", sm: 0 } }}>
-
+		<Box sx={{ ml: { md: '280px', sm: 0 } }}>
 			{isLoading && <Loading />}
 
 			<CssBaseline />
@@ -210,9 +199,8 @@ export default function App({ colorMode }) {
 				/>
 
 				<Routes>
-
 					<Route
-						path="/tweet/:id"
+						path='/tweet/:id'
 						element={
 							<Tweet
 								auth={auth}
@@ -229,18 +217,18 @@ export default function App({ colorMode }) {
 					/>
 
 					<Route
-						path="/tweet/add"
+						path='/tweet/add'
 						element={
-							auth
-								? <AddTweet
-									setSnackbarOpen={setSnackbarOpen}
-								/>
-								: <Login />
+							auth ? (
+								<AddTweet setSnackbarOpen={setSnackbarOpen} />
+							) : (
+								<Login />
+							)
 						}
 					/>
 
 					<Route
-						path="/@:handle"
+						path='/@:handle'
 						element={
 							<Profile
 								auth={auth}
@@ -254,18 +242,18 @@ export default function App({ colorMode }) {
 					/>
 
 					<Route
-						path="/tweet/:id/share"
+						path='/tweet/:id/share'
 						element={
-							auth
-								? <AddShare
-									setSnackbarOpen={setSnackbarOpen}
-								/>
-								: <Login />
+							auth ? (
+								<AddShare setSnackbarOpen={setSnackbarOpen} />
+							) : (
+								<Login />
+							)
 						}
 					/>
 
 					<Route
-						path="/tweet/:id/likes"
+						path='/tweet/:id/likes'
 						element={
 							<Likes
 								authUser={authUser}
@@ -275,7 +263,7 @@ export default function App({ colorMode }) {
 					/>
 
 					<Route
-						path="/tweet/:id/shares"
+						path='/tweet/:id/shares'
 						element={
 							<Shares
 								authUser={authUser}
@@ -285,7 +273,7 @@ export default function App({ colorMode }) {
 					/>
 
 					<Route
-						path="/user/:handle/followers"
+						path='/user/:handle/followers'
 						element={
 							<Followers
 								authUser={authUser}
@@ -295,7 +283,7 @@ export default function App({ colorMode }) {
 					/>
 
 					<Route
-						path="/user/:handle/following"
+						path='/user/:handle/following'
 						element={
 							<Following
 								authUser={authUser}
@@ -305,14 +293,12 @@ export default function App({ colorMode }) {
 					/>
 
 					<Route
-						path="/notis"
-						element={
-							<Notis setNotiCount={setNotiCount} />
-						}
+						path='/notis'
+						element={<Notis setNotiCount={setNotiCount} />}
 					/>
 
 					<Route
-						path="/"
+						path='/'
 						element={
 							<Home
 								auth={auth}
@@ -324,55 +310,56 @@ export default function App({ colorMode }) {
 						}
 					/>
 
-					<Route path="/register" element={
-						<Register
-							setAuth={setAuth}
-							setAuthUser={setAuthUser}
-						/>
-					}
+					<Route
+						path='/register'
+						element={
+							<Register
+								setAuth={setAuth}
+								setAuthUser={setAuthUser}
+							/>
+						}
 					/>
 
-					<Route path="/login" element={
-						<Login
-							setAuth={setAuth}
-							setAuthUser={setAuthUser}
-						/>
-					}
+					<Route
+						path='/login'
+						element={
+							<Login
+								setAuth={setAuth}
+								setAuthUser={setAuthUser}
+							/>
+						}
 					/>
 
-					<Route path="/user/edit" element={
-						<EditUser
-							authUser={authUser}
-							setAuthUser={setAuthUser}
-						/>
-					}
+					<Route
+						path='/user/edit'
+						element={
+							<EditUser
+								authUser={authUser}
+								setAuthUser={setAuthUser}
+							/>
+						}
 					/>
 
-					<Route path="/error" element={<Error />} />
-					<Route path="*" element={<NotFound />} />
+					<Route path='/error' element={<Error />} />
+					<Route path='*' element={<NotFound />} />
 				</Routes>
 
-				{
-					(
-						auth
-						&& !addShareRoute
-						&& location.pathname !== "/tweet/add"
-					) &&
-
-					<Fab
-						color="info"
-						sx={{
-							position: "fixed",
-							bottom: "40px",
-							right: "40px"
-						}}
-						onClick={() => {
-							navigate("/tweet/add");
-						}}
-					>
-						<AddIcon />
-					</Fab>
-				}
+				{auth &&
+					!addShareRoute &&
+					location.pathname !== '/tweet/add' && (
+						<Fab
+							color='info'
+							sx={{
+								position: 'fixed',
+								bottom: '40px',
+								right: '40px',
+							}}
+							onClick={() => {
+								navigate('/tweet/add');
+							}}>
+							<AddIcon />
+						</Fab>
+					)}
 
 				<BottomMenu
 					auth={auth}
@@ -385,18 +372,14 @@ export default function App({ colorMode }) {
 
 			<Snackbar
 				anchorOrigin={{
-					vertical: "top",
-					horizontal: "right"
+					vertical: 'top',
+					horizontal: 'right',
 				}}
 				open={snackbarOpen}
 				autoHideDuration={5000}
-				onClose={() => setSnackbarOpen(false)}
-			>
-				<Alert severity="success">
-					Your post has been added.
-				</Alert>
+				onClose={() => setSnackbarOpen(false)}>
+				<Alert severity='success'>Your post has been added.</Alert>
 			</Snackbar>
-
 		</Box>
 	);
 }

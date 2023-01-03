@@ -1,93 +1,93 @@
-import Head from "next/head";
+import Head from 'next/head';
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from 'react';
 
-import { putLike, fetchTweet, postNoti } from "../../utils/apiCalls";
+import { putLike, fetchTweet, postNoti } from '../../utils/apiCalls';
 
-import Layout from "../components/Layout";
-import SingleTweet from "../components/SingleTweet";
+import Layout from '../components/Layout';
+import SingleTweet from '../components/SingleTweet';
 
-import { AuthContext } from "../components/AuthProvider";
+import { AuthContext } from '../components/AuthProvider';
 
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
 export default function Tweet() {
 	const router = useRouter();
 	const { id } = router.query;
 
-    const [tweet, setTweet] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
+	const [tweet, setTweet] = useState({});
+	const [isLoading, setIsLoading] = useState(true);
 
-    const { authStatus } = useContext(AuthContext);
+	const { authStatus } = useContext(AuthContext);
 
-    useEffect(() => {
-        (async () => {
-            let result = await fetchTweet(id);
-            // if (!result) return navigate("/error");
+	useEffect(() => {
+		(async () => {
+			let result = await fetchTweet(id);
+			// if (!result) return navigate("/error");
 
-			if(result) {
+			if (result) {
 				setTweet(result);
-                setIsLoading(false);
+				setIsLoading(false);
 			}
-        })();
-    }, [id]);
+		})();
+	}, [id]);
 
-    const toggleLike = (id) => {
-        if (!authStatus) return false;
+	const toggleLike = id => {
+		if (!authStatus) return false;
 
-        (async () => {
-            let likes = await putLike(id);
-            // if (!likes) return navigate("/error");
+		(async () => {
+			let likes = await putLike(id);
+			// if (!likes) return navigate("/error");
 
 			let result = await fetchTweet(id);
-            // if (!result) return navigate("/error");
+			// if (!result) return navigate("/error");
 
-            setTweet(result);
-            postNoti("like", id);
-        })();
-    };
+			setTweet(result);
+			postNoti('like', id);
+		})();
+	};
 
 	const toggleLikeForComment = (commentId, tweetId) => {
-        if (!authStatus) return false;
+		if (!authStatus) return false;
 
-        (async () => {
-            let likes = await putLike(commentId);
-            // if (!likes) return navigate("/error");
+		(async () => {
+			let likes = await putLike(commentId);
+			// if (!likes) return navigate("/error");
 
-            let result = await fetchTweet(tweetId);
-            // if (!result) return navigate("/error");
+			let result = await fetchTweet(tweetId);
+			// if (!result) return navigate("/error");
 
-            setTweet(result);
-        })();
-    };
+			setTweet(result);
+		})();
+	};
 
-	const addComment = (reply) => {
-        tweet.comments.push(reply);
-        setTweet({ ...tweet });
-    };
+	const addComment = reply => {
+		tweet.comments.push(reply);
+		setTweet({ ...tweet });
+	};
 
-    return (
-        <>
-            <Head>
-                <title>Next Twitter</title>
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1"
-                />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <main>
-                <Layout>
-                    {!isLoading && (
-                        <SingleTweet
-                            tweet={tweet}
-                            toggleLike={toggleLike}
-                            toggleLikeForComment={toggleLikeForComment}
-                            addComment={addComment}
-                        />
-                    )}
-                </Layout>
-            </main>
-        </>
-    );
+	return (
+		<>
+			<Head>
+				<title>Next Twitter</title>
+				<meta
+					name='viewport'
+					content='width=device-width, initial-scale=1'
+				/>
+				<link rel='icon' href='/favicon.ico' />
+			</Head>
+			<main>
+				<Layout>
+					{!isLoading && (
+						<SingleTweet
+							tweet={tweet}
+							toggleLike={toggleLike}
+							toggleLikeForComment={toggleLikeForComment}
+							addComment={addComment}
+						/>
+					)}
+				</Layout>
+			</main>
+		</>
+	);
 }

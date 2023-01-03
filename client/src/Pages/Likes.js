@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 import {
 	Box,
@@ -7,11 +7,11 @@ import {
 	ListItem,
 	ListItemText,
 	ListItemAvatar,
-} from "@mui/material";
+} from '@mui/material';
 
-import { fetchLikes } from "../apiCalls";
-import FollowButton from "../Components/FollowButton";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { fetchLikes } from '../apiCalls';
+import FollowButton from '../Components/FollowButton';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 
 export default function Likes({ authUser, setAuthUser }) {
 	const { id } = useParams();
@@ -22,7 +22,7 @@ export default function Likes({ authUser, setAuthUser }) {
 	useEffect(() => {
 		(async () => {
 			let result = await fetchLikes(id);
-			if (!result) navigate("/error");
+			if (!result) navigate('/error');
 
 			setLikes(result);
 		})();
@@ -41,19 +41,18 @@ export default function Likes({ authUser, setAuthUser }) {
 									user={user}
 									setAuthUser={setAuthUser}
 								/>
-							}
-						>
+							}>
 							<ListItemAvatar>
 								<Link to={`/@${user.handle}`}>
-									<Avatar alt="Profile"></Avatar>
+									<Avatar alt='Profile'></Avatar>
 								</Link>
 							</ListItemAvatar>
 							<ListItemText
-								primary={user.name + " @" + user.handle}
+								primary={user.name + ' @' + user.handle}
 								secondary={user.profile}
 							/>
 						</ListItem>
-					)
+					);
 				})}
 			</List>
 		</Box>

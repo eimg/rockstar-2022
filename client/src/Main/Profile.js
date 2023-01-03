@@ -1,17 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import {
-	Tab,
-	Tabs,
-	Box,
-	Avatar,
-	Typography,
-	Button,
-} from "@mui/material";
+import { Tab, Tabs, Box, Avatar, Typography, Button } from '@mui/material';
 
-import { pink, lightBlue } from "@mui/material/colors";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import Loading from "../Utils/Loading";
+import { pink, lightBlue } from '@mui/material/colors';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import Loading from '../Utils/Loading';
 
 import {
 	putLike,
@@ -20,9 +13,9 @@ import {
 	fetchUserByHandle,
 	fetchCommentsByHandle,
 	fetchLikedTweetsByHandle,
-} from "../apiCalls";
+} from '../apiCalls';
 
-import MainList from "./MainList";
+import MainList from './MainList';
 
 export default function Profile({
 	auth,
@@ -45,22 +38,22 @@ export default function Profile({
 
 		(async () => {
 			let result = await fetchUserByHandle(handle);
-			if (!result) return navigate("/error");
+			if (!result) return navigate('/error');
 
 			setUser(result);
 
 			let tweets = await fetchTweetsByHandle(handle);
-			if (!tweets) return navigate("/error");
+			if (!tweets) return navigate('/error');
 
 			setTweets(tweets);
 
 			let comments = await fetchCommentsByHandle(handle);
-			if (!comments) return navigate("/error");
+			if (!comments) return navigate('/error');
 
 			setComments(comments);
 
 			let likes = await fetchLikedTweetsByHandle(handle);
-			if (!likes) return navigate("/error");
+			if (!likes) return navigate('/error');
 
 			setLikedTweets(likes);
 
@@ -73,63 +66,63 @@ export default function Profile({
 
 		(async () => {
 			let likes = await putLike(id);
-			if (!likes) return navigate("/error");
+			if (!likes) return navigate('/error');
 
 			let updatedTweets = await Promise.all(
-				tweets.map(async (tweet) => {
+				tweets.map(async tweet => {
 					if (tweet._id === id) {
 						tweet.likes = likes;
 					}
 
 					return tweet;
-				})
+				}),
 			);
 
 			setTweets(updatedTweets);
 		})();
-	}
+	};
 
 	const toggleLikeOnComments = id => {
 		if (!auth) return false;
 
 		(async () => {
 			let likes = await putLike(id);
-			if (!likes) return navigate("/error");
+			if (!likes) return navigate('/error');
 
 			let updatedComments = await Promise.all(
-				comments.map(async (comment) => {
+				comments.map(async comment => {
 					if (comment._id === id) {
 						comment.likes = likes;
 					}
 
 					return comment;
-				})
+				}),
 			);
 
 			setComments(updatedComments);
 		})();
-	}
+	};
 
 	const toggleLikeOnLikedTweets = id => {
 		if (!auth) return false;
 
 		(async () => {
 			let likes = await putLike(id);
-			if (!likes) return navigate("/error");
+			if (!likes) return navigate('/error');
 
 			let updatedTweets = await Promise.all(
-				likedTweets.map(async (tweet) => {
+				likedTweets.map(async tweet => {
 					if (tweet._id === id) {
 						tweet.likes = likes;
 					}
 
 					return tweet;
-				})
+				}),
 			);
 
 			setLikedTweets(updatedTweets);
 		})();
-	}
+	};
 
 	const tabChange = (event, switchTab) => {
 		setTab(switchTab);
@@ -137,22 +130,25 @@ export default function Profile({
 
 	return (
 		<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>
-			{isLoading
-				? <Loading />
-				: <Box>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Box>
 					<Box
 						sx={{
-							height: "140px",
+							height: '140px',
 							bgcolor: lightBlue[500],
 							borderRadius: 1,
-						}}
-					>
-					</Box>
+						}}></Box>
 
-					<Box sx={{ display: "flex", justifyContent: "space-between" }}>
-						<Box sx={{ ml: "20px", mt: "-50px", mb: 3 }}>
+					<Box
+						sx={{
+							display: 'flex',
+							justifyContent: 'space-between',
+						}}>
+						<Box sx={{ ml: '20px', mt: '-50px', mb: 3 }}>
 							<Avatar
-								alt="Profile"
+								alt='Profile'
 								sx={{
 									mb: 1,
 									width: 96,
@@ -162,155 +158,188 @@ export default function Profile({
 							/>
 
 							<Box sx={{ ml: 1 }}>
-								<Typography sx={{ fontSize: "1.2em", mb: "-5px" }}>
+								<Typography
+									sx={{ fontSize: '1.2em', mb: '-5px' }}>
 									<b>{user && user.name}</b>
 								</Typography>
 
 								<Typography
-									variant="body2"
-									sx={{ mb: 1, color: "text.fade" }}
-								>
+									variant='body2'
+									sx={{ mb: 1, color: 'text.fade' }}>
 									@{user && user.handle}
 								</Typography>
 
-								<Typography sx={{ fontSize: "0.8em" }}>
+								<Typography sx={{ fontSize: '0.8em' }}>
 									{user && user.profile}
 								</Typography>
 
-								{(handle === authUser.handle)
-									? <>
+								{handle === authUser.handle ? (
+									<>
 										<Typography
-											component="span"
-											sx={{ mr: 3, fontSize: 14, color: "text.fade" }}
-										>
+											component='span'
+											sx={{
+												mr: 3,
+												fontSize: 14,
+												color: 'text.fade',
+											}}>
 											<Link
 												to={`/user/${authUser.handle}/following`}
-												style={{ color: pink[400], textDecoration: "none" }}
-											>
-												{(authUser.following 
-													&& authUser.following.length) || 0} Following
+												style={{
+													color: pink[400],
+													textDecoration: 'none',
+												}}>
+												{(authUser.following &&
+													authUser.following
+														.length) ||
+													0}{' '}
+												Following
 											</Link>
 										</Typography>
 
 										<Typography
-											component="span"
-											sx={{ fontSize: 14, color: "text.fade" }}
-										>
+											component='span'
+											sx={{
+												fontSize: 14,
+												color: 'text.fade',
+											}}>
 											<Link
 												to={`/user/${authUser.handle}/followers`}
-												style={{ color: pink[400], textDecoration: "none" }}
-											>
-												{(authUser.followers 
-													&& authUser.followers.length) || 0} Followers
+												style={{
+													color: pink[400],
+													textDecoration: 'none',
+												}}>
+												{(authUser.followers &&
+													authUser.followers
+														.length) ||
+													0}{' '}
+												Followers
 											</Link>
 										</Typography>
 									</>
-									: <>
+								) : (
+									<>
 										<Typography
-											component="span"
-											sx={{ mr: 3, fontSize: 14, color: "text.fade" }}
-										>
+											component='span'
+											sx={{
+												mr: 3,
+												fontSize: 14,
+												color: 'text.fade',
+											}}>
 											<Link
 												to={`/user/${user.handle}/following`}
-												style={{ color: pink[400], textDecoration: "none" }}
-											>
-												{(user.following 
-													&& user.following.length) || 0} Following
+												style={{
+													color: pink[400],
+													textDecoration: 'none',
+												}}>
+												{(user.following &&
+													user.following.length) ||
+													0}{' '}
+												Following
 											</Link>
 										</Typography>
 
 										<Typography
-											component="span"
-											sx={{ fontSize: 14, color: "text.fade" }}
-										>
+											component='span'
+											sx={{
+												fontSize: 14,
+												color: 'text.fade',
+											}}>
 											<Link
 												to={`/user/${user.handle}/followers`}
-												style={{ color: pink[400], textDecoration: "none" }}
-											>
-												{(user.followers 
-													&& user.followers.length) || 0} Followers
+												style={{
+													color: pink[400],
+													textDecoration: 'none',
+												}}>
+												{(user.followers &&
+													user.followers.length) ||
+													0}{' '}
+												Followers
 											</Link>
 										</Typography>
 									</>
-								}
+								)}
 							</Box>
 						</Box>
 						<Box sx={{ pt: 2 }}>
-							{
-								auth ?
-								
-								(handle === authUser.handle)
-									? <Button
-										size="small"
-										color="info"
-										variant="outlined"
+							{auth ? (
+								handle === authUser.handle ? (
+									<Button
+										size='small'
+										color='info'
+										variant='outlined'
 										sx={{ borderRadius: 5 }}
 										onClick={() => {
-											navigate("/user/edit");
-										}}
-									>
+											navigate('/user/edit');
+										}}>
 										Edit Profile
 									</Button>
+								) : user.followers &&
+								  user.followers.includes(authUser._id) ? (
+									<Button
+										size='small'
+										color='info'
+										variant='outlined'
+										sx={{ borderRadius: 5 }}
+										onClick={() => {
+											(async () => {
+												let result = await putFollow(
+													user._id,
+												);
+												if (!result) navigate('/error');
 
-									: (user.followers && user.followers.includes(authUser._id))
+												user.followers =
+													result.followers;
+												authUser.following =
+													result.following;
 
-										? <Button
-											size="small"
-											color="info"
-											variant="outlined"
-											sx={{ borderRadius: 5 }}
-											onClick={() => {
-												(async () => {
-													let result = await putFollow(user._id);
-													if (!result) navigate("/error");
+												setUser({ ...user });
+												setAuthUser({ ...authUser });
+											})();
+										}}>
+										Followed
+									</Button>
+								) : (
+									<Button
+										size='small'
+										color='info'
+										variant='contained'
+										sx={{ borderRadius: 5 }}
+										onClick={() => {
+											(async () => {
+												let result = await putFollow(
+													user._id,
+												);
+												if (!result) navigate('/error');
 
-													user.followers = result.followers;
-													authUser.following = result.following;
+												user.followers =
+													result.followers;
+												authUser.following =
+													result.following;
 
-													setUser({ ...user });
-													setAuthUser({ ...authUser });
-												})();
-											}}
-										>
-											Followed
-										</Button>
-
-										: <Button
-											size="small"
-											color="info"
-											variant="contained"
-											sx={{ borderRadius: 5 }}
-											onClick={() => {
-												(async () => {
-													let result = await putFollow(user._id);
-													if (!result) navigate("/error");
-
-													user.followers = result.followers;
-													authUser.following = result.following;
-
-													setUser({ ...user });
-													setAuthUser({ ...authUser });
-												})();
-											}}
-										>
-											Follow
-										</Button>
-
-								: <></>
-							}
+												setUser({ ...user });
+												setAuthUser({ ...authUser });
+											})();
+										}}>
+										Follow
+									</Button>
+								)
+							) : (
+								<></>
+							)}
 						</Box>
 					</Box>
 
-					<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+					<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 						<Tabs
 							value={tab}
 							onChange={tabChange}
-							variant="fullWidth"
-							TabIndicatorProps={{ style: { background: lightBlue[500] } }}
-						>
-							<Tab label="Posts" />
-							<Tab label="Comments" />
-							<Tab label="Likes" />
+							variant='fullWidth'
+							TabIndicatorProps={{
+								style: { background: lightBlue[500] },
+							}}>
+							<Tab label='Posts' />
+							<Tab label='Comments' />
+							<Tab label='Likes' />
 						</Tabs>
 					</Box>
 					<Box hidden={tab !== 0} sx={{ py: 4 }}>
@@ -341,7 +370,7 @@ export default function Profile({
 						/>
 					</Box>
 				</Box>
-			}
+			)}
 		</Box>
 	);
 }

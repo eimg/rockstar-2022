@@ -1,31 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { useRoute } from "@react-navigation/native";
+import { useRoute } from '@react-navigation/native';
 
-import UserList from "../_Share/UserList";
+import UserList from '../_Share/UserList';
 
-import { fetchShares } from "../../apiCalls";
+import { fetchShares } from '../../apiCalls';
 
 export default function Shares({ authUser, setAuthUser }) {
-    const route = useRoute();
+	const route = useRoute();
 
-    const [sharedUsers, setSharedUsers] = useState([]);
-    const { id } = route.params;
+	const [sharedUsers, setSharedUsers] = useState([]);
+	const { id } = route.params;
 
-    useEffect(() => {
-        (async () => {
-            let result = await fetchShares(id);
-            // handle api error here
+	useEffect(() => {
+		(async () => {
+			let result = await fetchShares(id);
+			// handle api error here
 
-            setSharedUsers(result.map((share) => share.user[0]));
-        })();
-    }, [id]);
+			setSharedUsers(result.map(share => share.user[0]));
+		})();
+	}, [id]);
 
-    return (
-        <UserList
-            authUser={authUser}
-            setAuthUser={setAuthUser}
-            users={sharedUsers}
-        />
-    );
+	return (
+		<UserList
+			authUser={authUser}
+			setAuthUser={setAuthUser}
+			users={sharedUsers}
+		/>
+	);
 }

@@ -1,15 +1,13 @@
-import {
-	Box,
-} from "@mui/material";
+import { Box } from '@mui/material';
 
-import MainList from "./MainList";
+import MainList from './MainList';
 
 export default function Home({
 	auth,
 	tweets,
 	authUser,
 	toggleLike,
-	toggleBottomMenu
+	toggleBottomMenu,
 }) {
 	return (
 		<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>
