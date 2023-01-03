@@ -1,17 +1,21 @@
-import { useMemo, useState, createContext } from 'react';
-import { Box, CssBaseline } from '@mui/material';
+import { useMemo, useState, createContext, useContext } from 'react';
+import { Box, CssBaseline, Fab } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-
+import { Add as AddIcon } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 import { grey, pink, yellow } from '@mui/material/colors';
-
+import { AuthContext } from './AuthProvider';
 import Header from './Header';
 import MainNav from './MainNav';
 
 export const ColorModeContext = createContext();
 
 export default function Layout({ children }) {
+	const router = useRouter();
 	const [mode, setMode] = useState('dark');
 	const [drawerState, setDrawerState] = useState(false);
+
+	const { authStatus, authUser } = useContext(AuthContext);
 
 	const toggleDrawer = open => event => {
 		if (
@@ -88,6 +92,21 @@ export default function Layout({ children }) {
 				<Box sx={{ ml: { lg: '280px', md: '280px' } }}>
 					<Header toggleDrawer={toggleDrawer} />
 					{children}
+
+					{authStatus && router.pathname !== '/add' && (
+						<Fab
+							color='info'
+							sx={{
+								position: 'fixed',
+								bottom: '40px',
+								right: '40px',
+							}}
+							onClick={() => {
+								router.push('/add');
+							}}>
+							<AddIcon />
+						</Fab>
+					)}
 				</Box>
 			</ThemeProvider>
 		</ColorModeContext.Provider>

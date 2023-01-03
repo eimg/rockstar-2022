@@ -10,7 +10,7 @@ import {
 	AccountCircle as AccountCircleIcon,
 } from '@mui/icons-material';
 
-import { fetchNotis } from '../../utils/apiCalls';
+import { fetchNotis, getToken } from '../../utils/apiCalls';
 import { useRouter } from 'next/router';
 import { AuthContext } from './AuthProvider';
 
@@ -35,6 +35,22 @@ export default function Header({ toggleDrawer }) {
 			}
 		})();
 	}, [authStatus]);
+
+	useEffect(() => {
+		const ws = new WebSocket('ws://localhost:8000/subscribe');
+
+		ws.onopen = e => {
+			const token = getToken();
+			if (token) {
+				ws.send(token);
+			}
+		};
+
+		ws.onmessage = e => {
+			// const noti = JSON.parse(e.data);
+			setNotiCount(1);
+		};
+	}, []);
 
 	return (
 		<AppBar

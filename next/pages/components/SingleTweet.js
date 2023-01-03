@@ -1,4 +1,4 @@
-import { useRef, useContext } from 'react';
+import { useRef, useContext, useState } from 'react';
 
 import {
 	Box,
@@ -25,10 +25,11 @@ import {
 } from '@mui/icons-material';
 
 import { green } from '@mui/material/colors';
-
+import { useRouter } from 'next/router';
 import { formatRelative, parseISO } from 'date-fns';
 import { postNoti, postReply } from '../../utils/apiCalls';
 import { AuthContext } from './AuthProvider';
+import BottomMenu from './BottomMenu';
 
 export default function Tweet({
 	tweet,
@@ -36,8 +37,26 @@ export default function Tweet({
 	toggleLike,
 	toggleLikeForComment,
 }) {
+	const router = useRouter();
 	const { authUser, authStatus } = useContext(AuthContext);
 	const input = useRef();
+
+	const [bottomMenuState, setBottomMenuState] = useState(false);
+	const [currentTweet, setCurrentTweet] = useState({});
+
+	const toggleBottomMenu =
+		(open, tweet = {}) =>
+		event => {
+			if (
+				event.type === 'keydown' &&
+				(event.key === 'Tab' || event.key === 'Shift')
+			) {
+				return;
+			}
+
+			setCurrentTweet(tweet);
+			setBottomMenuState(open);
+		};
 
 	return (
 		<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>
@@ -80,7 +99,9 @@ export default function Tweet({
 							<Box sx={{ mr: 3, display: 'flex' }}>
 								<div
 									onClick={e => {
-										// navigate("/@" + tweet.user[0].handle);
+										router.push(
+											'/@/' + tweet.user[0].handle,
+										);
 										e.stopPropagation();
 									}}>
 									<Avatar
@@ -109,7 +130,9 @@ export default function Tweet({
 					</Box>
 
 					<Box>
-						<IconButton edge='end'>
+						<IconButton
+							edge='end'
+							onClick={toggleBottomMenu(true, tweet)}>
 							<MoreVertIcon color='text.fade' />
 						</IconButton>
 					</Box>
@@ -136,17 +159,19 @@ export default function Tweet({
 						elevation={0}>
 						<CardActionArea
 							onClick={() => {
-								// navigate("/tweet/" + tweet.origin_tweet[0]._id);
+								router.push(
+									'/tweet/' + tweet.origin_tweet[0]._id,
+								);
 							}}>
 							<CardContent sx={{ display: 'flex', p: 2 }}>
 								<Box sx={{ mr: 3 }}>
 									<div
 										onClick={e => {
-											// navigate(
-											//     "/@" +
-											//         tweet.origin_tweet[0]
-											//             .user[0].handle
-											// );
+											router.push(
+												'/@/' +
+													tweet.origin_tweet[0]
+														.user[0].handle,
+											);
 											e.stopPropagation();
 										}}>
 										<Avatar
@@ -238,8 +263,8 @@ export default function Tweet({
 						</IconButton>
 						<Button
 							onClick={() => {
-								// if (tweet.likes && tweet.likes.length)
-								//     navigate(`/tweet/${tweet._id}/likes`);
+								if (tweet.likes && tweet.likes.length)
+									navigate(`/likes/${tweet._id}`);
 							}}
 							sx={{
 								color: 'text.fade',
@@ -252,7 +277,8 @@ export default function Tweet({
 					<ButtonGroup variant='text'>
 						<IconButton
 							onClick={() => {
-								// if (auth) navigate(`/tweet/${tweet._id}/share`);
+								if (authStatus)
+									router.push(`/share/${tweet._id}`);
 							}}
 							size='small'
 							disableRipple={true}>
@@ -260,8 +286,8 @@ export default function Tweet({
 						</IconButton>
 						<Button
 							onClick={() => {
-								// if (tweet.shares && tweet.shares.length)
-								//     navigate(`/tweet/${tweet._id}/shares`);
+								if (tweet.shares && tweet.shares.length)
+									router.push(`/shares/${tweet._id}`);
 							}}
 							sx={{
 								color: 'text.fade',
@@ -296,15 +322,15 @@ export default function Tweet({
 					<Card variant='outlined' key={comment._id} sx={{ mb: 0 }}>
 						<CardActionArea
 							onClick={() => {
-								// navigate("/tweet/" + comment._id);
+								router.push('/tweet/' + comment._id);
 							}}>
 							<CardContent sx={{ display: 'flex', p: 2 }}>
 								<Box sx={{ mr: 3 }}>
 									<div
 										onClick={e => {
-											// navigate(
-											//     "/@" + comment.user[0].handle
-											// );
+											router.push(
+												'/@/' + comment.user[0].handle,
+											);
 											e.stopPropagation();
 										}}>
 										<Avatar
@@ -378,13 +404,13 @@ export default function Tweet({
 
 								<Button
 									onClick={() => {
-										// if (
-										//     comment.likes &&
-										//     comment.likes.length
-										// )
-										//     navigate(
-										//         `/tweet/${comment._id}/likes`
-										//     );
+										if (
+											comment.likes &&
+											comment.likes.length
+										)
+											router.push(
+												`/likes/${comment._id}`,
+											);
 									}}
 									size='small'
 									sx={{
@@ -407,10 +433,10 @@ export default function Tweet({
 										color: 'text.fade',
 									}}
 									onClick={() => {
-										// if (auth)
-										//     navigate(
-										//         `/tweet/${comment._id}/share`
-										//     );
+										if (authStatus)
+											router.push(
+												`/share/${comment._id}`,
+											);
 									}}>
 									<ShareIcon
 										sx={{
@@ -425,9 +451,9 @@ export default function Tweet({
 											comment.shares &&
 											comment.shares.length
 										) {
-											// navigate(
-											//     `/tweet/${comment._id}/shares`
-											// );
+											router.push(
+												`/shares/${comment._id}`,
+											);
 										}
 									}}
 									size='small'
@@ -452,9 +478,9 @@ export default function Tweet({
 										color: 'text.fade',
 									}}
 									onClick={() => {
-										// navigate(
-										//     `/tweet/${comment._id}#comments`
-										// );
+										router.push(
+											`/tweet/${comment._id}#comments`,
+										);
 									}}>
 									<ChatBubbleIcon
 										sx={{
@@ -465,9 +491,9 @@ export default function Tweet({
 								</IconButton>
 								<Button
 									onClick={() => {
-										// navigate(
-										//     `/tweet/${comment._id}#comments`
-										// );
+										router.push(
+											`/tweet/${comment._id}#comments`,
+										);
 									}}
 									size='small'
 									sx={{
@@ -535,6 +561,12 @@ export default function Tweet({
 					</FormControl>
 				</Box>
 			)}
+
+			<BottomMenu
+				currentTweet={currentTweet}
+				bottomMenuState={bottomMenuState}
+				toggleBottomMenu={toggleBottomMenu}
+			/>
 		</Box>
 	);
 }

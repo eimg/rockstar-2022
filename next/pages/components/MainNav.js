@@ -155,7 +155,7 @@ function MenuList({ toggleDrawer }) {
 						<ListItem>
 							<ListItemButton
 								onClick={() => {
-									router.push(`/@${authUser.handle}`);
+									router.push(`/@/${authUser.handle}`);
 								}}>
 								<ListItemIcon>
 									<PersonIcon />

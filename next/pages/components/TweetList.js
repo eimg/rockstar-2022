@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import {
 	Box,
@@ -23,15 +23,30 @@ import {
 } from '@mui/icons-material';
 
 import { formatRelative, parseISO } from 'date-fns';
-
 import { useRouter } from 'next/router';
-
 import { AuthContext } from './AuthProvider';
+import BottomMenu from './BottomMenu';
 
-export default function MainList({ tweets, toggleLike }) {
+export default function MainList({ remove, tweets, toggleLike }) {
 	const router = useRouter();
+	const [bottomMenuState, setBottomMenuState] = useState(false);
+	const [currentTweet, setCurrentTweet] = useState({});
 
 	const { authStatus, authUser } = useContext(AuthContext);
+
+	const toggleBottomMenu =
+		(open, tweet = {}) =>
+		event => {
+			if (
+				event.type === 'keydown' &&
+				(event.key === 'Tab' || event.key === 'Shift')
+			) {
+				return;
+			}
+
+			setCurrentTweet(tweet);
+			setBottomMenuState(open);
+		};
 
 	return (
 		<div>
@@ -42,7 +57,7 @@ export default function MainList({ tweets, toggleLike }) {
 				return (
 					<Card sx={{ mb: 1 }} key={tweet._id} variant='outlined'>
 						<Box sx={{ float: 'right' }}>
-							<IconButton>
+							<IconButton onClick={toggleBottomMenu(true, tweet)}>
 								<MoreVertIcon
 									sx={{
 										fontSize: '24px',
@@ -93,7 +108,7 @@ export default function MainList({ tweets, toggleLike }) {
 									<div
 										onClick={e => {
 											router.push(
-												'/@' + tweet.user[0].handle,
+												'/@/' + tweet.user[0].handle,
 											);
 											e.stopPropagation();
 										}}>
@@ -156,7 +171,7 @@ export default function MainList({ tweets, toggleLike }) {
 											<div
 												onClick={e => {
 													router.push(
-														'/@' +
+														'/@/' +
 															tweet
 																.origin_tweet[0]
 																.user[0].handle,
@@ -315,9 +330,7 @@ export default function MainList({ tweets, toggleLike }) {
 									}}
 									onClick={() => {
 										if (authStatus)
-											router.push(
-												`/shares/${tweet._id}/share`,
-											);
+											router.push(`/share/${tweet._id}`);
 									}}>
 									{tweet.shares && tweet.shares.length ? (
 										<ShareIcon
@@ -404,6 +417,13 @@ export default function MainList({ tweets, toggleLike }) {
 					</Card>
 				);
 			})}
+
+			<BottomMenu
+				remove={remove}
+				currentTweet={currentTweet}
+				bottomMenuState={bottomMenuState}
+				toggleBottomMenu={toggleBottomMenu}
+			/>
 		</div>
 	);
 }

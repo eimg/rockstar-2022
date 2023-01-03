@@ -43,33 +43,29 @@ export default function Likes() {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<main>
-				<Layout>
-					<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>
-						<List>
-							{following.map(user => {
-								return (
-									<ListItem
-										key={user._id}
-										secondaryAction={
-											<FollowButton user={user} />
-										}>
-										<ListItemAvatar>
-											<Link href={`/@${user.handle}`}>
-												<Avatar alt='Profile'></Avatar>
-											</Link>
-										</ListItemAvatar>
-										<ListItemText
-											primary={
-												user.name + ' @' + user.handle
-											}
-											secondary={user.profile}
-										/>
-									</ListItem>
-								);
-							})}
-						</List>
-					</Box>
-				</Layout>
+				<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>
+					<List>
+						{following.map(user => {
+							return (
+								<ListItem
+									key={user._id}
+									secondaryAction={
+										<FollowButton user={user} />
+									}>
+									<ListItemAvatar>
+										<Link href={`/@${user.handle}`}>
+											<Avatar alt='Profile'></Avatar>
+										</Link>
+									</ListItemAvatar>
+									<ListItemText
+										primary={user.name + ' @' + user.handle}
+										secondary={user.profile}
+									/>
+								</ListItem>
+							);
+						})}
+					</List>
+				</Box>
 			</main>
 		</>
 	);

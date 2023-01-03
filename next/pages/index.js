@@ -4,7 +4,6 @@ import { useState, useEffect, useContext } from 'react';
 
 import { putLike, fetchTweets, postNoti } from '../utils/apiCalls';
 
-import Layout from './components/Layout';
 import Latest from './components/Latest';
 import { AuthContext } from './components/AuthProvider';
 
@@ -42,6 +41,10 @@ export default function Index() {
 		})();
 	};
 
+	const remove = id => {
+		setTweets(tweets.filter(tweet => tweet._id !== id));
+	};
+
 	return (
 		<>
 			<Head>
@@ -53,9 +56,11 @@ export default function Index() {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<main>
-				<Layout>
-					<Latest tweets={tweets} toggleLike={toggleLike} />
-				</Layout>
+				<Latest
+					remove={remove}
+					tweets={tweets}
+					toggleLike={toggleLike}
+				/>
 			</main>
 		</>
 	);

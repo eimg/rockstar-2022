@@ -12,7 +12,6 @@ import { useState, useEffect } from 'react';
 import { fetchShares } from '../../utils/apiCalls';
 import { useRouter } from 'next/router';
 
-import Layout from '../components/Layout';
 import FollowButton from '../components/FollowButton';
 
 export default function Shares() {
@@ -43,38 +42,34 @@ export default function Shares() {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<main>
-				<Layout>
-					<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>
-						<List>
-							{shares.map(share => {
-								return (
-									<ListItem
-										key={share.user[0]._id}
-										secondaryAction={
-											<FollowButton
-												user={share.user[0]}
-											/>
-										}>
-										<ListItemAvatar>
-											<Link
-												href={`/@${share.user[0].handle}`}>
-												<Avatar alt='Profile'></Avatar>
-											</Link>
-										</ListItemAvatar>
-										<ListItemText
-											primary={
-												share.user[0].name +
-												' @' +
-												share.user[0].handle
-											}
-											secondary={share.body}
-										/>
-									</ListItem>
-								);
-							})}
-						</List>
-					</Box>
-				</Layout>
+				<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>
+					<List>
+						{shares.map(share => {
+							return (
+								<ListItem
+									key={share.user[0]._id}
+									secondaryAction={
+										<FollowButton user={share.user[0]} />
+									}>
+									<ListItemAvatar>
+										<Link
+											href={`/@${share.user[0].handle}`}>
+											<Avatar alt='Profile'></Avatar>
+										</Link>
+									</ListItemAvatar>
+									<ListItemText
+										primary={
+											share.user[0].name +
+											' @' +
+											share.user[0].handle
+										}
+										secondary={share.body}
+									/>
+								</ListItem>
+							);
+						})}
+					</List>
+				</Box>
 			</main>
 		</>
 	);

@@ -4,7 +4,6 @@ import { useState, useEffect, useContext } from 'react';
 
 import { putLike, fetchTweet, postNoti } from '../../utils/apiCalls';
 
-import Layout from '../components/Layout';
 import SingleTweet from '../components/SingleTweet';
 
 import { AuthContext } from '../components/AuthProvider';
@@ -64,6 +63,7 @@ export default function Tweet() {
 	const addComment = reply => {
 		tweet.comments.push(reply);
 		setTweet({ ...tweet });
+		postNoti('comment', id);
 	};
 
 	return (
@@ -77,16 +77,14 @@ export default function Tweet() {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<main>
-				<Layout>
-					{!isLoading && (
-						<SingleTweet
-							tweet={tweet}
-							toggleLike={toggleLike}
-							toggleLikeForComment={toggleLikeForComment}
-							addComment={addComment}
-						/>
-					)}
-				</Layout>
+				{!isLoading && (
+					<SingleTweet
+						tweet={tweet}
+						toggleLike={toggleLike}
+						toggleLikeForComment={toggleLikeForComment}
+						addComment={addComment}
+					/>
+				)}
 			</main>
 		</>
 	);
