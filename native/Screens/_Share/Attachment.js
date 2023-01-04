@@ -1,10 +1,10 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Avatar } from '@rneui/themed';
+import { View, Text, TouchableOpacity } from "react-native";
+import { Avatar } from "@rneui/themed";
 
-import { useTheme } from '@rneui/themed';
+import { useTheme } from "@rneui/themed";
 
-import { useNavigation } from '@react-navigation/native';
-import { formatRelative, parseISO } from 'date-fns';
+import { useNavigation } from "@react-navigation/native";
+import { formatRelative, parseISO } from "date-fns";
 
 export default function Attachment({ tweet }) {
 	const { theme } = useTheme();
@@ -20,10 +20,10 @@ export default function Attachment({ tweet }) {
 						borderRadius: 4,
 						backgroundColor: theme.colors.fade,
 					}}>
-					<View style={{ flex: 1, flexDirection: 'row' }}>
+					<View style={{ flex: 1, flexDirection: "row" }}>
 						<TouchableOpacity
 							onPress={() => {
-								navigation.navigate('User', {
+								navigation.navigate("User", {
 									handle: tweet.origin_tweet[0].user[0]
 										.handle,
 								});
@@ -42,13 +42,13 @@ export default function Attachment({ tweet }) {
 								<View
 									style={{
 										flex: 1,
-										flexDirection: 'row',
-										flexWrap: 'wrap',
+										flexDirection: "row",
+										flexWrap: "wrap",
 									}}>
 									<Text
 										style={{
 											fontSize: 12,
-											fontWeight: 'bold',
+											fontWeight: "bold",
 											marginRight: 6,
 											color: theme.colors.black,
 										}}>
@@ -58,7 +58,7 @@ export default function Attachment({ tweet }) {
 									<Text
 										style={{
 											fontSize: 12,
-											color: 'grey',
+											color: "grey",
 											marginRight: 10,
 										}}>
 										@{tweet.origin_tweet[0].user[0].handle}
@@ -81,7 +81,7 @@ export default function Attachment({ tweet }) {
 
 							<TouchableOpacity
 								onPress={() => {
-									navigation.navigate('Tweet', {
+									navigation.navigate("Tweet", {
 										_id: tweet.origin_tweet[0]._id,
 									});
 								}}>
@@ -105,9 +105,9 @@ export default function Attachment({ tweet }) {
 					style={{
 						padding: 15,
 						marginTop: 15,
-						backgroundColor: '#f5f5f5',
+						backgroundColor: "#f5f5f5",
 					}}>
-					<Text style={{ color: 'grey' }}>[ deleted post ]</Text>
+					<Text style={{ color: "grey" }}>[ deleted post ]</Text>
 				</View>
 			)}
 		</>

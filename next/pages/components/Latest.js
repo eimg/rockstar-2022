@@ -1,6 +1,6 @@
-import { Box } from '@mui/material';
+import { Box } from "@mui/material";
 
-import TweetList from './TweetList';
+import TweetList from "./TweetList";
 
 export default function Latest({ remove, tweets, toggleLike }) {
 	return (

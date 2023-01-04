@@ -1,14 +1,14 @@
-import Head from 'next/head';
+import Head from "next/head";
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from "react";
 
-import { putLike, fetchTweet, postNoti } from '../../utils/apiCalls';
+import { putLike, fetchTweet, postNoti } from "../../utils/apiCalls";
 
-import SingleTweet from '../components/SingleTweet';
+import SingleTweet from "../components/SingleTweet";
 
-import { AuthContext } from '../components/AuthProvider';
+import { AuthContext } from "../components/AuthProvider";
 
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 export default function Tweet() {
 	const router = useRouter();
@@ -42,7 +42,7 @@ export default function Tweet() {
 			// if (!result) return navigate("/error");
 
 			setTweet(result);
-			postNoti('like', id);
+			postNoti("like", id);
 		})();
 	};
 
@@ -63,7 +63,7 @@ export default function Tweet() {
 	const addComment = reply => {
 		tweet.comments.push(reply);
 		setTweet({ ...tweet });
-		postNoti('comment', id);
+		postNoti("comment", id);
 	};
 
 	return (
@@ -71,10 +71,10 @@ export default function Tweet() {
 			<Head>
 				<title>Next Twitter</title>
 				<meta
-					name='viewport'
-					content='width=device-width, initial-scale=1'
+					name="viewport"
+					content="width=device-width, initial-scale=1"
 				/>
-				<link rel='icon' href='/favicon.ico' />
+				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<main>
 				{!isLoading && (

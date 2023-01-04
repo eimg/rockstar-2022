@@ -1,4 +1,4 @@
-import { Box } from '@mui/system';
+import { Box } from "@mui/system";
 
 import {
 	Avatar,
@@ -7,15 +7,15 @@ import {
 	Card,
 	CardContent,
 	Typography,
-} from '@mui/material';
+} from "@mui/material";
 
-import { useRef, useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { formatRelative, parseISO } from 'date-fns';
+import { useRef, useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { formatRelative, parseISO } from "date-fns";
 
-import { fetchTweet, postNoti, postShare } from '../apiCalls';
+import { fetchTweet, postNoti, postShare } from "../apiCalls";
 
-import Loading from '../Utils/Loading';
+import Loading from "../Utils/Loading";
 
 export default function AddShare({ setSnackbarOpen }) {
 	const navigate = useNavigate();
@@ -29,7 +29,7 @@ export default function AddShare({ setSnackbarOpen }) {
 	useEffect(() => {
 		(async () => {
 			let tweet = await fetchTweet(id);
-			if (!tweet) return navigate('/error');
+			if (!tweet) return navigate("/error");
 
 			setTweet(tweet);
 			setIsLoading(false);
@@ -42,27 +42,27 @@ export default function AddShare({ setSnackbarOpen }) {
 		<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>
 			<Box
 				sx={{
-					display: 'flex',
+					display: "flex",
 					mb: 2,
-					justifyContent: 'space-between',
+					justifyContent: "space-between",
 				}}>
-				<Avatar alt='Profile' />
+				<Avatar alt="Profile" />
 
 				<Button
-					size='small'
-					variant='contained'
-					color='success'
+					size="small"
+					variant="contained"
+					color="success"
 					sx={{ borderRadius: 5 }}
 					onClick={() => {
 						let newTweet = input.current.value;
 
 						(async () => {
 							let result = await postShare(id, newTweet);
-							if (!result) return navigate('/error');
+							if (!result) return navigate("/error");
 
-							postNoti('share', id);
+							postNoti("share", id);
 
-							navigate('/');
+							navigate("/");
 							setSnackbarOpen(true);
 						})();
 					}}>
@@ -70,22 +70,22 @@ export default function AddShare({ setSnackbarOpen }) {
 				</Button>
 			</Box>
 
-			<Box sx={{ p: 2, border: 1, borderColor: 'text.fade' }}>
+			<Box sx={{ p: 2, border: 1, borderColor: "text.fade" }}>
 				<Input
 					multiline
 					fullWidth
 					minRows={4}
 					inputRef={input}
-					placeholder='Enter your remark'
-					sx={{ fontSize: '16px', py: 2 }}
+					placeholder="Enter your remark"
+					sx={{ fontSize: "16px", py: 2 }}
 				/>
 			</Box>
 
 			<Card sx={{ p: 2, mt: 4 }}>
-				<CardContent sx={{ display: 'flex', p: 2 }}>
+				<CardContent sx={{ display: "flex", p: 2 }}>
 					<Box sx={{ mr: 3 }}>
 						<Avatar
-							alt='Profile Picture'
+							alt="Profile Picture"
 							sx={{ width: 48, height: 48 }}
 						/>
 					</Box>
@@ -93,21 +93,21 @@ export default function AddShare({ setSnackbarOpen }) {
 					<Box>
 						<Typography
 							sx={{ mr: 1 }}
-							color='text.secondary'
-							component='span'>
+							color="text.secondary"
+							component="span">
 							<b>{tweet.user[0].name}</b>
 						</Typography>
 
 						<Typography
-							component='span'
-							sx={{ color: 'text.fade', mr: 1 }}>
+							component="span"
+							sx={{ color: "text.fade", mr: 1 }}>
 							@{tweet.user[0].handle}
 						</Typography>
 
 						<Typography
-							component='span'
-							variant='body2'
-							sx={{ color: 'text.fade' }}>
+							component="span"
+							variant="body2"
+							sx={{ color: "text.fade" }}>
 							{formatRelative(
 								parseISO(tweet.created),
 								new Date(),
@@ -115,9 +115,9 @@ export default function AddShare({ setSnackbarOpen }) {
 						</Typography>
 
 						<Typography
-							variant='subtitle1'
-							color='text.fade'
-							sx={{ fontSize: '16px' }}>
+							variant="subtitle1"
+							color="text.fade"
+							sx={{ fontSize: "16px" }}>
 							{tweet.body}
 						</Typography>
 					</Box>

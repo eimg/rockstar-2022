@@ -1,18 +1,18 @@
-import { useEffect, useState, useCallback } from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { useEffect, useState, useCallback } from "react";
+import { View, ScrollView, TouchableOpacity } from "react-native";
 
-import { Card, Avatar, Button, Text, useTheme } from '@rneui/themed';
+import { Card, Avatar, Button, Text, useTheme } from "@rneui/themed";
 
-import Ionicons from '@expo/vector-icons/Ionicons';
-import Toast from 'react-native-root-toast';
+import Ionicons from "@expo/vector-icons/Ionicons";
+import Toast from "react-native-root-toast";
 
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { formatRelative, parseISO } from 'date-fns';
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { formatRelative, parseISO } from "date-fns";
 
-import { fetchTweets, putLike, postNoti, deleteTweet } from '../../apiCalls';
+import { fetchTweets, putLike, postNoti, deleteTweet } from "../../apiCalls";
 
-import ActionButtons from '../_Share/ActionButtons';
-import Attachment from '../_Share/Attachment';
+import ActionButtons from "../_Share/ActionButtons";
+import Attachment from "../_Share/Attachment";
 
 export default function Latest({ auth, authUser }) {
 	const navigation = useNavigation();
@@ -57,7 +57,7 @@ export default function Latest({ auth, authUser }) {
 			);
 
 			setTweets(updatedTweets);
-			postNoti('like', id);
+			postNoti("like", id);
 		})();
 	};
 
@@ -69,17 +69,17 @@ export default function Latest({ auth, authUser }) {
 						<Card>
 							<View
 								style={{
-									flexDirection: 'row',
-									justifyContent: 'space-between',
+									flexDirection: "row",
+									justifyContent: "space-between",
 								}}>
 								<View
 									style={{
-										flexDirection: 'row',
+										flexDirection: "row",
 										flexShrink: 1,
 									}}>
 									<TouchableOpacity
 										onPress={() => {
-											navigation.navigate('User', {
+											navigation.navigate("User", {
 												handle: tweet.user[0].handle,
 											});
 										}}>
@@ -101,14 +101,14 @@ export default function Latest({ auth, authUser }) {
 										}}>
 										<View
 											style={{
-												flexDirection: 'row',
-												flexWrap: 'wrap',
+												flexDirection: "row",
+												flexWrap: "wrap",
 												marginTop: 5,
 											}}>
 											<Text
 												style={{
 													fontSize: 14,
-													fontWeight: 'bold',
+													fontWeight: "bold",
 													marginRight: 6,
 												}}>
 												{tweet.user[0].name}
@@ -117,7 +117,7 @@ export default function Latest({ auth, authUser }) {
 											<Text
 												style={{
 													fontSize: 14,
-													color: 'grey',
+													color: "grey",
 													marginRight: 10,
 												}}>
 												@{tweet.user[0].handle}
@@ -138,7 +138,7 @@ export default function Latest({ auth, authUser }) {
 
 										<TouchableOpacity
 											onPress={() => {
-												navigation.navigate('Tweet', {
+												navigation.navigate("Tweet", {
 													_id: tweet._id,
 												});
 											}}>
@@ -155,8 +155,8 @@ export default function Latest({ auth, authUser }) {
 
 								{tweet.owner === authUser._id && (
 									<Button
-										size='sm'
-										type='clear'
+										size="sm"
+										type="clear"
 										buttonStyle={{ padding: 0 }}
 										onPress={() => {
 											deleteTweet(tweet._id);
@@ -166,14 +166,14 @@ export default function Latest({ auth, authUser }) {
 												),
 											);
 
-											Toast.show('A tweet deleted', {
+											Toast.show("A tweet deleted", {
 												duration: Toast.durations.LONG,
 											});
 										}}>
 										<Ionicons
-											name='close-outline'
+											name="close-outline"
 											size={24}
-											color='grey'
+											color="grey"
 										/>
 									</Button>
 								)}

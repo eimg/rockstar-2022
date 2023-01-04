@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 
 import {
 	Box,
@@ -13,7 +13,7 @@ import {
 	ListItemText,
 	ListItemButton,
 	useTheme,
-} from '@mui/material';
+} from "@mui/material";
 
 import {
 	Feed as FeedIcon,
@@ -24,14 +24,14 @@ import {
 	LightMode as LightModeIcon,
 	PersonAddAlt as PersonAddAltIcon,
 	SwitchAccount as SwitchAccountIcon,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
 
-import { pink } from '@mui/material/colors';
-import { ColorModeContext } from './Layout';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
+import { pink } from "@mui/material/colors";
+import { ColorModeContext } from "./Layout";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
-import { AuthContext } from './AuthProvider';
+import { AuthContext } from "./AuthProvider";
 
 function MenuList({ toggleDrawer }) {
 	const router = useRouter();
@@ -51,12 +51,12 @@ function MenuList({ toggleDrawer }) {
 					p: 3,
 					mb: 2,
 					minHeight: 150,
-					bgcolor: 'banner.background',
+					bgcolor: "banner.background",
 				}}>
 				{authStatus && (
 					<>
 						<Avatar
-							alt='Profile'
+							alt="Profile"
 							sx={{
 								mb: 3,
 								width: 64,
@@ -70,39 +70,39 @@ function MenuList({ toggleDrawer }) {
 						</Typography>
 
 						<Typography
-							variant='body2'
-							sx={{ mb: 2, color: 'text.fade' }}>
+							variant="body2"
+							sx={{ mb: 2, color: "text.fade" }}>
 							@{authUser && authUser.handle}
 						</Typography>
 
 						<Typography
-							component='span'
-							sx={{ mr: 3, fontSize: 14, color: 'text.fade' }}>
+							component="span"
+							sx={{ mr: 3, fontSize: 14, color: "text.fade" }}>
 							<Link
 								href={`/following/${authUser.handle}`}
 								style={{
 									color: pink[400],
-									textDecoration: 'none',
+									textDecoration: "none",
 								}}>
 								{(authUser.following &&
 									authUser.following.length) ||
-									0}{' '}
+									0}{" "}
 								Following
 							</Link>
 						</Typography>
 
 						<Typography
-							component='span'
-							sx={{ fontSize: 14, color: 'text.fade' }}>
+							component="span"
+							sx={{ fontSize: 14, color: "text.fade" }}>
 							<Link
 								href={`/followers/${authUser.handle}`}
 								style={{
 									color: pink[400],
-									textDecoration: 'none',
+									textDecoration: "none",
 								}}>
 								{(authUser.followers &&
 									authUser.followers.length) ||
-									0}{' '}
+									0}{" "}
 								Followers
 							</Link>
 						</Typography>
@@ -114,12 +114,12 @@ function MenuList({ toggleDrawer }) {
 				<ListItem>
 					<ListItemButton
 						onClick={() => {
-							router.push('/');
+							router.push("/");
 						}}>
 						<ListItemIcon>
 							<FeedIcon />
 						</ListItemIcon>
-						<ListItemText primary='Newsfeed' />
+						<ListItemText primary="Newsfeed" />
 					</ListItemButton>
 				</ListItem>
 
@@ -128,23 +128,23 @@ function MenuList({ toggleDrawer }) {
 						<ListItem>
 							<ListItemButton
 								onClick={() => {
-									router.push('/register');
+									router.push("/register");
 								}}>
 								<ListItemIcon>
 									<PersonAddAltIcon />
 								</ListItemIcon>
-								<ListItemText primary='Register' />
+								<ListItemText primary="Register" />
 							</ListItemButton>
 						</ListItem>
 						<ListItem>
 							<ListItemButton
 								onClick={() => {
-									router.push('/login');
+									router.push("/login");
 								}}>
 								<ListItemIcon>
 									<LoginIcon />
 								</ListItemIcon>
-								<ListItemText primary='Login' />
+								<ListItemText primary="Login" />
 							</ListItemButton>
 						</ListItem>
 					</>
@@ -160,44 +160,44 @@ function MenuList({ toggleDrawer }) {
 								<ListItemIcon>
 									<PersonIcon />
 								</ListItemIcon>
-								<ListItemText primary='Profile' />
+								<ListItemText primary="Profile" />
 							</ListItemButton>
 						</ListItem>
 						<ListItem>
 							<ListItemButton
 								onClick={() => {
-									router.push('/register');
+									router.push("/register");
 								}}>
 								<ListItemIcon>
 									<PersonAddAltIcon />
 								</ListItemIcon>
-								<ListItemText primary='Add Account' />
+								<ListItemText primary="Add Account" />
 							</ListItemButton>
 						</ListItem>
 						<ListItem>
 							<ListItemButton
 								onClick={() => {
-									router.push('/login');
+									router.push("/login");
 								}}>
 								<ListItemIcon>
 									<SwitchAccountIcon />
 								</ListItemIcon>
-								<ListItemText primary='Switch Account' />
+								<ListItemText primary="Switch Account" />
 							</ListItemButton>
 						</ListItem>
 						<ListItem>
 							<ListItemButton
 								sx={{ color: pink[400] }}
 								onClick={() => {
-									localStorage.removeItem('token');
+									localStorage.removeItem("token");
 									setAuthStatus(false);
 									setAuthUser({});
-									router.push('/');
+									router.push("/");
 								}}>
 								<ListItemIcon>
 									<LogoutIcon />
 								</ListItemIcon>
-								<ListItemText primary='Logout' />
+								<ListItemText primary="Logout" />
 							</ListItemButton>
 						</ListItem>
 					</>
@@ -214,21 +214,21 @@ export default function Nav({ drawerState, toggleDrawer }) {
 	return (
 		<>
 			<Drawer
-				anchor='left'
+				anchor="left"
 				open={drawerState}
 				onClose={toggleDrawer(false)}
 				sx={{
-					display: { md: 'none', sm: 'block', xs: 'block' },
+					display: { md: "none", sm: "block", xs: "block" },
 				}}>
 				<MenuList toggleDrawer={toggleDrawer} />
 
 				<Divider />
 				<IconButton
-					color='inherit'
+					color="inherit"
 					disableRipple={true}
 					sx={{ ml: 1, mt: 2 }}
 					onClick={colorMode.toggleColorMode}>
-					{theme.palette.mode === 'dark' ? (
+					{theme.palette.mode === "dark" ? (
 						<DarkModeIcon />
 					) : (
 						<LightModeIcon />
@@ -238,22 +238,22 @@ export default function Nav({ drawerState, toggleDrawer }) {
 
 			<Drawer
 				open={true}
-				anchor='left'
-				variant='persistent'
+				anchor="left"
+				variant="persistent"
 				onClose={toggleDrawer(false)}
 				sx={{
-					display: { md: 'block', sm: 'none', xs: 'none' },
+					display: { md: "block", sm: "none", xs: "none" },
 				}}>
 				<MenuList toggleDrawer={toggleDrawer} />
 
 				<Divider />
 
 				<IconButton
-					color='inherit'
+					color="inherit"
 					disableRipple={true}
 					sx={{ ml: 1, mt: 2 }}
 					onClick={colorMode.toggleColorMode}>
-					{theme.palette.mode === 'dark' ? (
+					{theme.palette.mode === "dark" ? (
 						<DarkModeIcon />
 					) : (
 						<LightModeIcon />

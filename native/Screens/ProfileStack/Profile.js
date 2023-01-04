@@ -1,15 +1,15 @@
-import { ScrollView, View, TouchableOpacity } from 'react-native';
-import { Avatar, Button, Text, useTheme } from '@rneui/themed';
+import { ScrollView, View, TouchableOpacity } from "react-native";
+import { Avatar, Button, Text, useTheme } from "@rneui/themed";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Logo from '../_Share/Logo';
-import EditProfile from './EditProfile';
-import UserContents from '../_Share/UserContents';
-import ModeSwitcher from '../_Share/ModeSwitcher';
+import Logo from "../_Share/Logo";
+import EditProfile from "./EditProfile";
+import UserContents from "../_Share/UserContents";
+import ModeSwitcher from "../_Share/ModeSwitcher";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,12 +26,12 @@ export default function ProfileStack({
 			<Stack.Navigator
 				screenOptions={{
 					headerTitle: () => <Logo />,
-					headerTitleAlign: 'center',
+					headerTitleAlign: "center",
 					headerRight: () => (
 						<ModeSwitcher mode={mode} setMode={setMode} />
 					),
 				}}>
-				<Stack.Screen name='MainProfile'>
+				<Stack.Screen name="MainProfile">
 					{() => (
 						<Profile
 							auth={auth}
@@ -41,7 +41,7 @@ export default function ProfileStack({
 						/>
 					)}
 				</Stack.Screen>
-				<Stack.Screen name='EditProfile'>
+				<Stack.Screen name="EditProfile">
 					{() => (
 						<EditProfile
 							authUser={authUser}
@@ -62,8 +62,8 @@ function Profile({ auth, setAuth, authUser, setAuthUser }) {
 		<View
 			style={{
 				flex: 1,
-				alignItems: 'stretch',
-				justifyContent: 'center',
+				alignItems: "stretch",
+				justifyContent: "center",
 			}}>
 			<ScrollView>
 				<View
@@ -74,8 +74,8 @@ function Profile({ auth, setAuth, authUser, setAuthUser }) {
 
 				<View
 					style={{
-						flexDirection: 'row',
-						justifyContent: 'space-between',
+						flexDirection: "row",
+						justifyContent: "space-between",
 						marginHorizontal: 20,
 					}}>
 					<View style={{ marginTop: -50 }}>
@@ -88,9 +88,9 @@ function Profile({ auth, setAuth, authUser, setAuthUser }) {
 							}}
 						/>
 						<View style={{ marginTop: 10, marginLeft: 10 }}>
-							<Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+							<Text style={{ fontWeight: "bold", fontSize: 20 }}>
 								{authUser.name}
-								<Text style={{ marginLeft: 6, color: 'grey' }}>
+								<Text style={{ marginLeft: 6, color: "grey" }}>
 									@{authUser.handle}
 								</Text>
 							</Text>
@@ -103,11 +103,11 @@ function Profile({ auth, setAuth, authUser, setAuthUser }) {
 							style={{
 								marginLeft: 10,
 								marginTop: 15,
-								flexDirection: 'row',
+								flexDirection: "row",
 							}}>
 							<TouchableOpacity
 								onPress={() => {
-									navigation.navigate('Following', {
+									navigation.navigate("Following", {
 										handle: authUser.handle,
 									});
 								}}>
@@ -121,7 +121,7 @@ function Profile({ auth, setAuth, authUser, setAuthUser }) {
 							</TouchableOpacity>
 							<TouchableOpacity
 								onPress={() => {
-									navigation.navigate('Followers', {
+									navigation.navigate("Followers", {
 										handle: authUser.handle,
 									});
 								}}>
@@ -142,10 +142,10 @@ function Profile({ auth, setAuth, authUser, setAuthUser }) {
 							marginTop: 10,
 						}}>
 						<Button
-							type='outline'
+							type="outline"
 							style={{ marginRight: 10 }}
 							onPress={() => {
-								navigation.navigate('EditProfile');
+								navigation.navigate("EditProfile");
 							}}>
 							Edit Profile
 						</Button>
@@ -154,7 +154,7 @@ function Profile({ auth, setAuth, authUser, setAuthUser }) {
 								color={theme.colors.error}
 								onPress={() => {
 									(async () => {
-										AsyncStorage.removeItem('token');
+										AsyncStorage.removeItem("token");
 									})();
 
 									setAuth(false);

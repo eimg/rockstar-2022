@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { useEffect, useState } from "react";
+import { Text, View, ScrollView, TouchableOpacity } from "react-native";
 
-import { ListItem, Avatar, Button } from '@rneui/themed';
+import { ListItem, Avatar, Button } from "@rneui/themed";
 
-import Ionicons from '@expo/vector-icons/Ionicons';
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { formatRelative, parseISO } from 'date-fns';
-import { useNavigation } from '@react-navigation/native';
+import { formatRelative, parseISO } from "date-fns";
+import { useNavigation } from "@react-navigation/native";
 
-import { fetchNotis, markAllNotisRead, markNotiRead } from '../apiCalls';
+import { fetchNotis, markAllNotisRead, markNotiRead } from "../apiCalls";
 
 export default function Notis({ setNotiCount }) {
 	const navigation = useNavigation();
@@ -31,7 +31,7 @@ export default function Notis({ setNotiCount }) {
 					paddingTop: 20,
 					paddingLeft: 20,
 					paddingRight: 20,
-					alignItems: 'flex-end',
+					alignItems: "flex-end",
 				}}>
 				<Button
 					onPress={() => {
@@ -54,8 +54,8 @@ export default function Notis({ setNotiCount }) {
 				style={{
 					flex: 1,
 					padding: 20,
-					alignItems: 'stretch',
-					justifyContent: 'flex-start',
+					alignItems: "stretch",
+					justifyContent: "flex-start",
 				}}>
 				{notis.map(noti => {
 					return (
@@ -73,30 +73,30 @@ export default function Notis({ setNotiCount }) {
 									result.filter(noti => !noti.read).length,
 								);
 
-								navigation.navigate('Tweet', {
+								navigation.navigate("Tweet", {
 									_id: noti.target,
 								});
 							}}>
 							<ListItem
 								bottomDivider
 								style={{ opacity: noti.read ? 0.4 : 1 }}>
-								{noti.type === 'comment' ? (
+								{noti.type === "comment" ? (
 									<Ionicons
 										size={16}
-										name='chatbubble'
-										style={{ color: 'green' }}
+										name="chatbubble"
+										style={{ color: "green" }}
 									/>
-								) : noti.type === 'share' ? (
+								) : noti.type === "share" ? (
 									<Ionicons
 										size={16}
-										name='share-social'
-										style={{ color: '#059' }}
+										name="share-social"
+										style={{ color: "#059" }}
 									/>
 								) : (
 									<Ionicons
 										size={16}
-										name='heart'
-										style={{ color: 'red' }}
+										name="heart"
+										style={{ color: "red" }}
 									/>
 								)}
 
@@ -104,7 +104,7 @@ export default function Notis({ setNotiCount }) {
 									rounded
 									size={32}
 									title={noti.user[0].name[0].toUpperCase()}
-									containerStyle={{ backgroundColor: '#05a' }}
+									containerStyle={{ backgroundColor: "#05a" }}
 								/>
 								<ListItem.Content>
 									<ListItem.Title>
@@ -113,13 +113,13 @@ export default function Notis({ setNotiCount }) {
 										<Text
 											style={{
 												marginLeft: 5,
-												fontWeight: 'normal',
+												fontWeight: "normal",
 											}}>
 											{noti.msg}
 										</Text>
 									</ListItem.Title>
 									<ListItem.Subtitle>
-										<Text style={{ color: 'grey' }}>
+										<Text style={{ color: "grey" }}>
 											{formatRelative(
 												parseISO(noti.created),
 												new Date(),

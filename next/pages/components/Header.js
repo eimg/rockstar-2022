@@ -1,6 +1,6 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from "react";
 
-import { AppBar, Toolbar, IconButton, Badge } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Badge } from "@mui/material";
 
 import {
 	Hub as HubIcon,
@@ -8,13 +8,13 @@ import {
 	PersonSearch as PersonSearchIcon,
 	Notifications as NotificationsIcon,
 	AccountCircle as AccountCircleIcon,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
 
-import { fetchNotis, getToken } from '../../utils/apiCalls';
-import { useRouter } from 'next/router';
-import { AuthContext } from './AuthProvider';
+import { fetchNotis, getToken } from "../../utils/apiCalls";
+import { useRouter } from "next/router";
+import { AuthContext } from "./AuthProvider";
 
-import Search from './Search';
+import Search from "./Search";
 
 export default function Header({ toggleDrawer }) {
 	const router = useRouter();
@@ -37,7 +37,7 @@ export default function Header({ toggleDrawer }) {
 	}, [authStatus]);
 
 	useEffect(() => {
-		const ws = new WebSocket('ws://localhost:8000/subscribe');
+		const ws = new WebSocket("ws://localhost:8000/subscribe");
 
 		ws.onopen = e => {
 			const token = getToken();
@@ -55,23 +55,23 @@ export default function Header({ toggleDrawer }) {
 	return (
 		<AppBar
 			elevation={1}
-			position='static'
-			sx={{ bgcolor: 'appbar.background' }}>
+			position="static"
+			sx={{ bgcolor: "appbar.background" }}>
 			<Toolbar>
-				{path === '/' ? (
+				{path === "/" ? (
 					<IconButton
-						size='large'
-						edge='start'
-						color='inherit'
-						sx={{ mr: 2, display: { md: 'none' } }}
+						size="large"
+						edge="start"
+						color="inherit"
+						sx={{ mr: 2, display: { md: "none" } }}
 						onClick={toggleDrawer(true)}>
 						<AccountCircleIcon />
 					</IconButton>
 				) : (
 					<IconButton
-						size='large'
-						edge='start'
-						color='inherit'
+						size="large"
+						edge="start"
+						color="inherit"
 						onClick={() => {
 							router.back();
 						}}>
@@ -81,11 +81,11 @@ export default function Header({ toggleDrawer }) {
 
 				<IconButton
 					disableRipple={true}
-					sx={{ flexGrow: 1, textAlign: 'center' }}
+					sx={{ flexGrow: 1, textAlign: "center" }}
 					onClick={() => {
-						router.push('/');
+						router.push("/");
 					}}>
-					<HubIcon sx={{ color: 'logo.color', fontSize: 38 }} />
+					<HubIcon sx={{ color: "logo.color", fontSize: 38 }} />
 				</IconButton>
 
 				<IconButton
@@ -98,15 +98,15 @@ export default function Header({ toggleDrawer }) {
 
 				{authStatus && (
 					<IconButton
-						color='inherit'
+						color="inherit"
 						onClick={() => {
-							router.push('/notis');
+							router.push("/notis");
 						}}>
 						{notiCount > 0 ? (
 							<Badge
-								variant='dot'
-								color='noti'
-								overlap='circular'>
+								variant="dot"
+								color="noti"
+								overlap="circular">
 								<NotificationsIcon />
 							</Badge>
 						) : (

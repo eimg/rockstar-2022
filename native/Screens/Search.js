@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { useEffect, useState } from "react";
+import { View } from "react-native";
 
-import { Input } from '@rneui/themed';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Input } from "@rneui/themed";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { fetchUsers } from '../apiCalls';
-import UserList from './_Share/UserList';
+import { fetchUsers } from "../apiCalls";
+import UserList from "./_Share/UserList";
 
 export default function Search({ authUser, setAuthUser }) {
 	const [users, setUsers] = useState([]);
-	const [search, setSearch] = useState('');
+	const [search, setSearch] = useState("");
 
 	useEffect(() => {
 		(async () => {
@@ -24,12 +24,12 @@ export default function Search({ authUser, setAuthUser }) {
 		<View
 			style={{
 				flex: 1,
-				alignItems: 'stretch',
-				justifyContent: 'flex-start',
+				alignItems: "stretch",
+				justifyContent: "flex-start",
 			}}>
 			<Input
 				value={search}
-				placeholder='User search'
+				placeholder="User search"
 				onChangeText={setSearch}
 				onChange={() => {
 					(async () => {
@@ -40,7 +40,7 @@ export default function Search({ authUser, setAuthUser }) {
 					})();
 				}}
 				leftIcon={
-					<Ionicons name='person-outline' size={24} color='grey' />
+					<Ionicons name="person-outline" size={24} color="grey" />
 				}
 			/>
 

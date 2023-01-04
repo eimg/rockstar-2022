@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from 'react';
-import { View, TouchableOpacity, ScrollView } from 'react-native';
+import { useEffect, useState, useCallback } from "react";
+import { View, TouchableOpacity, ScrollView } from "react-native";
 
 import {
 	Text,
@@ -8,13 +8,13 @@ import {
 	Button,
 	ButtonGroup,
 	useTheme,
-} from '@rneui/themed';
+} from "@rneui/themed";
 
-import Ionicons from '@expo/vector-icons/Ionicons';
-import Toast from 'react-native-root-toast';
+import Ionicons from "@expo/vector-icons/Ionicons";
+import Toast from "react-native-root-toast";
 
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { formatRelative, parseISO } from 'date-fns';
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { formatRelative, parseISO } from "date-fns";
 
 import {
 	putLike,
@@ -23,10 +23,10 @@ import {
 	fetchCommentsByHandle,
 	fetchLikedTweetsByHandle,
 	deleteTweet,
-} from '../../apiCalls';
+} from "../../apiCalls";
 
-import Attachment from './Attachment';
-import ActionButtons from './ActionButtons';
+import Attachment from "./Attachment";
+import ActionButtons from "./ActionButtons";
 
 export default function UserContents({ authUser, handle, auth }) {
 	const [selectedButton, setSelectedButton] = useState(0);
@@ -80,7 +80,7 @@ export default function UserContents({ authUser, handle, auth }) {
 			);
 
 			setTweets(updatedTweets);
-			postNoti('like', id);
+			postNoti("like", id);
 		})();
 	};
 
@@ -88,7 +88,7 @@ export default function UserContents({ authUser, handle, auth }) {
 		deleteTweet(tweet._id);
 		setTweets(tweets.filter(t => t._id !== tweet._id));
 
-		Toast.show('A tweet deleted', {
+		Toast.show("A tweet deleted", {
 			duration: Toast.durations.LONG,
 		});
 	};
@@ -97,7 +97,7 @@ export default function UserContents({ authUser, handle, auth }) {
 		deleteTweet(tweet._id);
 		setComments(tweets.filter(t => t._id !== tweet._id));
 
-		Toast.show('A tweet deleted', {
+		Toast.show("A tweet deleted", {
 			duration: Toast.durations.LONG,
 		});
 	};
@@ -106,7 +106,7 @@ export default function UserContents({ authUser, handle, auth }) {
 		deleteTweet(tweet._id);
 		setLikedTweets(tweets.filter(t => t._id !== tweet._id));
 
-		Toast.show('A tweet deleted', {
+		Toast.show("A tweet deleted", {
 			duration: Toast.durations.LONG,
 		});
 	};
@@ -115,14 +115,14 @@ export default function UserContents({ authUser, handle, auth }) {
 		<View>
 			<ButtonGroup
 				selectedIndex={selectedButton}
-				buttons={['Recent', 'Comments', 'Likes']}
+				buttons={["Recent", "Comments", "Likes"]}
 				onPress={value => {
 					setSelectedButton(value);
 				}}
 				containerStyle={{
 					marginHorizontal: 15,
 					marginTop: 20,
-					borderColor: 'grey',
+					borderColor: "grey",
 				}}
 				buttonStyle={{ backgroundColor: theme.colors.background }}
 			/>
@@ -172,14 +172,14 @@ function TweetList({ authUser, auth, tweets, toggleLike, show, remove }) {
 					<Card>
 						<View
 							style={{
-								flexDirection: 'row',
-								justifyContent: 'space-between',
+								flexDirection: "row",
+								justifyContent: "space-between",
 							}}>
 							<View
-								style={{ flexDirection: 'row', flexShrink: 1 }}>
+								style={{ flexDirection: "row", flexShrink: 1 }}>
 								<TouchableOpacity
 									onPress={() => {
-										navigation.navigate('User', {
+										navigation.navigate("User", {
 											handle: tweet.user[0].handle,
 										});
 									}}>
@@ -188,7 +188,7 @@ function TweetList({ authUser, auth, tweets, toggleLike, show, remove }) {
 										size={48}
 										title={tweet.user[0].name[0].toUpperCase()}
 										containerStyle={{
-											backgroundColor: '#0a5',
+											backgroundColor: "#0a5",
 										}}
 									/>
 								</TouchableOpacity>
@@ -196,14 +196,14 @@ function TweetList({ authUser, auth, tweets, toggleLike, show, remove }) {
 								<View style={{ marginLeft: 10, flexShrink: 1 }}>
 									<View
 										style={{
-											flexDirection: 'row',
-											flexWrap: 'wrap',
+											flexDirection: "row",
+											flexWrap: "wrap",
 											marginTop: 5,
 										}}>
 										<Text
 											style={{
 												fontSize: 14,
-												fontWeight: 'bold',
+												fontWeight: "bold",
 												marginRight: 6,
 											}}>
 											{tweet.user[0].name}
@@ -212,7 +212,7 @@ function TweetList({ authUser, auth, tweets, toggleLike, show, remove }) {
 										<Text
 											style={{
 												fontSize: 14,
-												color: 'grey',
+												color: "grey",
 												marginRight: 10,
 											}}>
 											@{tweet.user[0].handle}
@@ -221,7 +221,7 @@ function TweetList({ authUser, auth, tweets, toggleLike, show, remove }) {
 										<Text
 											style={{
 												fontSize: 14,
-												color: '#5ad',
+												color: "#5ad",
 											}}>
 											{formatRelative(
 												parseISO(tweet.created),
@@ -232,7 +232,7 @@ function TweetList({ authUser, auth, tweets, toggleLike, show, remove }) {
 
 									<TouchableOpacity
 										onPress={() => {
-											navigation.navigate('Tweet', {
+											navigation.navigate("Tweet", {
 												_id: tweet._id,
 											});
 										}}>
@@ -249,16 +249,16 @@ function TweetList({ authUser, auth, tweets, toggleLike, show, remove }) {
 
 							{tweet.owner === authUser._id && (
 								<Button
-									size='sm'
-									type='clear'
+									size="sm"
+									type="clear"
 									buttonStyle={{ padding: 0 }}
 									onPress={() => {
 										remove(tweet, tweets);
 									}}>
 									<Ionicons
-										name='close-outline'
+										name="close-outline"
 										size={24}
-										color='grey'
+										color="grey"
 									/>
 								</Button>
 							)}

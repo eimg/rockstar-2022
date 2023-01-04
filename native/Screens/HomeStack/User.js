@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { ScrollView, View, TouchableOpacity } from 'react-native';
+import { useEffect, useState } from "react";
+import { ScrollView, View, TouchableOpacity } from "react-native";
 
-import { Text, Avatar, useTheme } from '@rneui/themed';
+import { Text, Avatar, useTheme } from "@rneui/themed";
 
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-import { fetchUserByHandle } from '../../apiCalls';
-import UserContents from '../_Share/UserContents';
-import FollowButton from '../_Share/FollowButton';
+import { fetchUserByHandle } from "../../apiCalls";
+import UserContents from "../_Share/UserContents";
+import FollowButton from "../_Share/FollowButton";
 
 export default function User({ authUser, auth, setAuthUser }) {
 	const navigation = useNavigation();
@@ -36,8 +36,8 @@ export default function User({ authUser, auth, setAuthUser }) {
 			<View
 				style={{
 					flex: 1,
-					alignItems: 'stretch',
-					justifyContent: 'center',
+					alignItems: "stretch",
+					justifyContent: "center",
 				}}>
 				<ScrollView>
 					<View
@@ -48,8 +48,8 @@ export default function User({ authUser, auth, setAuthUser }) {
 
 					<View
 						style={{
-							flexDirection: 'row',
-							justifyContent: 'space-between',
+							flexDirection: "row",
+							justifyContent: "space-between",
 							marginHorizontal: 20,
 						}}>
 						<View style={{ marginTop: -50 }}>
@@ -57,19 +57,19 @@ export default function User({ authUser, auth, setAuthUser }) {
 								rounded
 								size={98}
 								title={user.name[0].toUpperCase()}
-								containerStyle={{ backgroundColor: '#0a5' }}
+								containerStyle={{ backgroundColor: "#0a5" }}
 							/>
 							<View style={{ marginTop: 10, marginLeft: 10 }}>
 								<Text
 									style={{
-										fontWeight: 'bold',
+										fontWeight: "bold",
 										fontSize: 20,
 									}}>
 									{user.name}
 									<Text
 										style={{
 											marginLeft: 6,
-											color: 'grey',
+											color: "grey",
 										}}>
 										@{user.handle}
 									</Text>
@@ -83,22 +83,22 @@ export default function User({ authUser, auth, setAuthUser }) {
 								style={{
 									marginLeft: 10,
 									marginTop: 15,
-									flexDirection: 'row',
+									flexDirection: "row",
 								}}>
 								<TouchableOpacity
 									onPress={() => {
-										navigation.navigate('Following', {
+										navigation.navigate("Following", {
 											handle: user.handle,
 										});
 									}}>
 									<Text
-										style={{ fontSize: 16, color: '#09c' }}>
+										style={{ fontSize: 16, color: "#09c" }}>
 										{user.following_users.length} Followings
 									</Text>
 								</TouchableOpacity>
 								<TouchableOpacity
 									onPress={() => {
-										navigation.navigate('Followers', {
+										navigation.navigate("Followers", {
 											handle: user.handle,
 										});
 									}}>
@@ -106,7 +106,7 @@ export default function User({ authUser, auth, setAuthUser }) {
 										style={{
 											marginLeft: 10,
 											fontSize: 16,
-											color: '#09c',
+											color: "#09c",
 										}}>
 										{user.followers_users.length} Followers
 									</Text>

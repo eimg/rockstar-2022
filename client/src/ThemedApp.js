@@ -1,23 +1,23 @@
-import { useMemo, useState, createContext } from 'react';
+import { useMemo, useState, createContext } from "react";
 
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-import { grey, pink, yellow } from '@mui/material/colors';
+import { grey, pink, yellow } from "@mui/material/colors";
 
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from "react-router-dom";
 
-import App from './App';
-import ScrollToTop from './Utils/ScrollToTop';
+import App from "./App";
+import ScrollToTop from "./Utils/ScrollToTop";
 
 export const ColorModeContext = createContext();
 
 export default function ThemedApp() {
-	const [mode, setMode] = useState('dark');
+	const [mode, setMode] = useState("dark");
 
 	const colorMode = useMemo(() => {
 		return {
 			toggleColorMode: () => {
-				setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
+				setMode(prevMode => (prevMode === "light" ? "dark" : "light"));
 			},
 		};
 	}, []);
@@ -26,7 +26,7 @@ export default function ThemedApp() {
 		return createTheme({
 			palette: {
 				mode,
-				...(mode === 'light'
+				...(mode === "light"
 					? {
 							banner: {
 								background: grey[100],
@@ -35,7 +35,7 @@ export default function ThemedApp() {
 								background: pink[500],
 							},
 							logo: {
-								color: 'white',
+								color: "white",
 							},
 							text: {
 								fade: grey[500],
@@ -50,7 +50,7 @@ export default function ThemedApp() {
 								background: grey[900],
 							},
 							appbar: {
-								background: '#111',
+								background: "#111",
 							},
 							logo: {
 								color: pink[500],

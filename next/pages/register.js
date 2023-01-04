@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import Head from "next/head";
 
 import {
 	Box,
@@ -7,12 +7,12 @@ import {
 	Typography,
 	OutlinedInput,
 	InputAdornment,
-} from '@mui/material';
+} from "@mui/material";
 
-import { useState, useRef, useContext } from 'react';
-import { register } from '../utils/apiCalls';
-import { useRouter } from 'next/router';
-import { AuthContext } from './components/AuthProvider';
+import { useState, useRef, useContext } from "react";
+import { register } from "../utils/apiCalls";
+import { useRouter } from "next/router";
+import { AuthContext } from "./components/AuthProvider";
 
 export default function Register() {
 	const { setAuthUser, setAuthStatus } = useContext(AuthContext);
@@ -24,7 +24,7 @@ export default function Register() {
 	const profileInput = useRef();
 	const passwordInput = useRef();
 
-	const [errMsg, setErrMsg] = useState('');
+	const [errMsg, setErrMsg] = useState("");
 	const [hasError, setHasError] = useState(false);
 
 	return (
@@ -32,21 +32,21 @@ export default function Register() {
 			<Head>
 				<title>Next Twitter</title>
 				<meta
-					name='viewport'
-					content='width=device-width, initial-scale=1'
+					name="viewport"
+					content="width=device-width, initial-scale=1"
 				/>
-				<link rel='icon' href='/favicon.ico' />
+				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<main>
 				<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>
 					<Typography
-						variant='h4'
-						sx={{ textAlign: 'center', mb: 3 }}>
+						variant="h4"
+						sx={{ textAlign: "center", mb: 3 }}>
 						Register
 					</Typography>
 
 					{hasError && (
-						<Alert severity='warning' sx={{ mb: 3 }}>
+						<Alert severity="warning" sx={{ mb: 3 }}>
 							{errMsg}
 						</Alert>
 					)}
@@ -72,14 +72,14 @@ export default function Register() {
 
 								if (!result) {
 									setErrMsg(
-										'required: name, handle, profile',
+										"required: name, handle, profile",
 									);
 									setHasError(true);
 									return;
 								}
 
 								if (result === 409) {
-									setErrMsg('Handle already taken');
+									setErrMsg("Handle already taken");
 									setHasError(true);
 									return;
 								}
@@ -87,13 +87,13 @@ export default function Register() {
 								setAuthStatus(false);
 								setAuthUser(result.user);
 								setAuthStatus(true);
-								router.push('/');
+								router.push("/");
 							})();
 						}}>
 						<OutlinedInput
 							required
 							inputRef={nameInput}
-							placeholder='Name'
+							placeholder="Name"
 							fullWidth={true}
 							sx={{ mb: 2 }}
 						/>
@@ -101,11 +101,11 @@ export default function Register() {
 						<OutlinedInput
 							required
 							inputRef={handleInput}
-							placeholder='Handle'
+							placeholder="Handle"
 							fullWidth={true}
-							inputProps={{ pattern: '[a-zA-Z0-9_]+' }}
+							inputProps={{ pattern: "[a-zA-Z0-9_]+" }}
 							startAdornment={
-								<InputAdornment position='start'>
+								<InputAdornment position="start">
 									@
 								</InputAdornment>
 							}
@@ -116,7 +116,7 @@ export default function Register() {
 							multiline
 							minRows={2}
 							inputRef={profileInput}
-							placeholder='Profile (optional)'
+							placeholder="Profile (optional)"
 							fullWidth={true}
 							sx={{ mb: 2 }}
 						/>
@@ -124,17 +124,17 @@ export default function Register() {
 						<OutlinedInput
 							required
 							inputRef={passwordInput}
-							placeholder='Password'
+							placeholder="Password"
 							fullWidth={true}
-							inputProps={{ type: 'password' }}
+							inputProps={{ type: "password" }}
 							sx={{ mb: 3 }}
 						/>
 
 						<Button
-							color='info'
-							type='submit'
+							color="info"
+							type="submit"
 							fullWidth={true}
-							variant='contained'>
+							variant="contained">
 							Register
 						</Button>
 					</form>

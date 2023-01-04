@@ -1,26 +1,26 @@
-import { useMemo, useState, createContext, useContext } from 'react';
-import { Box, CssBaseline, Fab } from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Add as AddIcon } from '@mui/icons-material';
-import { useRouter } from 'next/router';
-import { grey, pink, yellow } from '@mui/material/colors';
-import { AuthContext } from './AuthProvider';
-import Header from './Header';
-import MainNav from './MainNav';
+import { useMemo, useState, createContext, useContext } from "react";
+import { Box, CssBaseline, Fab } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Add as AddIcon } from "@mui/icons-material";
+import { useRouter } from "next/router";
+import { grey, pink, yellow } from "@mui/material/colors";
+import { AuthContext } from "./AuthProvider";
+import Header from "./Header";
+import MainNav from "./MainNav";
 
 export const ColorModeContext = createContext();
 
 export default function Layout({ children }) {
 	const router = useRouter();
-	const [mode, setMode] = useState('dark');
+	const [mode, setMode] = useState("dark");
 	const [drawerState, setDrawerState] = useState(false);
 
 	const { authStatus, authUser } = useContext(AuthContext);
 
 	const toggleDrawer = open => event => {
 		if (
-			event.type === 'keydown' &&
-			(event.key === 'Tab' || event.key === 'Shift')
+			event.type === "keydown" &&
+			(event.key === "Tab" || event.key === "Shift")
 		) {
 			return;
 		}
@@ -31,7 +31,7 @@ export default function Layout({ children }) {
 	const colorMode = useMemo(() => {
 		return {
 			toggleColorMode: () => {
-				setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
+				setMode(prevMode => (prevMode === "light" ? "dark" : "light"));
 			},
 		};
 	}, []);
@@ -40,7 +40,7 @@ export default function Layout({ children }) {
 		return createTheme({
 			palette: {
 				mode,
-				...(mode === 'light'
+				...(mode === "light"
 					? {
 							banner: {
 								background: grey[100],
@@ -49,7 +49,7 @@ export default function Layout({ children }) {
 								background: pink[500],
 							},
 							logo: {
-								color: 'white',
+								color: "white",
 							},
 							text: {
 								fade: grey[500],
@@ -64,7 +64,7 @@ export default function Layout({ children }) {
 								background: grey[900],
 							},
 							appbar: {
-								background: '#111',
+								background: "#111",
 							},
 							logo: {
 								color: pink[500],
@@ -89,20 +89,20 @@ export default function Layout({ children }) {
 					toggleDrawer={toggleDrawer}
 					drawerState={drawerState}
 				/>
-				<Box sx={{ ml: { lg: '280px', md: '280px' } }}>
+				<Box sx={{ ml: { lg: "280px", md: "280px" } }}>
 					<Header toggleDrawer={toggleDrawer} />
 					{children}
 
-					{authStatus && router.pathname !== '/add' && (
+					{authStatus && router.pathname !== "/add" && (
 						<Fab
-							color='info'
+							color="info"
 							sx={{
-								position: 'fixed',
-								bottom: '40px',
-								right: '40px',
+								position: "fixed",
+								bottom: "40px",
+								right: "40px",
 							}}
 							onClick={() => {
-								router.push('/add');
+								router.push("/add");
 							}}>
 							<AddIcon />
 						</Fab>

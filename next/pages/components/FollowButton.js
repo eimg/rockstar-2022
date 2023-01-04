@@ -1,8 +1,8 @@
-import { useContext } from 'react';
-import { Button } from '@mui/material';
-import { useRouter } from 'next/router';
-import { putFollow } from '../../utils/apiCalls';
-import { AuthContext } from './AuthProvider';
+import { useContext } from "react";
+import { Button } from "@mui/material";
+import { useRouter } from "next/router";
+import { putFollow } from "../../utils/apiCalls";
+import { AuthContext } from "./AuthProvider";
 
 export default function FollowButton({ user }) {
 	const router = useRouter();
@@ -16,9 +16,9 @@ export default function FollowButton({ user }) {
 	return authUser.following &&
 		authUser.following.find(uid => uid === user._id) ? (
 		<Button
-			size='small'
-			edge='end'
-			variant='outlined'
+			size="small"
+			edge="end"
+			variant="outlined"
 			sx={{ borderRadius: 5 }}
 			onClick={() => {
 				(async () => {
@@ -34,14 +34,14 @@ export default function FollowButton({ user }) {
 		</Button>
 	) : (
 		<Button
-			size='small'
-			edge='end'
-			variant='contained'
+			size="small"
+			edge="end"
+			variant="contained"
 			sx={{ borderRadius: 5 }}
 			onClick={() => {
 				(async () => {
 					let result = await putFollow(user._id);
-					if (!result) navigate('/error');
+					if (!result) navigate("/error");
 
 					authUser.following = result.following;
 

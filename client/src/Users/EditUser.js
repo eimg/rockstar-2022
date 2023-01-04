@@ -5,11 +5,11 @@ import {
 	Typography,
 	OutlinedInput,
 	InputAdornment,
-} from '@mui/material';
+} from "@mui/material";
 
-import { useRef, useState } from 'react';
-import { updateProfile } from '../apiCalls';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useState } from "react";
+import { updateProfile } from "../apiCalls";
+import { useNavigate } from "react-router-dom";
 
 export default function EditUser({ setAuthUser, authUser }) {
 	const navigate = useNavigate();
@@ -18,17 +18,17 @@ export default function EditUser({ setAuthUser, authUser }) {
 	const profileInput = useRef();
 	const passwordInput = useRef();
 
-	const [errMsg, setErrMsg] = useState('');
+	const [errMsg, setErrMsg] = useState("");
 	const [hasError, setHasError] = useState(false);
 
 	return (
 		<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>
-			<Typography variant='h4' sx={{ textAlign: 'center', mb: 3 }}>
+			<Typography variant="h4" sx={{ textAlign: "center", mb: 3 }}>
 				Edit Profile
 			</Typography>
 
 			{hasError && (
-				<Alert severity='warning' sx={{ mb: 3 }}>
+				<Alert severity="warning" sx={{ mb: 3 }}>
 					{errMsg}
 				</Alert>
 			)}
@@ -52,19 +52,19 @@ export default function EditUser({ setAuthUser, authUser }) {
 						);
 
 						if (!result) {
-							setErrMsg('required: name and password');
+							setErrMsg("required: name and password");
 							setHasError(true);
 							return;
 						}
 
 						setAuthUser(result);
-						navigate('/profile');
+						navigate("/profile");
 					})();
 				}}>
 				<OutlinedInput
 					required
 					inputRef={nameInput}
-					placeholder='Name'
+					placeholder="Name"
 					fullWidth={true}
 					sx={{ mb: 2 }}
 					defaultValue={authUser.name}
@@ -72,11 +72,11 @@ export default function EditUser({ setAuthUser, authUser }) {
 
 				<OutlinedInput
 					disabled
-					placeholder='Handle'
+					placeholder="Handle"
 					fullWidth={true}
-					inputProps={{ pattern: '[a-zA-Z0-9_]+' }}
+					inputProps={{ pattern: "[a-zA-Z0-9_]+" }}
 					startAdornment={
-						<InputAdornment position='start'>@</InputAdornment>
+						<InputAdornment position="start">@</InputAdornment>
 					}
 					sx={{ mb: 2 }}
 					defaultValue={authUser.handle}
@@ -86,7 +86,7 @@ export default function EditUser({ setAuthUser, authUser }) {
 					multiline
 					minRows={2}
 					inputRef={profileInput}
-					placeholder='Profile (optional)'
+					placeholder="Profile (optional)"
 					fullWidth={true}
 					sx={{ mb: 2 }}
 					defaultValue={authUser.profile}
@@ -94,17 +94,17 @@ export default function EditUser({ setAuthUser, authUser }) {
 
 				<OutlinedInput
 					inputRef={passwordInput}
-					placeholder='Password (leave blank to unchange)'
+					placeholder="Password (leave blank to unchange)"
 					fullWidth={true}
-					inputProps={{ type: 'password' }}
+					inputProps={{ type: "password" }}
 					sx={{ mb: 3 }}
 				/>
 
 				<Button
-					color='info'
-					type='submit'
+					color="info"
+					type="submit"
 					fullWidth={true}
-					variant='contained'>
+					variant="contained">
 					Update
 				</Button>
 			</form>

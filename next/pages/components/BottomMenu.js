@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 
 import {
 	Box,
@@ -8,13 +8,13 @@ import {
 	ListItemIcon,
 	ListItemText,
 	ListItemButton,
-} from '@mui/material';
+} from "@mui/material";
 
-import { Delete as DeleteIcon, Flag as FlagIcon } from '@mui/icons-material';
+import { Delete as DeleteIcon, Flag as FlagIcon } from "@mui/icons-material";
 
-import { useRouter } from 'next/router';
-import { AuthContext } from './AuthProvider';
-import { deleteTweet } from '../../utils/apiCalls';
+import { useRouter } from "next/router";
+import { AuthContext } from "./AuthProvider";
+import { deleteTweet } from "../../utils/apiCalls";
 
 function MenuList({ remove, toggleBottomMenu, currentTweet }) {
 	const router = useRouter();
@@ -30,7 +30,7 @@ function MenuList({ remove, toggleBottomMenu, currentTweet }) {
 						<ListItemIcon>
 							<FlagIcon />
 						</ListItemIcon>
-						<ListItemText primary='Report' />
+						<ListItemText primary="Report" />
 					</ListItemButton>
 				</ListItem>
 
@@ -43,13 +43,13 @@ function MenuList({ remove, toggleBottomMenu, currentTweet }) {
 									// if (!result) navigate("/error");
 
 									if (remove) remove(currentTweet._id);
-									else router.push('/');
+									else router.push("/");
 								})();
 							}}>
 							<ListItemIcon>
-								<DeleteIcon color='error' />
+								<DeleteIcon color="error" />
 							</ListItemIcon>
-							<ListItemText primary='Delete Tweet' />
+							<ListItemText primary="Delete Tweet" />
 						</ListItemButton>
 					</ListItem>
 				)}
@@ -67,7 +67,7 @@ export default function BottomMenu({
 	return (
 		<>
 			<Drawer
-				anchor='bottom'
+				anchor="bottom"
 				open={bottomMenuState}
 				onClose={toggleBottomMenu(false)}>
 				<MenuList

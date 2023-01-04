@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import { View } from 'react-native';
+import { useState } from "react";
+import { View } from "react-native";
 
-import { Input, Button, Avatar, useTheme } from '@rneui/themed';
-import { useNavigation } from '@react-navigation/native';
+import { Input, Button, Avatar, useTheme } from "@rneui/themed";
+import { useNavigation } from "@react-navigation/native";
 
-import Toast from 'react-native-root-toast';
+import Toast from "react-native-root-toast";
 
-import { postTweet } from '../../apiCalls';
+import { postTweet } from "../../apiCalls";
 
 export default function Add({ authUser }) {
 	const navigation = useNavigation();
-	const [body, setBody] = useState('');
+	const [body, setBody] = useState("");
 
 	const { theme } = useTheme();
 
@@ -20,14 +20,14 @@ export default function Add({ authUser }) {
 				style={{
 					marginVertical: 10,
 					marginHorizontal: 10,
-					flexDirection: 'row',
-					justifyContent: 'space-between',
+					flexDirection: "row",
+					justifyContent: "space-between",
 				}}>
 				<Avatar
 					rounded
 					size={48}
 					title={authUser.name[0].toUpperCase()}
-					containerStyle={{ backgroundColor: '#0a5' }}
+					containerStyle={{ backgroundColor: "#0a5" }}
 				/>
 				<Button
 					onPress={() => {
@@ -37,11 +37,11 @@ export default function Add({ authUser }) {
 							let result = await postTweet(body);
 							// handle api error here
 
-							Toast.show('You tweet is posted', {
+							Toast.show("You tweet is posted", {
 								duration: Toast.durations.LONG,
 							});
 
-							navigation.navigate('Latest');
+							navigation.navigate("Latest");
 						})();
 					}}>
 					Tweet
@@ -58,7 +58,7 @@ export default function Add({ authUser }) {
 						height: 100,
 						backgroundColor: theme.colors.white,
 						borderWidth: 1,
-						borderColor: 'grey',
+						borderColor: "grey",
 					}}
 				/>
 			</View>

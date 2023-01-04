@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 import {
 	Box,
@@ -7,11 +7,11 @@ import {
 	ListItem,
 	ListItemText,
 	ListItemAvatar,
-} from '@mui/material';
+} from "@mui/material";
 
-import { fetchShares } from '../apiCalls';
-import FollowButton from '../Components/FollowButton';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { fetchShares } from "../apiCalls";
+import FollowButton from "../Components/FollowButton";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 export default function Shares({ authUser, setAuthUser }) {
 	const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function Shares({ authUser, setAuthUser }) {
 	useEffect(() => {
 		(async () => {
 			let result = await fetchShares(id);
-			if (!result) return navigate('/error');
+			if (!result) return navigate("/error");
 
 			setShares(result);
 		})();
@@ -44,13 +44,13 @@ export default function Shares({ authUser, setAuthUser }) {
 							}>
 							<ListItemAvatar>
 								<Link to={`/@${share.user[0].handle}`}>
-									<Avatar alt='Profile'></Avatar>
+									<Avatar alt="Profile"></Avatar>
 								</Link>
 							</ListItemAvatar>
 							<ListItemText
 								primary={
 									share.user[0].name +
-									' @' +
+									" @" +
 									share.user[0].handle
 								}
 								secondary={share.body}

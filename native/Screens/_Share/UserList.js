@@ -1,9 +1,9 @@
-import { View, ScrollView, TouchableOpacity } from 'react-native';
-import { ListItem, Avatar, useTheme } from '@rneui/themed';
+import { View, ScrollView, TouchableOpacity } from "react-native";
+import { ListItem, Avatar, useTheme } from "@rneui/themed";
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
-import FollowButton from './FollowButton';
+import FollowButton from "./FollowButton";
 
 export default function Shares({ authUser, setAuthUser, users }) {
 	const navigation = useNavigation();
@@ -15,15 +15,15 @@ export default function Shares({ authUser, setAuthUser, users }) {
 			<View
 				style={{
 					flex: 1,
-					alignItems: 'stretch',
-					justifyContent: 'flex-start',
+					alignItems: "stretch",
+					justifyContent: "flex-start",
 				}}>
 				{users.map(user => {
 					return (
 						<TouchableOpacity
 							key={user._id}
 							onPress={() => {
-								navigation.navigate('User', {
+								navigation.navigate("User", {
 									handle: user.handle,
 								});
 							}}>

@@ -1,6 +1,6 @@
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect } from "react";
 
-import { fetchUser } from '../../utils/apiCalls';
+import { fetchUser } from "../../utils/apiCalls";
 
 export const AuthContext = createContext({});
 

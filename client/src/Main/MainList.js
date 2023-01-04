@@ -8,9 +8,9 @@ import {
 	ButtonGroup,
 	CardContent,
 	CardActionArea,
-} from '@mui/material';
+} from "@mui/material";
 
-import { green } from '@mui/material/colors';
+import { green } from "@mui/material/colors";
 
 import {
 	Share as ShareIcon,
@@ -18,10 +18,10 @@ import {
 	Favorite as FavoriteIcon,
 	ChatBubble as ChatBubbleIcon,
 	FavoriteBorder as FavoriteBorderIcon,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
 
-import { useNavigate } from 'react-router-dom';
-import { formatRelative, parseISO } from 'date-fns';
+import { useNavigate } from "react-router-dom";
+import { formatRelative, parseISO } from "date-fns";
 
 export default function MainList({
 	auth,
@@ -39,8 +39,8 @@ export default function MainList({
 				if (!tweet.user[0]) return false;
 
 				return (
-					<Card sx={{ mb: 1 }} key={tweet._id} variant='outlined'>
-						<Box sx={{ float: 'right' }}>
+					<Card sx={{ mb: 1 }} key={tweet._id} variant="outlined">
+						<Box sx={{ float: "right" }}>
 							<IconButton
 								onClick={toggleBottomMenu(true, {
 									_id: tweet._id,
@@ -48,40 +48,40 @@ export default function MainList({
 								})}>
 								<MoreVertIcon
 									sx={{
-										fontSize: '24px',
-										color: 'text.fade',
+										fontSize: "24px",
+										color: "text.fade",
 									}}
 								/>
 							</IconButton>
 						</Box>
 
-						{tweet.type === 'share' && (
+						{tweet.type === "share" && (
 							<Box
 								sx={{
 									mt: 2,
 									ml: 3,
-									display: 'flex',
-									fontSize: '16px',
-									color: 'text.fade',
+									display: "flex",
+									fontSize: "16px",
+									color: "text.fade",
 								}}>
 								<ShareIcon
-									sx={{ fontSize: '18px', p: 0, mr: 2 }}
+									sx={{ fontSize: "18px", p: 0, mr: 2 }}
 								/>
 								<div style={{ marginTop: -2 }}>share</div>
 							</Box>
 						)}
 
-						{tweet.type === 'comment' && (
+						{tweet.type === "comment" && (
 							<Box
 								sx={{
 									mt: 2,
 									ml: 3,
-									display: 'flex',
-									fontSize: '16px',
-									color: 'text.fade',
+									display: "flex",
+									fontSize: "16px",
+									color: "text.fade",
 								}}>
 								<ChatBubbleIcon
-									sx={{ fontSize: '18px', p: 0, mr: 2 }}
+									sx={{ fontSize: "18px", p: 0, mr: 2 }}
 								/>
 								<div style={{ marginTop: -2 }}>comment</div>
 							</Box>
@@ -89,19 +89,19 @@ export default function MainList({
 
 						<CardActionArea
 							onClick={() => {
-								navigate('/tweet/' + tweet._id);
+								navigate("/tweet/" + tweet._id);
 							}}>
-							<CardContent sx={{ display: 'flex', p: 2 }}>
+							<CardContent sx={{ display: "flex", p: 2 }}>
 								<Box sx={{ mr: 3 }}>
 									<div
 										onClick={e => {
 											navigate(
-												'/@' + tweet.user[0].handle,
+												"/@" + tweet.user[0].handle,
 											);
 											e.stopPropagation();
 										}}>
 										<Avatar
-											alt='Profile Picture'
+											alt="Profile Picture"
 											sx={{
 												width: 64,
 												height: 64,
@@ -111,17 +111,17 @@ export default function MainList({
 									</div>
 								</Box>
 								<Box>
-									<Typography sx={{ mr: 1 }} component='span'>
+									<Typography sx={{ mr: 1 }} component="span">
 										<b>{tweet.user[0].name}</b>
 									</Typography>
 
 									<Typography
-										component='span'
-										sx={{ color: 'text.fade' }}>
+										component="span"
+										sx={{ color: "text.fade" }}>
 										@{tweet.user[0].handle}
 									</Typography>
 
-									<Typography component='span' sx={{ ml: 1 }}>
+									<Typography component="span" sx={{ ml: 1 }}>
 										<small>
 											{formatRelative(
 												parseISO(tweet.created),
@@ -131,8 +131,8 @@ export default function MainList({
 									</Typography>
 
 									<Typography
-										variant='subtitle1'
-										color='text.secondary'>
+										variant="subtitle1"
+										color="text.secondary">
 										{tweet.body}
 									</Typography>
 								</Box>
@@ -143,7 +143,7 @@ export default function MainList({
 							<CardActionArea
 								onClick={() => {
 									navigate(
-										'/tweet/' + tweet.origin_tweet[0]._id,
+										"/tweet/" + tweet.origin_tweet[0]._id,
 									);
 								}}>
 								<Card
@@ -151,15 +151,15 @@ export default function MainList({
 										p: 2,
 										mx: 3,
 										my: 2,
-										bgcolor: 'banner.background',
+										bgcolor: "banner.background",
 									}}
 									elevation={0}>
-									<CardContent sx={{ display: 'flex', p: 2 }}>
+									<CardContent sx={{ display: "flex", p: 2 }}>
 										<Box sx={{ mr: 3 }}>
 											<div
 												onClick={e => {
 													navigate(
-														'/@' +
+														"/@" +
 															tweet
 																.origin_tweet[0]
 																.user[0].handle,
@@ -167,7 +167,7 @@ export default function MainList({
 													e.stopPropagation();
 												}}>
 												<Avatar
-													alt='Profile Picture'
+													alt="Profile Picture"
 													sx={{
 														width: 48,
 														height: 48,
@@ -177,9 +177,9 @@ export default function MainList({
 										</Box>
 										<Box>
 											<Typography
-												component='span'
+												component="span"
 												sx={{ mr: 1 }}
-												color='text.secondary'>
+												color="text.secondary">
 												<b>
 													{
 														tweet.origin_tweet[0]
@@ -189,9 +189,9 @@ export default function MainList({
 											</Typography>
 
 											<Typography
-												component='span'
+												component="span"
 												sx={{
-													color: 'text.fade',
+													color: "text.fade",
 													mr: 1,
 												}}>
 												@
@@ -202,9 +202,9 @@ export default function MainList({
 											</Typography>
 
 											<Typography
-												component='span'
-												variant='body2'
-												sx={{ color: 'text.fade' }}>
+												component="span"
+												variant="body2"
+												sx={{ color: "text.fade" }}>
 												{formatRelative(
 													parseISO(
 														tweet.origin_tweet[0]
@@ -215,9 +215,9 @@ export default function MainList({
 											</Typography>
 
 											<Typography
-												variant='subtitle1'
-												color='text.fade'
-												sx={{ fontSize: '16px' }}>
+												variant="subtitle1"
+												color="text.fade"
+												sx={{ fontSize: "16px" }}>
 												{tweet.origin_tweet[0].body}
 											</Typography>
 										</Box>
@@ -232,14 +232,14 @@ export default function MainList({
 									p: 2,
 									mx: 3,
 									my: 2,
-									bgcolor: 'banner.background',
+									bgcolor: "banner.background",
 								}}
 								elevation={0}>
 								<CardContent>
 									<Typography
 										sx={{
-											color: 'text.fade',
-											fontSize: '16px',
+											color: "text.fade",
+											fontSize: "16px",
 										}}>
 										[ deleted post ]
 									</Typography>
@@ -250,17 +250,17 @@ export default function MainList({
 						<Box
 							sx={{
 								mb: 2,
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'space-around',
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "space-around",
 							}}>
-							<ButtonGroup variant='text'>
+							<ButtonGroup variant="text">
 								<IconButton
-									size='small'
+									size="small"
 									disableRipple={true}
 									sx={{
-										fontSize: '20px',
-										color: 'text.fade',
+										fontSize: "20px",
+										color: "text.fade",
 									}}
 									onClick={() => {
 										if (auth) toggleLike(tweet._id);
@@ -268,23 +268,23 @@ export default function MainList({
 									{tweet.likes &&
 									tweet.likes.includes(authUser._id) ? (
 										<FavoriteIcon
-											color='error'
+											color="error"
 											sx={{
-												fontSize: '20px',
+												fontSize: "20px",
 											}}
 										/>
 									) : tweet.likes && tweet.likes.length ? (
 										<FavoriteBorderIcon
-											color='error'
+											color="error"
 											sx={{
-												fontSize: '20px',
+												fontSize: "20px",
 											}}
 										/>
 									) : (
 										<FavoriteBorderIcon
 											sx={{
-												fontSize: '20px',
-												color: 'text.fade',
+												fontSize: "20px",
+												color: "text.fade",
 											}}
 										/>
 									)}
@@ -297,24 +297,24 @@ export default function MainList({
 												`/tweet/${tweet._id}/likes`,
 											);
 									}}
-									size='small'
+									size="small"
 									sx={{
-										color: 'text.fade',
-										'&:hover': {
-											backgroundColor: 'transparent',
+										color: "text.fade",
+										"&:hover": {
+											backgroundColor: "transparent",
 										},
 									}}>
 									{(tweet.likes && tweet.likes.length) || 0}
 								</Button>
 							</ButtonGroup>
 
-							<ButtonGroup variant='text'>
+							<ButtonGroup variant="text">
 								<IconButton
-									size='small'
+									size="small"
 									disableRipple={true}
 									sx={{
-										fontSize: '20px',
-										color: 'text.fade',
+										fontSize: "20px",
+										color: "text.fade",
 									}}
 									onClick={() => {
 										if (auth)
@@ -324,16 +324,16 @@ export default function MainList({
 									}}>
 									{tweet.shares && tweet.shares.length ? (
 										<ShareIcon
-											color='primary'
+											color="primary"
 											sx={{
-												fontSize: '20px',
+												fontSize: "20px",
 											}}
 										/>
 									) : (
 										<ShareIcon
 											sx={{
-												fontSize: '20px',
-												color: 'text.fade',
+												fontSize: "20px",
+												color: "text.fade",
 											}}
 										/>
 									)}
@@ -346,24 +346,24 @@ export default function MainList({
 												`/tweet/${tweet._id}/shares`,
 											);
 									}}
-									size='small'
+									size="small"
 									sx={{
-										color: 'text.fade',
-										'&:hover': {
-											backgroundColor: 'transparent',
+										color: "text.fade",
+										"&:hover": {
+											backgroundColor: "transparent",
 										},
 									}}>
 									{(tweet.shares && tweet.shares.length) || 0}
 								</Button>
 							</ButtonGroup>
 
-							<ButtonGroup variant='text'>
+							<ButtonGroup variant="text">
 								<IconButton
-									size='small'
+									size="small"
 									disableRipple={true}
 									sx={{
-										fontSize: '20px',
-										color: 'text.fade',
+										fontSize: "20px",
+										color: "text.fade",
 									}}
 									onClick={() => {
 										navigate(
@@ -372,27 +372,27 @@ export default function MainList({
 									}}>
 									{tweet.comments && tweet.comments.length ? (
 										<ChatBubbleIcon
-											color='success'
+											color="success"
 											sx={{
-												fontSize: '20px',
+												fontSize: "20px",
 											}}
 										/>
 									) : (
 										<ChatBubbleIcon
 											sx={{
-												fontSize: '20px',
-												color: 'text.fade',
+												fontSize: "20px",
+												color: "text.fade",
 											}}
 										/>
 									)}
 								</IconButton>
 
 								<Button
-									size='small'
+									size="small"
 									sx={{
-										color: 'text.fade',
-										'&:hover': {
-											backgroundColor: 'transparent',
+										color: "text.fade",
+										"&:hover": {
+											backgroundColor: "transparent",
 										},
 									}}
 									onClick={() => {

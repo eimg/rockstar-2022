@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import Head from "next/head";
 
 import {
 	Box,
@@ -7,14 +7,14 @@ import {
 	Typography,
 	OutlinedInput,
 	InputAdornment,
-} from '@mui/material';
+} from "@mui/material";
 
-import { useState, useRef, useContext } from 'react';
-import { login } from '../utils/apiCalls';
-import { useRouter } from 'next/router';
-import { AuthContext } from './components/AuthProvider';
+import { useState, useRef, useContext } from "react";
+import { login } from "../utils/apiCalls";
+import { useRouter } from "next/router";
+import { AuthContext } from "./components/AuthProvider";
 
-import Layout from './components/Layout';
+import Layout from "./components/Layout";
 
 export default function Login() {
 	const { setAuthUser, setAuthStatus } = useContext(AuthContext);
@@ -31,21 +31,21 @@ export default function Login() {
 			<Head>
 				<title>Next Twitter</title>
 				<meta
-					name='viewport'
-					content='width=device-width, initial-scale=1'
+					name="viewport"
+					content="width=device-width, initial-scale=1"
 				/>
-				<link rel='icon' href='/favicon.ico' />
+				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<main>
 				<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>
 					<Typography
-						variant='h4'
-						sx={{ textAlign: 'center', mb: 3 }}>
+						variant="h4"
+						sx={{ textAlign: "center", mb: 3 }}>
 						Login
 					</Typography>
 
 					{hasError && (
-						<Alert severity='warning' sx={{ mb: 3 }}>
+						<Alert severity="warning" sx={{ mb: 3 }}>
 							Handle or password incorrect
 						</Alert>
 					)}
@@ -65,16 +65,16 @@ export default function Login() {
 
 								setAuthStatus(true);
 								setAuthUser(result.user);
-								router.push('/');
+								router.push("/");
 							})();
 						}}>
 						<OutlinedInput
 							required
 							inputRef={handleInput}
-							placeholder='Handle'
+							placeholder="Handle"
 							fullWidth={true}
 							startAdornment={
-								<InputAdornment position='start'>
+								<InputAdornment position="start">
 									@
 								</InputAdornment>
 							}
@@ -84,16 +84,16 @@ export default function Login() {
 						<OutlinedInput
 							required
 							inputRef={passwordInput}
-							placeholder='Password'
+							placeholder="Password"
 							fullWidth={true}
-							inputProps={{ type: 'password' }}
+							inputProps={{ type: "password" }}
 							sx={{ mb: 3 }}
 						/>
 
 						<Button
-							type='submit'
-							variant='contained'
-							color='info'
+							type="submit"
+							variant="contained"
+							color="info"
 							fullWidth={true}>
 							Login
 						</Button>

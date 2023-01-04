@@ -6,12 +6,12 @@ import {
 	ListItemIcon,
 	ListItemText,
 	ListItemButton,
-} from '@mui/material';
+} from "@mui/material";
 
-import { Delete as DeleteIcon, Flag as FlagIcon } from '@mui/icons-material';
+import { Delete as DeleteIcon, Flag as FlagIcon } from "@mui/icons-material";
 
-import { useNavigate } from 'react-router-dom';
-import { deleteTweet } from '../apiCalls';
+import { useNavigate } from "react-router-dom";
+import { deleteTweet } from "../apiCalls";
 
 function MenuList({ toggleBottomMenu, authUser, tweetIdOwner }) {
 	const navigate = useNavigate();
@@ -26,7 +26,7 @@ function MenuList({ toggleBottomMenu, authUser, tweetIdOwner }) {
 						<ListItemIcon>
 							<FlagIcon />
 						</ListItemIcon>
-						<ListItemText primary='Report' />
+						<ListItemText primary="Report" />
 					</ListItemButton>
 				</ListItem>
 
@@ -36,15 +36,15 @@ function MenuList({ toggleBottomMenu, authUser, tweetIdOwner }) {
 							onClick={() => {
 								(async () => {
 									let result = deleteTweet(tweetIdOwner._id);
-									if (!result) navigate('/error');
+									if (!result) navigate("/error");
 
-									navigate('/');
+									navigate("/");
 								})();
 							}}>
 							<ListItemIcon>
-								<DeleteIcon color='error' />
+								<DeleteIcon color="error" />
 							</ListItemIcon>
-							<ListItemText primary='Delete Tweet' />
+							<ListItemText primary="Delete Tweet" />
 						</ListItemButton>
 					</ListItem>
 				)}
@@ -62,7 +62,7 @@ export default function BottomMenu({
 	return (
 		<>
 			<Drawer
-				anchor='bottom'
+				anchor="bottom"
 				open={bottomMenuState}
 				onClose={toggleBottomMenu(false)}>
 				<MenuList

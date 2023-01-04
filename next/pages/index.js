@@ -1,11 +1,11 @@
-import Head from 'next/head';
+import Head from "next/head";
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from "react";
 
-import { putLike, fetchTweets, postNoti } from '../utils/apiCalls';
+import { putLike, fetchTweets, postNoti } from "../utils/apiCalls";
 
-import Latest from './components/Latest';
-import { AuthContext } from './components/AuthProvider';
+import Latest from "./components/Latest";
+import { AuthContext } from "./components/AuthProvider";
 
 export default function Index() {
 	const [tweets, setTweets] = useState([]);
@@ -37,7 +37,7 @@ export default function Index() {
 			});
 
 			setTweets(updatedTweets);
-			postNoti('like', id);
+			postNoti("like", id);
 		})();
 	};
 
@@ -50,10 +50,10 @@ export default function Index() {
 			<Head>
 				<title>Next Twitter</title>
 				<meta
-					name='viewport'
-					content='width=device-width, initial-scale=1'
+					name="viewport"
+					content="width=device-width, initial-scale=1"
 				/>
-				<link rel='icon' href='/favicon.ico' />
+				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<main>
 				<Latest

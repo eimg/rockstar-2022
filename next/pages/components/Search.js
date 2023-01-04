@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 import {
 	Box,
@@ -11,32 +11,32 @@ import {
 	InputAdornment,
 	ListItemButton,
 	ListItemAvatar,
-} from '@mui/material';
+} from "@mui/material";
 
-import { PersonSearch as PersonSearchIcon } from '@mui/icons-material';
+import { PersonSearch as PersonSearchIcon } from "@mui/icons-material";
 
-import { fetchUsers } from '../../utils/apiCalls';
+import { fetchUsers } from "../../utils/apiCalls";
 
 const style = {
-	position: 'absolute',
+	position: "absolute",
 	top: {
-		lg: '10%',
-		md: '10%',
-		sm: '5%',
+		lg: "10%",
+		md: "10%",
+		sm: "5%",
 	},
 	left: {
-		lg: '20%',
-		md: '20%',
-		sm: '5%',
+		lg: "20%",
+		md: "20%",
+		sm: "5%",
 	},
-	bgcolor: 'background.paper',
-	border: '2px solid #000',
+	bgcolor: "background.paper",
+	border: "2px solid #000",
 	boxShadow: 24,
 	p: 4,
 	width: {
-		lg: '60%',
-		md: '60%',
-		sm: '90%',
+		lg: "60%",
+		md: "60%",
+		sm: "90%",
 	},
 };
 
@@ -62,10 +62,10 @@ export default function Search({ open, setOpen }) {
 					<OutlinedInput
 						fullWidth={true}
 						inputRef={input}
-						variant='outlined'
-						placeholder='Search user'
+						variant="outlined"
+						placeholder="Search user"
 						startAdornment={
-							<InputAdornment position='start'>
+							<InputAdornment position="start">
 								<PersonSearchIcon />
 							</InputAdornment>
 						}
@@ -90,11 +90,11 @@ export default function Search({ open, setOpen }) {
 											// navigate(`/@${user.handle}`);
 										}}>
 										<ListItemAvatar>
-											<Avatar alt='Profile'></Avatar>
+											<Avatar alt="Profile"></Avatar>
 										</ListItemAvatar>
 										<ListItemText
 											primary={
-												user.name + ' @' + user.handle
+												user.name + " @" + user.handle
 											}
 											secondary={user.profile}
 										/>

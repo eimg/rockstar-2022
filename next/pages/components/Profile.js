@@ -1,9 +1,9 @@
-import { useEffect, useState, useContext } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { AuthContext } from './AuthProvider';
-import { Tab, Tabs, Box, Avatar, Typography, Button } from '@mui/material';
-import { pink, lightBlue } from '@mui/material/colors';
+import { useEffect, useState, useContext } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { AuthContext } from "./AuthProvider";
+import { Tab, Tabs, Box, Avatar, Typography, Button } from "@mui/material";
+import { pink, lightBlue } from "@mui/material/colors";
 
 import {
 	putLike,
@@ -12,9 +12,9 @@ import {
 	fetchUserByHandle,
 	fetchCommentsByHandle,
 	fetchLikedTweetsByHandle,
-} from '../../utils/apiCalls';
+} from "../../utils/apiCalls";
 
-import TweetList from './TweetList';
+import TweetList from "./TweetList";
 
 export default function Profile() {
 	const router = useRouter();
@@ -144,19 +144,19 @@ export default function Profile() {
 				<Box>
 					<Box
 						sx={{
-							height: '140px',
+							height: "140px",
 							bgcolor: lightBlue[500],
 							borderRadius: 1,
 						}}></Box>
 
 					<Box
 						sx={{
-							display: 'flex',
-							justifyContent: 'space-between',
+							display: "flex",
+							justifyContent: "space-between",
 						}}>
-						<Box sx={{ ml: '20px', mt: '-50px', mb: 3 }}>
+						<Box sx={{ ml: "20px", mt: "-50px", mb: 3 }}>
 							<Avatar
-								alt='Profile'
+								alt="Profile"
 								sx={{
 									mb: 1,
 									width: 96,
@@ -167,59 +167,59 @@ export default function Profile() {
 
 							<Box sx={{ ml: 1 }}>
 								<Typography
-									sx={{ fontSize: '1.2em', mb: '-5px' }}>
+									sx={{ fontSize: "1.2em", mb: "-5px" }}>
 									<b>{user && user.name}</b>
 								</Typography>
 
 								<Typography
-									variant='body2'
-									sx={{ mb: 1, color: 'text.fade' }}>
+									variant="body2"
+									sx={{ mb: 1, color: "text.fade" }}>
 									@{user && user.handle}
 								</Typography>
 
-								<Typography sx={{ fontSize: '0.8em' }}>
+								<Typography sx={{ fontSize: "0.8em" }}>
 									{user && user.profile}
 								</Typography>
 
 								{handle === authUser.handle ? (
 									<>
 										<Typography
-											component='span'
+											component="span"
 											sx={{
 												mr: 3,
 												fontSize: 14,
-												color: 'text.fade',
+												color: "text.fade",
 											}}>
 											<Link
 												href={`/following/${authUser.handle}`}
 												style={{
 													color: pink[400],
-													textDecoration: 'none',
+													textDecoration: "none",
 												}}>
 												{(authUser.following &&
 													authUser.following
 														.length) ||
-													0}{' '}
+													0}{" "}
 												Following
 											</Link>
 										</Typography>
 
 										<Typography
-											component='span'
+											component="span"
 											sx={{
 												fontSize: 14,
-												color: 'text.fade',
+												color: "text.fade",
 											}}>
 											<Link
 												href={`/followers/${authUser.handle}`}
 												style={{
 													color: pink[400],
-													textDecoration: 'none',
+													textDecoration: "none",
 												}}>
 												{(authUser.followers &&
 													authUser.followers
 														.length) ||
-													0}{' '}
+													0}{" "}
 												Followers
 											</Link>
 										</Typography>
@@ -227,40 +227,40 @@ export default function Profile() {
 								) : (
 									<>
 										<Typography
-											component='span'
+											component="span"
 											sx={{
 												mr: 3,
 												fontSize: 14,
-												color: 'text.fade',
+												color: "text.fade",
 											}}>
 											<Link
 												href={`/following/${user.handle}`}
 												style={{
 													color: pink[400],
-													textDecoration: 'none',
+													textDecoration: "none",
 												}}>
 												{(user.following &&
 													user.following.length) ||
-													0}{' '}
+													0}{" "}
 												Following
 											</Link>
 										</Typography>
 
 										<Typography
-											component='span'
+											component="span"
 											sx={{
 												fontSize: 14,
-												color: 'text.fade',
+												color: "text.fade",
 											}}>
 											<Link
 												href={`/followers/${user.handle}`}
 												style={{
 													color: pink[400],
-													textDecoration: 'none',
+													textDecoration: "none",
 												}}>
 												{(user.followers &&
 													user.followers.length) ||
-													0}{' '}
+													0}{" "}
 												Followers
 											</Link>
 										</Typography>
@@ -272,21 +272,21 @@ export default function Profile() {
 							{authStatus ? (
 								handle === authUser.handle ? (
 									<Button
-										size='small'
-										color='info'
-										variant='outlined'
+										size="small"
+										color="info"
+										variant="outlined"
 										sx={{ borderRadius: 5 }}
 										onClick={() => {
-											router.push('/edit');
+											router.push("/edit");
 										}}>
 										Edit Profile
 									</Button>
 								) : user.followers &&
 								  user.followers.includes(authUser._id) ? (
 									<Button
-										size='small'
-										color='info'
-										variant='outlined'
+										size="small"
+										color="info"
+										variant="outlined"
 										sx={{ borderRadius: 5 }}
 										onClick={() => {
 											(async () => {
@@ -308,9 +308,9 @@ export default function Profile() {
 									</Button>
 								) : (
 									<Button
-										size='small'
-										color='info'
-										variant='contained'
+										size="small"
+										color="info"
+										variant="contained"
 										sx={{ borderRadius: 5 }}
 										onClick={() => {
 											(async () => {
@@ -337,17 +337,17 @@ export default function Profile() {
 						</Box>
 					</Box>
 
-					<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+					<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
 						<Tabs
 							value={tab}
 							onChange={tabChange}
-							variant='fullWidth'
+							variant="fullWidth"
 							TabIndicatorProps={{
 								style: { background: lightBlue[500] },
 							}}>
-							<Tab label='Posts' />
-							<Tab label='Comments' />
-							<Tab label='Likes' />
+							<Tab label="Posts" />
+							<Tab label="Comments" />
+							<Tab label="Likes" />
 						</Tabs>
 					</Box>
 					<Box hidden={tab !== 0} sx={{ py: 4 }}>

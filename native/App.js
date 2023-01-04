@@ -1,40 +1,40 @@
-import 'react-native-gesture-handler';
+import "react-native-gesture-handler";
 
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from "expo-status-bar";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-import { DarkTheme, DefaultTheme } from '@react-navigation/native';
-import { createTheme, ThemeProvider, useTheme } from '@rneui/themed';
+import { DarkTheme, DefaultTheme } from "@react-navigation/native";
+import { createTheme, ThemeProvider, useTheme } from "@rneui/themed";
 
-import { RootSiblingParent } from 'react-native-root-siblings';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { RootSiblingParent } from "react-native-root-siblings";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
-import { FAB } from '@rneui/themed';
+import { FAB } from "@rneui/themed";
 
-import Ionicons from '@expo/vector-icons/Ionicons';
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-import Login from './Screens/Login';
-import Notis from './Screens/Notis';
-import Search from './Screens/Search';
-import Singup from './Screens/Singup';
-import Logo from './Screens/_Share/Logo';
-import Add from './Screens/HomeStack/Add';
-import User from './Screens/HomeStack/User';
-import Share from './Screens/HomeStack/Share';
-import Tweet from './Screens/HomeStack/Tweet';
-import Likes from './Screens/HomeStack/Likes';
-import Latest from './Screens/HomeStack/Latest';
-import Shares from './Screens/HomeStack/Shares';
-import Followers from './Screens/HomeStack/Followers';
-import Following from './Screens/HomeStack/Following';
-import ModeSwitcher from './Screens/_Share/ModeSwitcher';
-import ProfileStack from './Screens/ProfileStack/Profile';
+import Login from "./Screens/Login";
+import Notis from "./Screens/Notis";
+import Search from "./Screens/Search";
+import Singup from "./Screens/Singup";
+import Logo from "./Screens/_Share/Logo";
+import Add from "./Screens/HomeStack/Add";
+import User from "./Screens/HomeStack/User";
+import Share from "./Screens/HomeStack/Share";
+import Tweet from "./Screens/HomeStack/Tweet";
+import Likes from "./Screens/HomeStack/Likes";
+import Latest from "./Screens/HomeStack/Latest";
+import Shares from "./Screens/HomeStack/Shares";
+import Followers from "./Screens/HomeStack/Followers";
+import Following from "./Screens/HomeStack/Following";
+import ModeSwitcher from "./Screens/_Share/ModeSwitcher";
+import ProfileStack from "./Screens/ProfileStack/Profile";
 
-import { fetchUser, fetchNotis } from './apiCalls';
+import { fetchUser, fetchNotis } from "./apiCalls";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -49,24 +49,24 @@ function Home({ authUser, setAuthUser, auth, mode, setMode }) {
 			<Stack.Navigator
 				screenOptions={{
 					headerTitle: () => <Logo />,
-					headerTitleAlign: 'center',
+					headerTitleAlign: "center",
 					headerRight: () => (
 						<ModeSwitcher mode={mode} setMode={setMode} />
 					),
 				}}>
-				<Stack.Screen name='Latest'>
+				<Stack.Screen name="Latest">
 					{() => <Latest authUser={authUser} auth={auth} />}
 				</Stack.Screen>
-				<Stack.Screen name='Tweet'>
+				<Stack.Screen name="Tweet">
 					{() => <Tweet authUser={authUser} auth={auth} />}
 				</Stack.Screen>
-				<Stack.Screen name='Add'>
+				<Stack.Screen name="Add">
 					{() => <Add authUser={authUser} auth={auth} />}
 				</Stack.Screen>
-				<Stack.Screen name='Share'>
+				<Stack.Screen name="Share">
 					{() => <Share authUser={authUser} auth={auth} />}
 				</Stack.Screen>
-				<Stack.Screen name='User'>
+				<Stack.Screen name="User">
 					{() => (
 						<User
 							authUser={authUser}
@@ -75,7 +75,7 @@ function Home({ authUser, setAuthUser, auth, mode, setMode }) {
 						/>
 					)}
 				</Stack.Screen>
-				<Stack.Screen name='Followers'>
+				<Stack.Screen name="Followers">
 					{() => (
 						<Followers
 							setAuthUser={setAuthUser}
@@ -84,7 +84,7 @@ function Home({ authUser, setAuthUser, auth, mode, setMode }) {
 						/>
 					)}
 				</Stack.Screen>
-				<Stack.Screen name='Following'>
+				<Stack.Screen name="Following">
 					{() => (
 						<Following
 							setAuthUser={setAuthUser}
@@ -93,7 +93,7 @@ function Home({ authUser, setAuthUser, auth, mode, setMode }) {
 						/>
 					)}
 				</Stack.Screen>
-				<Stack.Screen name='Likes'>
+				<Stack.Screen name="Likes">
 					{() => (
 						<Likes
 							setAuthUser={setAuthUser}
@@ -102,7 +102,7 @@ function Home({ authUser, setAuthUser, auth, mode, setMode }) {
 						/>
 					)}
 				</Stack.Screen>
-				<Stack.Screen name='Shares'>
+				<Stack.Screen name="Shares">
 					{() => (
 						<Shares
 							setAuthUser={setAuthUser}
@@ -118,19 +118,19 @@ function Home({ authUser, setAuthUser, auth, mode, setMode }) {
 					visible={true}
 					icon={() => (
 						<Ionicons
-							name='add'
-							style={{ color: 'white' }}
+							name="add"
+							style={{ color: "white" }}
 							size={24}
 						/>
 					)}
 					color={theme.colors.primary}
 					style={{
-						position: 'absolute',
+						position: "absolute",
 						right: 30,
 						bottom: 30,
 					}}
 					onPress={() => {
-						navigation.navigate('Add');
+						navigation.navigate("Add");
 					}}
 				/>
 			)}
@@ -142,14 +142,14 @@ export default function App() {
 	const [auth, setAuth] = useState(false);
 	const [authUser, setAuthUser] = useState({});
 	const [notiCount, setNotiCount] = useState(0);
-	const [mode, setMode] = useState('dark');
+	const [mode, setMode] = useState("dark");
 
 	const theme = createTheme({
 		mode,
 		components: {
 			Input: {
 				inputStyle: {
-					outline: 'none',
+					outline: "none",
 					margin: 0,
 					padding: 10,
 				},
@@ -161,14 +161,14 @@ export default function App() {
 			},
 		},
 		darkColors: {
-			primary: '#0a84ff',
-			lightBlue: '#5ad',
-			fade: '#222',
+			primary: "#0a84ff",
+			lightBlue: "#5ad",
+			fade: "#222",
 		},
 		lightColors: {
-			primary: '#0a84ff',
-			lightBlue: '#5ad',
-			fade: '#efefef',
+			primary: "#0a84ff",
+			lightBlue: "#5ad",
+			fade: "#efefef",
 		},
 	});
 
@@ -195,12 +195,12 @@ export default function App() {
 		<SafeAreaProvider>
 			<ThemeProvider theme={theme}>
 				<NavigationContainer
-					theme={mode === 'dark' ? DarkTheme : DefaultTheme}>
+					theme={mode === "dark" ? DarkTheme : DefaultTheme}>
 					<RootSiblingParent>
 						<Tab.Navigator
 							screenOptions={{
 								headerTitle: () => <Logo />,
-								headerTitleAlign: 'center',
+								headerTitleAlign: "center",
 								headerRight: () => (
 									<ModeSwitcher
 										mode={mode}
@@ -209,11 +209,11 @@ export default function App() {
 								),
 							}}>
 							<Tab.Screen
-								name='Home'
+								name="Home"
 								options={{
 									tabBarIcon: ({ color }) => (
 										<Ionicons
-											name='home-outline'
+											name="home-outline"
 											size={24}
 											color={color}
 										/>
@@ -232,11 +232,11 @@ export default function App() {
 							</Tab.Screen>
 
 							<Tab.Screen
-								name='Search'
+								name="Search"
 								options={{
 									tabBarIcon: ({ color }) => (
 										<Ionicons
-											name='search'
+											name="search"
 											size={24}
 											color={color}
 										/>
@@ -253,14 +253,14 @@ export default function App() {
 							{auth ? (
 								<>
 									<Tab.Screen
-										name='Profile'
+										name="Profile"
 										options={{
 											headerShown: false,
 											tabBarIcon: ({ color }) => (
 												<Ionicons
 													size={24}
 													color={color}
-													name='person-circle-outline'
+													name="person-circle-outline"
 												/>
 											),
 										}}>
@@ -277,17 +277,17 @@ export default function App() {
 									</Tab.Screen>
 
 									<Tab.Screen
-										name='Notis'
+										name="Notis"
 										options={{
 											tabBarBadge:
 												notiCount < 1
 													? null
 													: notiCount > 9
-													? '..'
+													? ".."
 													: notiCount,
 											tabBarIcon: ({ color }) => (
 												<Ionicons
-													name='notifications'
+													name="notifications"
 													size={24}
 													color={color}
 												/>
@@ -303,13 +303,13 @@ export default function App() {
 							) : (
 								<>
 									<Tab.Screen
-										name='Singup'
+										name="Singup"
 										options={{
 											tabBarIcon: ({ color }) => (
 												<Ionicons
 													size={24}
 													color={color}
-													name='person-add-outline'
+													name="person-add-outline"
 												/>
 											),
 										}}>
@@ -322,13 +322,13 @@ export default function App() {
 									</Tab.Screen>
 
 									<Tab.Screen
-										name='Login'
+										name="Login"
 										options={{
 											tabBarIcon: ({ color }) => (
 												<Ionicons
 													size={24}
 													color={color}
-													name='log-in-outline'
+													name="log-in-outline"
 												/>
 											),
 										}}>
@@ -345,7 +345,7 @@ export default function App() {
 					</RootSiblingParent>
 				</NavigationContainer>
 
-				<StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
+				<StatusBar style={mode === "dark" ? "light" : "dark"} />
 			</ThemeProvider>
 		</SafeAreaProvider>
 	);

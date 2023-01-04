@@ -1,6 +1,6 @@
-import { Box } from '@mui/material';
+import { Box } from "@mui/material";
 
-import MainList from './MainList';
+import MainList from "./MainList";
 
 export default function Home({
 	auth,

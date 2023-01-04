@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { useRoute } from '@react-navigation/native';
+import { useRoute } from "@react-navigation/native";
 
-import { fetchFollowers } from '../../apiCalls';
-import UserList from '../_Share/UserList';
+import { fetchFollowers } from "../../apiCalls";
+import UserList from "../_Share/UserList";
 
 export default function Followers({ authUser, setAuthUser }) {
 	const route = useRoute();

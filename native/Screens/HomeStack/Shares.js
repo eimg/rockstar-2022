@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { useRoute } from '@react-navigation/native';
+import { useRoute } from "@react-navigation/native";
 
-import UserList from '../_Share/UserList';
+import UserList from "../_Share/UserList";
 
-import { fetchShares } from '../../apiCalls';
+import { fetchShares } from "../../apiCalls";
 
 export default function Shares({ authUser, setAuthUser }) {
 	const route = useRoute();

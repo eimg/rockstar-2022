@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import Head from "next/head";
 import {
 	Box,
 	Card,
@@ -7,23 +7,23 @@ import {
 	Typography,
 	CardContent,
 	CardActionArea,
-} from '@mui/material';
+} from "@mui/material";
 
 import {
 	Share as ShareIcon,
 	Comment as CommentIcon,
 	Favorite as FavoriteIcon,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-import { formatRelative, parseISO } from 'date-fns';
+import { formatRelative, parseISO } from "date-fns";
 
-import { fetchNotis, markAllNotisRead, markNotiRead } from '../utils/apiCalls';
+import { fetchNotis, markAllNotisRead, markNotiRead } from "../utils/apiCalls";
 
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
-import Layout from './components/Layout';
+import Layout from "./components/Layout";
 
 export default function Notis() {
 	const router = useRouter();
@@ -46,18 +46,18 @@ export default function Notis() {
 			<Head>
 				<title>Next Twitter</title>
 				<meta
-					name='viewport'
-					content='width=device-width, initial-scale=1'
+					name="viewport"
+					content="width=device-width, initial-scale=1"
 				/>
-				<link rel='icon' href='/favicon.ico' />
+				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<main>
 				<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>
-					<Box sx={{ display: 'flex', mb: 2 }}>
+					<Box sx={{ display: "flex", mb: 2 }}>
 						<Box sx={{ flex: 1 }}></Box>
 						<Button
-							size='small'
-							variant='outlined'
+							size="small"
+							variant="outlined"
 							sx={{ borderRadius: 5 }}
 							onClick={() => {
 								markAllNotisRead();
@@ -83,39 +83,39 @@ export default function Notis() {
 									}}>
 									<CardContent
 										sx={{
-											display: 'flex',
+											display: "flex",
 											opacity: noti.read ? 0.4 : 1,
 										}}>
-										{noti.type === 'comment' ? (
-											<CommentIcon color='success' />
-										) : noti.type === 'share' ? (
-											<ShareIcon color='primary' />
+										{noti.type === "comment" ? (
+											<CommentIcon color="success" />
+										) : noti.type === "share" ? (
+											<ShareIcon color="primary" />
 										) : (
-											<FavoriteIcon color='error' />
+											<FavoriteIcon color="error" />
 										)}
 
 										<Box sx={{ ml: 3 }}>
-											<Avatar alt='Profile'></Avatar>
+											<Avatar alt="Profile"></Avatar>
 
 											<Box sx={{ mt: 1 }}>
 												<Typography
-													component='span'
+													component="span"
 													sx={{ mr: 1 }}>
 													<b>{noti.user[0].name}</b>
 												</Typography>
 
 												<Typography
-													component='span'
+													component="span"
 													sx={{
 														mr: 1,
-														color: 'text.secondary',
+														color: "text.secondary",
 													}}>
 													{noti.msg}
 												</Typography>
 
 												<Typography
-													component='span'
-													color='primary'>
+													component="span"
+													color="primary">
 													<small>
 														{formatRelative(
 															parseISO(
