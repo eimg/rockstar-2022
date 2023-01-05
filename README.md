@@ -11,6 +11,8 @@
 * React Native
 * React Navigation for React Native
 * React Native Elements UI Framework
+* Redux, Redux Toolkit
+* NextJS ~12.*
 
 ## Requirements (လိုအပ်ချက်)
 
@@ -28,10 +30,13 @@
 	https://nodejs.org/en/
 </a>
 
-3. ကုဒ်နမူနာတွင် အစိတ်အပိုင်း (၅) ပိုင်းပါဝင်သည်။ `api`, `client`, `native`, `next`, `tools` တို့ဖြစ်ကြသည်။ တစ်ပိုင်းချင်းစီအတွက် လိုအပ်သည့် Node Modules များကိုယူရန်၊ သက်ဆိုင်ရာ ဖိုဒါတစ်ခုချင်းစီအတွင်း `npm instll` Run ၍ ထည့်သွင်းပါ။
+3. ကုဒ်နမူနာတွင် အစိတ်အပိုင်း (၆) ပိုင်းပါဝင်သည်။ `api`, `client-redux`, `client`, `native`, `next`, `tools` တို့ဖြစ်ကြသည်။ တစ်ပိုင်းချင်းစီအတွက် လိုအပ်သည့် Node Modules များကိုယူရန်၊ သက်ဆိုင်ရာ ဖိုဒါတစ်ခုချင်းစီအတွင်း `npm instll` Run ၍ ထည့်သွင်းပါ။
 
 ```
 cd api
+npm install
+
+cd ../client-redux
 npm install
 
 cd ../client
@@ -77,4 +82,4 @@ npm start
 ## Todo (ဆက်လက်ထည့်သွင်းရန် ရည်ရွယ်ထားသည်များ)
 
 * Mention
-* Continues Loading
+* Continuous Loading
