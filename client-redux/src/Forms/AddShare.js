@@ -16,6 +16,7 @@ import { formatRelative, parseISO } from "date-fns";
 import { fetchTweet, postNoti, postShare } from "../apiCalls";
 import { useDispatch } from "react-redux";
 import { setSnackbarOpen } from "../slices/uiSlice";
+import { addTweet } from "../slices/appSlice";
 
 import Loading from "../Utils/Loading";
 
@@ -66,8 +67,9 @@ export default function AddShare() {
 
 							postNoti("share", id);
 
-							navigate("/");
+							dispatch(addTweet(result));
 							dispatch(setSnackbarOpen(true));
+							navigate("/");
 						})();
 					}}>
 					Share

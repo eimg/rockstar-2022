@@ -173,7 +173,14 @@ export async function postTweet(tweet) {
 
 	if (res.ok) {
 		let result = await res.json();
-		return result[0];
+		let data = result[0];
+
+		data.origin_tweet = [];
+		data.likes_users = [];
+		data.comments = [];
+		data.shares = [];
+
+		return data;
 	}
 
 	return false;
@@ -193,7 +200,14 @@ export async function postReply(_id, reply) {
 
 	if (res.ok) {
 		let result = await res.json();
-		return result[0];
+		let data = result[0];
+
+		data.origin_tweet = [];
+		data.likes_users = [];
+		data.comments = [];
+		data.shares = [];
+
+		return data;
 	}
 
 	return false;

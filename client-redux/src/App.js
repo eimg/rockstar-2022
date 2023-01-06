@@ -32,10 +32,12 @@ import Followers from "./Pages/Followers";
 import Following from "./Pages/Following";
 import BottomMenu from "./Navs/BottomMenu";
 
-import { putLike, fetchTweet, postNoti } from "./apiCalls";
-
 import { useDispatch, useSelector } from "react-redux";
-import { setDrawerState, setBottomMenuState, setSnackbarOpen } from "./slices/uiSlice";
+import {
+	setDrawerState,
+	setBottomMenuState,
+	setSnackbarOpen,
+} from "./slices/uiSlice";
 
 export default function App({ colorMode }) {
 	const theme = useTheme();
@@ -43,8 +45,8 @@ export default function App({ colorMode }) {
 	const location = useLocation();
 	const addShareRoute = useMatch("/tweet/:id/share");
 
-	const [tweet, setTweet] = useState({});
-	const [notiCount, setNotiCount] = useState(0);
+	// One bottom drawer is sharing across entire app
+	// and needed to know which item it's engaging
 	const [tweetIdOwner, setTweetIdOwner] = useState();
 
 	const dispatch = useDispatch();
@@ -59,9 +61,6 @@ export default function App({ colorMode }) {
 	const isLoading = useSelector(state => {
 		return state.app.status === "loading";
 	});
-	const setTweets = () => {
-		// dispatch(setTweets());
-	};
 
 	const toggleDrawer = open => event => {
 		if (
@@ -86,72 +85,13 @@ export default function App({ colorMode }) {
 		dispatch(setBottomMenuState(open));
 	};
 
-	const addComment = reply => {
-		tweet.comments.push(reply);
-		setTweet({ ...tweet });
-		setTweets(
-			tweets.map(t => {
-				if (t._id === reply.origin) {
-					t.comments.push(reply);
-				}
-
-				return t;
-			}),
-		);
-	};
-
-	const toggleLike = id => {
-		if (!auth) return false;
-
-		(async () => {
-			let likes = await putLike(id);
-			if (!likes) return navigate("/error");
-
-			let updatedTweets = await Promise.all(
-				tweets.map(async tweet => {
-					if (tweet._id === id) {
-						tweet.likes = likes;
-
-						let updatedTweet = await fetchTweet(id);
-						if (!updatedTweet) return navigate("/error");
-
-						setTweet(updatedTweet);
-					}
-
-					return tweet;
-				}),
-			);
-
-			setTweets(updatedTweets);
-			postNoti("like", id);
-		})();
-	};
-
-	const toggleLikeForComment = (commentId, tweetId) => {
-		if (!auth) return false;
-
-		(async () => {
-			let likes = await putLike(commentId);
-			if (!likes) return navigate("/error");
-
-			let result = await fetchTweet(tweetId);
-			if (!result) return navigate("/error");
-
-			setTweet(result);
-		})();
-	};
-
 	return (
 		<Box sx={{ ml: { md: "280px", sm: 0 } }}>
 			{isLoading && <Loading />}
 
 			<CssBaseline />
 			<Box sx={{ pb: 7 }}>
-				<Header
-					notiCount={notiCount}
-					setNotiCount={setNotiCount}
-					toggleDrawer={toggleDrawer}
-				/>
+				<Header toggleDrawer={toggleDrawer} />
 
 				<MainNav
 					theme={theme}
@@ -165,13 +105,8 @@ export default function App({ colorMode }) {
 						path="/tweet/:id"
 						element={
 							<Tweet
-								tweet={tweet}
-								setTweet={setTweet}
-								addComment={addComment}
-								toggleLike={toggleLike}
 								bottomMenuState={bottomMenuState}
 								toggleBottomMenu={toggleBottomMenu}
-								toggleLikeForComment={toggleLikeForComment}
 							/>
 						}
 					/>
@@ -186,7 +121,6 @@ export default function App({ colorMode }) {
 						element={
 							<Profile
 								tweets={tweets}
-								toggleLike={toggleLike}
 								toggleBottomMenu={toggleBottomMenu}
 							/>
 						}
@@ -211,17 +145,13 @@ export default function App({ colorMode }) {
 						element={<Following />}
 					/>
 
-					<Route
-						path="/notis"
-						element={<Notis setNotiCount={setNotiCount} />}
-					/>
+					<Route path="/notis" element={<Notis />} />
 
 					<Route
 						path="/"
 						element={
 							<Home
 								tweets={tweets}
-								toggleLike={toggleLike}
 								toggleBottomMenu={toggleBottomMenu}
 							/>
 						}

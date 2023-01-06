@@ -22,10 +22,12 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { formatRelative, parseISO } from "date-fns";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleLike } from "../slices/appSlice";
 
-export default function MainList({ tweets, toggleLike, toggleBottomMenu }) {
+export default function MainList({ tweets, toggleBottomMenu }) {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const auth = useSelector(state => state.auth.status);
 	const authUser = useSelector(state => state.auth.user);
@@ -261,7 +263,10 @@ export default function MainList({ tweets, toggleLike, toggleBottomMenu }) {
 										color: "text.fade",
 									}}
 									onClick={() => {
-										if (auth) toggleLike(tweet._id);
+										if (auth) dispatch(toggleLike({
+											target: tweet._id,
+											actor: authUser._id,
+										}));
 									}}>
 									{tweet.likes &&
 									tweet.likes.includes(authUser._id) ? (

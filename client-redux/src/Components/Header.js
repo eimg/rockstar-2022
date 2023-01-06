@@ -13,17 +13,18 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { fetchNotis } from "../apiCalls";
 import Search from "./Search";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setNotis } from "../slices/appSlice";
 
 export default function Header({
-	notiCount,
-	setNotiCount,
 	toggleDrawer,
 }) {
 	const location = useLocation();
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const auth = useSelector(state => state.auth.status);
+	const notis = useSelector(state => state.app.notis);
 
 	const [searchOpen, setSearchOpen] = useState(false);
 
@@ -33,10 +34,10 @@ export default function Header({
 				let result = await fetchNotis();
 				if (!result) return navigate("/error");
 
-				setNotiCount(result.filter(noti => !noti.read).length);
+				dispatch(setNotis(result));
 			}
 		})();
-	}, [setNotiCount, auth, navigate]);
+	}, [auth, navigate, dispatch]);
 
 	return (
 		<AppBar
@@ -88,7 +89,7 @@ export default function Header({
 						onClick={() => {
 							navigate("/notis");
 						}}>
-						{notiCount > 0 ? (
+						{notis.filter(noti => !noti.read).length > 0 ? (
 							<Badge
 								variant="dot"
 								color="noti"

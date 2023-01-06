@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import {
 	Box,
@@ -19,21 +19,22 @@ import {
 import { useNavigate } from "react-router-dom";
 import { formatRelative, parseISO } from "date-fns";
 import { fetchNotis, markAllNotisRead, markNotiRead } from "../apiCalls";
+import { useSelector, useDispatch } from "react-redux";
+import { setNotis, readNoti, readAllNotis } from "../slices/appSlice";
 
-export default function Notis({ setNotiCount }) {
+export default function Notis() {
 	const navigate = useNavigate();
-
-	const [notis, setNotis] = useState([]);
+	const dispatch = useDispatch();
+	const notis = useSelector(state => state.app.notis);
 
 	useEffect(() => {
 		(async () => {
 			let result = await fetchNotis();
 			if (!result) return navigate("/error");
 
-			setNotis(result);
-			setNotiCount(result.length);
+			dispatch(setNotis(result));
 		})();
-	}, [navigate, setNotiCount]);
+	}, [navigate, dispatch]);
 
 	return (
 		<Box sx={{ my: 3, mx: { lg: 20, md: 5, sm: 5, xs: 3 } }}>
@@ -45,15 +46,7 @@ export default function Notis({ setNotiCount }) {
 					sx={{ borderRadius: 5 }}
 					onClick={() => {
 						markAllNotisRead();
-
-						setNotis(
-							notis.map(noti => {
-								noti.read = true;
-								return noti;
-							}),
-						);
-
-						setNotiCount(0);
+						dispatch(readAllNotis());
 					}}>
 					Mark all as read
 				</Button>
@@ -65,6 +58,8 @@ export default function Notis({ setNotiCount }) {
 						<CardActionArea
 							onClick={() => {
 								markNotiRead(noti._id);
+								dispatch(readNoti(noti._id));
+
 								navigate(`/tweet/${noti.target}`);
 							}}>
 							<CardContent

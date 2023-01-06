@@ -8,6 +8,7 @@ import { postTweet } from "../apiCalls";
 
 import { useDispatch } from "react-redux";
 import { setSnackbarOpen } from "../slices/uiSlice";
+import { addTweet } from "../slices/appSlice";
 
 export default function AddTweet() {
 	const navigate = useNavigate();
@@ -38,8 +39,9 @@ export default function AddTweet() {
 							let result = await postTweet(newTweet);
 							if (!result) return navigate("/error");
 
-							navigate("/");
 							dispatch(setSnackbarOpen(true));
+							dispatch(addTweet(result));
+							navigate("/");
 						})();
 					}}>
 					Add Post
