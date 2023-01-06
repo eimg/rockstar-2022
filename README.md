@@ -12,7 +12,7 @@
 * React Navigation for React Native
 * React Native Elements UI Framework
 * Redux, Redux Toolkit
-* NextJS ~12.*
+* NextJS 13 Stable
 
 ## Requirements (လိုအပ်ချက်)
 
